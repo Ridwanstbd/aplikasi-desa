@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Shop;
 
 class SettingController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $shop = Shop::first();
-        return view('pages.admin.settings.index',compact('shop'));
+        return view('pages.admin.settings.index', compact('shop'));
     }
-    public function update(Request $request, $id) {
+
+    public function update(Request $request, $id)
+    {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable',
@@ -36,7 +39,7 @@ class SettingController extends Controller
                     Storage::delete($logo_url);
                 }
                 $logoName = 'logo-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->logo_url->getClientOriginalExtension();
-                $logo_url = $request->file('logo_url')->storeAs('public/logo', $logoName);
+                $logo_url = $request->file('logo_url')->storeAs('/public/logo', $logoName);
                 $validated['logo_url'] = $logo_url;
             }
 
@@ -64,7 +67,7 @@ class SettingController extends Controller
                     $shopbannersName = 'shop-banners-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $banner->getClientOriginalExtension();
                     $shop->banners()->create([
                         'shop_id' => $shop->id,
-                        'banner_url' => $banner->storeAs('public/shops', $shopbannersName),
+                        'banner_url' => $banner->storeAs('/public/shops', $shopbannersName),
                     ]);
                 }
             }
@@ -81,15 +84,14 @@ class SettingController extends Controller
                     $shopTestimonialsName = 'shop-testimonials-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $testimonial->getClientOriginalExtension();
                     $shop->testimonials()->create([
                         'shop_id' => $shop->id,
-                        'testimoni_url' => $testimonial->storeAs('public/shops', $shopTestimonialsName),
+                        'testimoni_url' => $testimonial->storeAs('/public/shops', $shopTestimonialsName),
                     ]);
                 }
             }
 
-            return redirect()->route('settings.index')->with('success','Toko Berhasil diperbarui!.');
+            return redirect()->route('settings.index')->with('success', 'Toko Berhasil diperbarui!.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
     }
-
 }
