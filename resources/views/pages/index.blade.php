@@ -1,11 +1,12 @@
 @extends('layouts.guest')
 
 @section('content')
+
 <div class="container">
     <!-- Deskripsi Toko -->
     @if (!empty($shop->first()->description))
         <div class="p-3 p-md-8 m-md-3 text-center">
-            <h2 class="fs-2">Selamat Datang di {{$shop->first()->name}}</h2>
+            <h2 class="fs-2">Selamat Datang di <span class="d-block d-md-inline">{{$shop->first()->name}}</span></h2>
             <p class="fs-4">{{$shop->first()->description}}</p>
         </div>
     @endif
@@ -52,15 +53,19 @@
                 <div class="row">
                     @foreach ($products as $product)
                         <div class="col-6 col-md-4 col-lg-3 mb-3">
-                            <img src="{{ Storage::url($product->main_image) }}" style="width:11rem; height: 11rem;" alt="...">
+                            <a href="{{ route('products.show', $product->slug) }}" class="">
+                                <img src="{{ Storage::url($product->main_image) }}" style="width:11rem; height: 11rem;" alt="...">
+                            </a>
                             <div class="p-1">
+                                <a href="{{ route('products.show', $product->slug) }}" class="text-black text-decoration-none">
                                 <h5 class="fs-5">Rp{{ number_format($product->hargaTermurah, 0, ',', '.') }}</h5>
-                                <p class="fs-6">{{ Str::limit($product->name, 22) }}</p>
+                                <p class="fs-6" style="color: green;" >{{ $product->name }}</p>
+                                </a>
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-4">
-                                        <button type="button" onclick="shareProduct('{{ route('products.show', $product->slug) }}')" class="btn btn-outline-secondary">
-                                            <i class="fa-solid fa-paper-plane"></i>
-                                        </button>
+                                    <div onclick="shareProduct('{{ route('products.show', $product->slug) }}', '{{ $product->name }}')" class="d-flex align-items-center" style="cursor: pointer;">
+                                        <i class="fa-solid fa-share text-gray-400"></i> <span class="fs-8 text-gray-400">Bagikan</span>
+                                    </div>
                                     </div>
                                     <div class="col-8">
                                         <a href="{{ route('products.show', $product->slug) }}" class="btn btn-warning" style="white-space: nowrap;">Lihat detail</a>
@@ -75,6 +80,23 @@
         </div>
         <!-- Product with Category -->
     </form>
+    <!-- Modal Bagikan Produk -->
+    <div class="modal fade" id="shareProductModal" tabindex="-1" aria-labelledby="shareProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shareProductModalLabel">Bagikan Produk</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="share-buttons-container">
+                    <!-- Share buttons akan dimuat melalui JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Testimoni -->
     <h3 class="text-center my-3">Testimoni</h3>
@@ -211,6 +233,7 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Fake Sales Notification
     const productAlert = document.getElementById("product-alert");
@@ -293,19 +316,20 @@
     });
     // Fake Sales Notification
 
-    // Share Product
-    function shareProduct(url) {
-        if (navigator.share) {
-            navigator.share({
-                title: 'Product Sharing',
-                url: url
-            }).then(() => {
-                console.log('Thanks for sharing!');
-            })
-            .catch(console.error);
-        } else {
-            console.log('Share not supported on this browser, do it the old way.');
-        }
+    function shareProduct(url, productName) {
+        const encodedUrl = encodeURIComponent(url);
+        const encodedProductName = encodeURIComponent(productName);
+
+        const fbShare = `<a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" class="btn btn-primary mb-2"><i class="fab fa-facebook-f"></i> Facebook</a>`;
+        const waShare = `<a href="https://wa.me/?text=${encodedProductName}%20${encodedUrl}" target="_blank" class="btn btn-success mb-2"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
+        const igShare = `<a href="https://www.instagram.com/?url=${encodedUrl}" target="_blank" class="btn btn-danger mb-2"><i class="fab fa-instagram"></i> Instagram</a>`;
+        const telegramShare = `<a href="https://telegram.me/share/url?url=${encodedUrl}&text=${encodedProductName}" target="_blank" class="btn btn-info mb-2"><i class="fab fa-telegram-plane"></i> Telegram</a>`;
+        const twitterShare = `<a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedProductName}" target="_blank" class="btn btn-primary mb-2" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i> Twitter</a>`;
+
+        document.getElementById('share-buttons-container').innerHTML = `${fbShare} ${waShare} ${igShare} ${telegramShare} ${twitterShare}`;
+
+        const shareProductModal = new bootstrap.Modal(document.getElementById('shareProductModal'));
+        shareProductModal.show();
     }
     // Share Product
 

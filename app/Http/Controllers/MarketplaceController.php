@@ -10,44 +10,49 @@ class MarketplaceController extends Controller
     public function index()
     {
         $MarketplaceLinks = MarketplaceLinks::latest()->paginate(10);
-        $headers = ['Nama','Aksi'];
+        $headers = ['Nama', 'Aksi'];
         return view('pages.admin.marketplace-links.index', compact('MarketplaceLinks', 'headers'));
     }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'marketplace_url' => 'nullable|string',
+            'shop_id' => 'required'
         ]);
 
         MarketplaceLinks::create($validatedData);
         return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil ditambahkan.');
     }
-    public function update(Request $request, $id){
-    $request->validate([
-        'type' => 'required|string|max:255',
-        'name' => 'required|string|max:255',
-        'marketplace_url' => 'nullable|string',
-    ]);
 
-    try {
-        $category = MarketplaceLinks::find($id);
-        $category->update([
-            'type' => $request->type,
-            'name' => $request->name,
-            'marketplace_url' => $request->marketplace_url,
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'type' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'marketplace_url' => 'nullable|string',
+            'shop_id' => 'required'
         ]);
-        return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil diperbarui.');
-    } catch (\Exception $e) {
-        return back()->withErrors(['error' => $e->getMessage()]);
+
+        try {
+            $category = MarketplaceLinks::find($id);
+            $category->update([
+                'type' => $request->type,
+                'name' => $request->name,
+                'marketplace_url' => $request->marketplace_url,
+                'shop_id' => $request->shop_id
+            ]);
+            return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
-}
+
     public function destroy($id)
     {
-            MarketplaceLinks::find($id)->delete();
-            return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil dihapus.');
+        MarketplaceLinks::find($id)->delete();
+        return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil dihapus.');
     }
-
-
 }

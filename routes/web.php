@@ -1,20 +1,20 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomerServiceController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class,'index'])->name('home');
-Route::get('/product/detail/{slug}', [ProductController::class,'show'])->name('products.show');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/product/detail/{slug}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/order/submit', [OrderController::class, 'submit'])->name('order.submit');
 Route::get('/order/details', [OrderController::class, 'orderDetailsForm'])->name('order.details.form');
 Route::post('/order/details', [OrderController::class, 'submitOrderDetails'])->name('order.details.submit');
@@ -76,5 +76,4 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     });
 });
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

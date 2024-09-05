@@ -20,6 +20,7 @@ class SettingController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable',
             'logo_url' => 'nullable',
+            'logo_footer_url' => 'nullable',
             'banners.*' => 'nullable',
             'added_url*' => 'nullable',
             'location_url' => 'nullable|url',
@@ -42,11 +43,21 @@ class SettingController extends Controller
                 $logo_url = $request->file('logo_url')->storeAs('/public/logo', $logoName);
                 $validated['logo_url'] = $logo_url;
             }
+            if ($request->hasFile('logo_footer_url')) {
+                $logo_footer_url = $shop->logo_footer_url;
+                if (Storage::exists($logo_footer_url)) {
+                    Storage::delete($logo_footer_url);
+                }
+                $logoName = 'logo-footer-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->logo_footer_url->getClientOriginalExtension();
+                $logo_footer_url = $request->file('logo_footer_url')->storeAs('/public/logo', $logoName);
+                $validated['logo_footer_url'] = $logo_footer_url;
+            }
 
             // Update shop
             $shop->update([
                 'name' => $validated['name'],
                 'logo_url' => $validated['logo_url'] ?? $shop->logo_url,
+                'logo_footer_url' => $validated['logo_footer_url'] ?? $shop->logo_footer_url,
                 'description' => $validated['description'],
                 'location_url' => $validated['location_url'],
                 'added_url' => $validated['added_url'],

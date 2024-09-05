@@ -2,7 +2,9 @@
     <div class="container">
         <div class="row w-100">
             <div class="col-md-4 d-flex align-items-center">
-                <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
+            @if (!empty($shop->first()->logo_footer_url))
+            <img src="{{ Storage::url($shop->logo_footer_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
+            @endif
                 <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
             </div>
             <div class="col-md-4">

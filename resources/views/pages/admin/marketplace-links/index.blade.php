@@ -17,9 +17,12 @@
                 </select>
                 </div>
                 <div class="col-md-12">
+                    <x-input type="text" label="Nama" name="name" placeholder="Shopee Madiun" />
+                </div>
+                <div class="col-md-12">
                     <x-input type="text" label="Url Marketplace" name="marketplace_url" placeholder="contoh: https://shopee.co.id/xxxxxx" />
                 </div>
-                <x-input type="hidden" label="id shop" name="shop_id" placeholder="##" value="{{$shop->first()->id}}" hidden/>
+                <input type="hidden" name="shop_id" placeholder="##" value="{{$shop->first()->id}}" hidden />
 
                 <div class="modal-footer">
                     <x-button type="button" label="Batal" class="btn-secondary" dataBsDismiss="modal" />

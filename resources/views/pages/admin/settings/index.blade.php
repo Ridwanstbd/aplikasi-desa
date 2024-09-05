@@ -54,6 +54,15 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
+                <input type="hidden" name="logo_footer_url" value="{{$shop->logo_footer_url}}" />
+                <x-input-image-png name="logo_footer_url" placeholder="Pilih Logo untuk footer (footer backgroundnya hitam)" label="Logo Footer *png (footer backgroundnya hitam)" />
+                    <div class="d-flex mb-2">
+                       @if ($shop->logo_footer_url)
+                        <x-image-preview :image="$shop->logo_footer_url"/>
+                        @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
                     <x-input type="text" placeholder="contoh: https://maps.app.goo.gl/XXXXX" name="location_url" value="{{$shop->location_url}}" label="Lokasi Toko" />
                 </div>
                 <div class="col-md-6">
