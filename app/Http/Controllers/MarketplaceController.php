@@ -9,7 +9,7 @@ class MarketplaceController extends Controller
 {
     public function index()
     {
-        $MarketplaceLinks = MarketplaceLinks::latest()->paginate(10);
+        $MarketplaceLinks = MarketplaceLinks::latest()->get();
         $headers = ['Nama', 'Aksi'];
         return view('pages.admin.marketplace-links.index', compact('MarketplaceLinks', 'headers'));
     }
