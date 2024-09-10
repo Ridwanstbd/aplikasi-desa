@@ -167,8 +167,8 @@
             align-items: flex-start;
             gap: 0.5rem;
             cursor: pointer;
+            z-index: 999;
             background-color: white;
-
         }
 
         .product-info {
