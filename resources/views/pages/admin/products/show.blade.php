@@ -20,8 +20,8 @@
                 </div>
             </div>
             <!-- Gambar Utama -->
-            <div class="d-flex w-100">
-                <img id="main-image" src="{{ Storage::url($product->main_image) }}" style="height: 60vh; width: max-content;" alt="{{$product->name}}"/>
+            <div class="d-flex">
+                <img id="main-image" class="img-fluid" src="{{ Storage::url($product->main_image) }}" alt="{{$product->name}}"/>
             </div>
         </div>
         <!-- Detail Produk -->

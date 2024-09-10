@@ -45,15 +45,6 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                @foreach ($shop->banners as $index => $banner)
-                <input type="hidden" name="banners[]" value="{{$banner->banner_url}}"  >
-                @endforeach
-                    <x-input-image name="banners" label="Banner" multiple=true />
-                    <x-carousel id="bannerCarousel" :images="$shop->banners->pluck('banner_url')" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
                 <input type="hidden" name="logo_footer_url" value="{{$shop->logo_footer_url}}" />
                 <x-input-image-png name="logo_footer_url" placeholder="Pilih Logo untuk footer (footer backgroundnya hitam)" label="Logo Footer *png (footer backgroundnya hitam)" />
                     <div class="d-flex mb-2">
@@ -62,17 +53,42 @@
                         @endif
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                <x-input-image name="banners" label="Banner" multiple=true />
+
+                @if($shop->banners->isNotEmpty())
+                    <div class="d-flex flex-wrap mb-2">
+                        @foreach ($shop->banners as $index => $banner)
+                            <div class="position-relative m-2">
+                                <img src="{{ Storage::url($banner->banner_url) }}" alt="Banner {{ $index+1 }}" class="img-thumbnail" style="width: 150px; height: auto;">
+                                <button class="btn btn-danger btn-sm delete-banner" data-id="{{ $banner->id }}">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                </div>
+
+                <div class="col-md-6">
+                <x-input-image name="testimonials" label="Testimonials" multiple=true />
+                <div class="d-flex flex-wrap mb-2">
+                    @foreach ($shop->testimonials as $index => $testimonial)
+                        <div class="position-relative m-2">
+                            <img src="{{ Storage::url($testimonial->testimoni_url) }}" alt="Testimonial {{ $index+1 }}" class="img-thumbnail" style="width: 7.5rem; height: 10rem;">
+                            <button class="btn btn-danger btn-sm delete-testimonial" data-id="{{ $testimonial->id }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    @endforeach
+                </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-md-6">
                     <x-input type="text" placeholder="contoh: https://maps.app.goo.gl/XXXXX" name="location_url" value="{{$shop->location_url}}" label="Lokasi Toko" />
-                </div>
-                <div class="col-md-6">
-                @foreach ($shop->testimonials as $index => $testimonial)
-                <input type="hidden" name="testimonials[]" value="{{$testimonial->testimoni_url}}"  >
-                @endforeach
-                    <x-input-image name="testimonials" label="Testimonials" multiple=true />
-                    <div class="d-flex flex-wrap mb-2">
-                    <x-carousel-preview id="testimonialCarousel" :images="$shop->testimonials->pluck('testimoni_url')" />
-                    </div>
                 </div>
             </div>
             <div class="row">
@@ -99,3 +115,73 @@
 </section>
 
 @endsection
+@push('scripts')
+    <script>
+        function showAlert(icon, title, text){
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            confirmButtonText: 'Ok'
+        });
+    }
+    @if (session('success'))
+        showAlert('success','Sukses!','{{ session('success') }}')
+    @endif
+    @if (session('error'))
+        @php $errorMessages = session('error'); @endphp
+        @if (is_array($errorMessages))
+            @foreach ($errorMessages as $errorMessage)
+                showAlert('error','Oops...','{{ $errorMessage }}')
+            @endforeach
+        @else
+                showAlert('error','Oops...','{{ $errorMessages }}')
+        @endif
+    @endif
+        $(document).on('click', '.delete-banner', function(e) {
+        e.preventDefault();
+        var bannerId = $(this).data('id');
+        var url = '/dashboard/shop/settings/delete-banner/' + bannerId;
+
+        if (confirm('Apakah Anda yakin ingin menghapus banner ini?')) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    showAlert('success','Sukses!','Banner berhasil dihapus.');
+                    location.reload();
+                },
+                error: function(xhr) {
+                    showAlert('error','Oops...','Terjadi kesalahan saat menghapus banner.');
+                }
+            });
+        }
+    });
+        $(document).on('click', '.delete-testimonial', function(e) {
+        e.preventDefault();
+        var testimonialId = $(this).data('id');
+        var url = '/dashboard/shop/settings/delete-testimonial/' + testimonialId;
+
+        if (confirm('Apakah Anda yakin ingin menghapus testimonial ini?')) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    showAlert('success','Sukses!','Testimonial berhasil dihapus');
+                    location.reload(); // Refresh halaman untuk melihat perubahan
+                },
+                error: function(xhr) {
+                    showAlert('error','Oops...','Terjadi kesalahan, testimonial tidak berhasil dihapus');
+                }
+            });
+        }
+    });
+
+    </script>
+@endpush

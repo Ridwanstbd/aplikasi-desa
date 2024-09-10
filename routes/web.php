@@ -42,6 +42,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::put('{slug}', [ProductController::class, 'update'])->name('products.update');
         Route::patch('{id}/variations', [ProductController::class, 'updateVariations'])->name('products.update.variations');
         Route::delete('{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+        Route::delete('delete-image/{id}', [ProductController::class, 'deleteImages'])->name('products.images.delete');
     });
 
     Route::prefix('marketplace')->group(function () {
@@ -73,6 +74,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::prefix('shop')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{id}', [SettingController::class, 'update'])->name('settings.update');
+        Route::post('banners/store/{id}', [SettingController::class, 'storeBanners'])->name('banners.store');
+        Route::post('testimonials/store/{id}', [SettingController::class, 'storeTestimonials'])->name('testimonials.store');
+        Route::delete('settings/delete-banner/{id}', [SettingController::class, 'destroyBanner'])->name('banners.destroy');
+        Route::delete('settings/delete-testimonial/{id}', [SettingController::class, 'destroyTestimonial'])->name('testimonials.destroy');
     });
 });
 

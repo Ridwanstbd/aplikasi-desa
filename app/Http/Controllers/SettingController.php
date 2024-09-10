@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\Shop;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,6 +45,7 @@ class SettingController extends Controller
                 $logo_url = $request->file('logo_url')->storeAs('/public/logo', $logoName);
                 $validated['logo_url'] = $logo_url;
             }
+
             if ($request->hasFile('logo_footer_url')) {
                 $logo_footer_url = $shop->logo_footer_url;
                 if (Storage::exists($logo_footer_url)) {
@@ -68,12 +71,6 @@ class SettingController extends Controller
 
             // Handle banners
             if ($request->hasFile('banners')) {
-                foreach ($shop->banners as $banner) {
-                    if (Storage::exists($banner->banner_url)) {
-                        Storage::delete($banner->banner_url);
-                    }
-                    $banner->delete();
-                }
                 foreach ($request->banners as $banner) {
                     $shopbannersName = 'shop-banners-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $banner->getClientOriginalExtension();
                     $shop->banners()->create([
@@ -82,17 +79,10 @@ class SettingController extends Controller
                     ]);
                 }
             }
-
             // Handle testimonials
             if ($request->hasFile('testimonials')) {
-                foreach ($shop->testimonials as $testimonial) {
-                    if (Storage::exists($testimonial->testimonial_url)) {
-                        Storage::delete($testimonial->testimonial_url);
-                    }
-                    $testimonial->delete();
-                }
                 foreach ($request->testimonials as $testimonial) {
-                    $shopTestimonialsName = 'shop-testimonials-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $testimonial->getClientOriginalExtension();
+                    $shopTestimonialsName = 'shop-testimonials-' . \Str::slug($shop->name, '-') . '-' . uniqid() . '.' . $testimonial->getClientOriginalExtension();
                     $shop->testimonials()->create([
                         'shop_id' => $shop->id,
                         'testimoni_url' => $testimonial->storeAs('/public/shops', $shopTestimonialsName),
@@ -104,5 +94,23 @@ class SettingController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function destroyBanner($id)
+    {
+        $banner = Banner::findOrFail($id);
+        Storage::delete($banner->banner_url);
+        $banner->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function destroyTestimonial($id)
+    {
+        $testimonial = Testimonial::findOrFail($id);
+        Storage::delete($testimonial->testimoni_url);
+        $testimonial->delete();
+
+        return response()->json(['success' => true]);
     }
 }

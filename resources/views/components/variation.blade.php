@@ -4,7 +4,7 @@
     @php
     $isHasVariation = true;
     @endphp
-    <x-checkbox name="has_variations" label="Produk ini memiliki variasi" :checked="$isHasVariation" checked/>
+    <x-checkbox name="has_variations" label="Produk ini memiliki variasi" :checked="$isHasVariation" checked hidden/>
     <h5 class="m-4">Variasi Produk</h5>
 
     @foreach ($variations as $index => $variation)

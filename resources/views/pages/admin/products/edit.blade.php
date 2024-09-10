@@ -55,7 +55,12 @@
                 <x-input type="file" name="images[]" label="Foto Tambahan" multiple=true />
                 <div class="d-flex mb-2">
                     @foreach ($product->images as $image)
-                    <x-image-preview :image="$image->images"/>
+                    <div class="position-relative m-2">
+                        <img src="{{ Storage::url($image->images) }}" style="width: 10rem; height: 10rem;" class="rounded mt-3">
+                        <button class="btn btn-danger btn-sm delete-image" data-id="{{ $image->id }}">
+                                <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -86,6 +91,49 @@
 
 @push('scripts')
 <script>
+    function showAlert(icon, title, text){
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: text,
+            confirmButtonText: 'Ok'
+        });
+    }
+    @if (session('success'))
+        showAlert('success','Sukses!','{{ session('success') }}')
+    @endif
+    @if (session('error'))
+        @php $errorMessages = session('error'); @endphp
+        @if (is_array($errorMessages))
+            @foreach ($errorMessages as $errorMessage)
+                showAlert('error','Oops...','{{ $errorMessage }}')
+            @endforeach
+        @else
+                showAlert('error','Oops...','{{ $errorMessages }}')
+        @endif
+    @endif
+    $(document).on('click', '.delete-image', function(e) {
+        e.preventDefault();
+        var imageId = $(this).data('id');
+        var url = '/dashboard/product/delete-image/' + imageId;
+
+        if (confirm('Apakah Anda yakin ingin menghapus Foto ini?')) {
+            $.ajax({
+                url: url,
+                type: 'DELETE',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    showAlert('success','Sukses!','Foto berhasil dihapus.');
+                    location.reload();
+                },
+                error: function(xhr) {
+                    showAlert('error','Oops...','Terjadi kesalahan saat menghapus foto.');
+                }
+            });
+        }
+    });
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
