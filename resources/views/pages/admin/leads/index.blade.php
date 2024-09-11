@@ -79,9 +79,11 @@
                              <p>Yakin ingin menghapus Leads ini?</p>
                              <div class="modal-footer">
                                 <x-button type="button" class="btn-secondary" dataBsDismiss="modal" label="Tidak, Batalkan" />
-                                <x-form action="{{ route('leads.destroy', $lead->id) }}" method="DELETE" class="inline-block">
+                                <form action="{{ route('leads.destroy', $lead->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
                                     <x-button type="submit" class="btn btn-danger" label="Hapus"/>
-                                </x-form>
+                                </form>
                             </div>
                             </x-modal>
                             <!-- hapusCSModal -->

@@ -101,15 +101,7 @@
     <!-- Testimoni -->
     <h3 class="text-center my-3">Testimoni</h3>
     <div class="row mt-2">
-        @foreach ($testimonials as $testimonial)
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="testimonial-box p-2 h-100">
-                    <div class="testimonial-image">
-                        <img src="{{ Storage::url($testimonial->testimoni_url) }}" alt="Testimonial Image" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-        @endforeach
+    <x-carousel id="testimonialCarousel" :images="$testimonials->pluck('testimoni_url')"/>
     </div>
     <!-- Testimoni -->
 
@@ -244,17 +236,17 @@
     const leads = @json($leads);
     const products = @json($productsJson);
     let alertTimeout;
-    let currentLeadIndex = 0;
+    let currentLeadIndex = leads.length - 1;
 
     const getNextLead = () => {
         const lead = leads[currentLeadIndex];
-        currentLeadIndex = (currentLeadIndex + 1) % leads.length;
+        currentLeadIndex = (currentLeadIndex - 1 + leads.length) % leads.length;
         return lead;
     };
 
     const showAlert = () => {
-    const randomLead = getNextLead();
-    const product = products.find(p => p.id === randomLead.product_id);
+    const nextLead = getNextLead();
+    const product = products.find(p => p.id === nextLead.product_id);
 
     if (!product) {
         console.error('Product not found');
@@ -267,7 +259,7 @@
         console.error('Image source is invalid or not found');
     }
 
-    const timeOrder = new Date(randomLead.time_order);
+    const timeOrder = new Date(nextLead.time_order);
     const now = new Date();
     const timeDifference = Math.floor((now - timeOrder) / 1000); // Selisih dalam detik
 
@@ -291,7 +283,7 @@
         const yearsAgo = Math.floor(timeDifference / 31536000);
         timeAgo = `${yearsAgo} tahun yang lalu`;
     }
-    productText.innerHTML = `<p class="message"><b>${randomLead.name}</b> dari <b>${randomLead.regency}</b> baru saja membeli <b>${product.name}</b></p><p class="time">${timeAgo}</p>`;
+    productText.innerHTML = `<p class="message"><b>${nextLead.name}</b> dari <b>${nextLead.regency}</b> baru saja membeli <b>${product.name}</b></p><p class="time">${timeAgo}</p>`;
 
     if (productInfo) {
         productInfo.onclick = () => window.location.href = `{{ url('product/detail') }}/${product.slug}`;
@@ -342,4 +334,3 @@
     // Filter Form
 </script>
 @endpush
-

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Cache;
+use App\Models\CsRotation;
+use App\Models\CustomerService;
 use App\Models\Leads;
 use App\Models\Product;
 use App\Models\Variation;
-use App\Models\CustomerService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -50,6 +50,7 @@ class OrderController extends Controller
         // Redirect ke halaman form data diri pemesan
         return redirect()->route('order.details.form');
     }
+
     public function orderDetailsForm(Request $request)
     {
         $orderData = $request->session()->get('orderData');
@@ -69,7 +70,6 @@ class OrderController extends Controller
 
     public function submitOrderDetails(Request $request)
     {
-        // Validasi request
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:15',
@@ -107,12 +107,12 @@ class OrderController extends Controller
             'name' => $request->input('name'),
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
-            'product_id'=> $orderData['product_id'],
+            'product_id' => $orderData['product_id'],
             'province' => $request->input('province_name'),
             'regency' => $request->input('regency_name'),
             'district' => $request->input('district_name'),
             'village' => $request->input('village_name'),
-            'detail_order' => "Produk: " . $product->name . ", Variasi: " . $variation->name_variation . ", Jumlah: " . $orderData['quantity'] . ", Total Harga: Rp " . number_format($totalPrice, 0, ',', '.'),
+            'detail_order' => 'Produk: ' . $product->name . ', Variasi: ' . $variation->name_variation . ', Jumlah: ' . $orderData['quantity'] . ', Total Harga: Rp ' . number_format($totalPrice, 0, ',', '.'),
             'time_order' => now()
         ];
 
@@ -121,36 +121,43 @@ class OrderController extends Controller
 
         // Buat pesan WhatsApp
         $whatsappMessage = "Halo Kak Mohon diproses pesanan saya:\n";
-        $whatsappMessage .= "Produk: " . $product->name . "\n";
-        $whatsappMessage .= "Variasi: " . $variation->name_variation . "\n";
-        $whatsappMessage .= "Harga Variasi: Rp " . number_format($variation->price, 0, ',', '.') . "\n";
-        $whatsappMessage .= "Jumlah: " . $orderData['quantity'] . "\n";
-        $whatsappMessage .= "Total Harga: Rp " . number_format($totalPrice, 0, ',', '.') . "\n"."\n";
-        $whatsappMessage .= "Nama: " . $customerData['name'] . "\n";
-        $whatsappMessage .= "Telepon: " . $customerData['phone'] . "\n";
-        $whatsappMessage .= "Alamat: " . $customerData['address'] . "\n";
-        $whatsappMessage .= "Desa: " . $customerData['village'] . "\n";
-        $whatsappMessage .= "Kecamatan: " . $customerData['district'] . "\n";
-        $whatsappMessage .= "Kota/Kabupaten: " . $customerData['regency'] . "\n";
-        $whatsappMessage .= "Provinsi: " . $customerData['province'] . "\n";
+        $whatsappMessage .= 'Produk: ' . $product->name . "\n";
+        $whatsappMessage .= 'Variasi: ' . $variation->name_variation . "\n";
+        $whatsappMessage .= 'Harga Variasi: Rp ' . number_format($variation->price, 0, ',', '.') . "\n";
+        $whatsappMessage .= 'Jumlah : ' . $orderData['quantity'] . "\n";
+        $whatsappMessage .= 'Total : Rp ' . number_format($totalPrice, 0, ',', '.') . "\n" . "\n";
+        $whatsappMessage .= 'Nama: ' . $customerData['name'] . "\n";
+        $whatsappMessage .= 'Telepon: ' . $customerData['phone'] . "\n";
+        $whatsappMessage .= 'Alamat: ' . $customerData['address'] . "\n";
+        $whatsappMessage .= 'Desa: ' . $customerData['village'] . "\n";
+        $whatsappMessage .= 'Kecamatan: ' . $customerData['district'] . "\n";
+        $whatsappMessage .= 'Kota/Kabupaten: ' . $customerData['regency'] . "\n";
+        $whatsappMessage .= 'Provinsi: ' . $customerData['province'] . "\n";
 
         // Ambil nomor customer service
-        $csIndex = Cache::get('cs_index', 1);
-        $customerService = CustomerService::find($csIndex);
+        $rotation = CsRotation::first();
+        if (!$rotation) {
+            // Jika belum ada record di tabel, buat yang pertama
+            $rotation = CsRotation::create(['current_cs_id' => 1]);
+        }
+        $customerService = CustomerService::find($rotation->current_cs_id);
         if (!$customerService) {
             return redirect()->back()->with('error', 'Customer service tidak ditemukan.');
         }
+        $minCsId = CustomerService::min('id');
 
-        // Update index customer service di cache
-        $nextCsIndex = $csIndex + 1;
-        if ($nextCsIndex > CustomerService::max('id')) {
-            $nextCsIndex = 1;
+        $nextCsId = CustomerService::where('id', '>', $rotation->current_cs_id)
+            ->min('id');
+        if (!$nextCsId) {
+            $nextCsId = $minCsId;
         }
-        Cache::put('cs_index', $nextCsIndex);
+
+        $rotation->update(['current_cs_id' => $nextCsId]);
 
         // URL WhatsApp
-        $whatsappUrl = "https://wa.me/" . $customerService->phone . "?text=" . urlencode($whatsappMessage);
+        $whatsappUrl = 'https://wa.me/' . $customerService->phone . '?text=' . urlencode($whatsappMessage);
 
+        $request->session()->forget('orderData');
         // Redirect ke WhatsApp
         return redirect($whatsappUrl);
     }
@@ -163,6 +170,4 @@ class OrderController extends Controller
         // Redirect ke halaman utama
         return redirect()->route('home')->with('success', 'Pesanan Anda telah dibatalkan.');
     }
-
-
 }

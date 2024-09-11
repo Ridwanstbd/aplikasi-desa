@@ -68,11 +68,21 @@
                                     @csrf
                                     @method('PUT')
                                 <div class="col-md-12">
+                                <select name="type" id="type" class="form-select">
+                                    <option value="Shopee" {{ $mp->type == 'Shopee' ? 'selected' : '' }}>Shopee</option>
+                                    <option value="Tokopedia" {{ $mp->type == 'Tokopedia' ? 'selected' : '' }}>Tokopedia</option>
+                                    <option value="Tiktok" {{ $mp->type == 'Tiktok' ? 'selected' : '' }}>Tiktok</option>
+                                    <option value="Lazada" {{ $mp->type == 'Lazada' ? 'selected' : '' }}>Lazada</option>
+                                </select>
+                                </div>
+                                <div class="col-md-12">
                                     <x-input type="text" label="Nama Marketplace" name="name" value="{{ $mp->name }}" required=true />
                                 </div>
                                 <div class="col-md-12">
-                                    <x-input type="text" label="Nama Marketplace" name="marketplace_url" value="{{ $mp->name }}" required=true />
-                                </div>                                            <div class="modal-footer">
+                                    <x-input type="text" label="Url Marketplace" name="marketplace_url" value="{{ $mp->marketplace_url }}" required=true />
+                                </div>
+                                    <input type="hidden" name="shop_id" placeholder="##" value="{{$shop->first()->id}}" hidden />
+                                <div class="modal-footer">
                                     <x-button type="button" class="btn-secondary" dataBsDismiss="modal" label="Batalkan"/>
                                     <x-button type="submit" class="btn-primary" label="Simpan"/>
                                 </div>

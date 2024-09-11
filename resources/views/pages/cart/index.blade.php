@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 field-content">
 <x-breadcrumbs :links="[
         ['url' => route('home'), 'label' => 'Semua Produk'],
         ['url' => route('cart.index'), 'label' => 'Lihat Keranjang'],
@@ -58,7 +58,13 @@
     @endif
 </div>
 @endsection
-
+@push('styles')
+    <style>
+        .field-content {
+            height: 100vh;
+        }
+    </style>
+@endpush
 @push('scripts')
 <script>
     function showAlert(icon, title, text){
