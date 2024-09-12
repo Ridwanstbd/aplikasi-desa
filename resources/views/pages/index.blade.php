@@ -101,7 +101,20 @@
     <!-- Testimoni -->
     <h3 class="text-center my-3">Testimoni</h3>
     <div class="row mt-2">
-    <x-carousel id="testimonialCarousel" :images="$testimonials->pluck('testimoni_url')"/>
+    <div id="carouselTestimonial" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+    <div class="carousel-inner" id="testimonialContainer">
+        <!-- di tampilkan javascript per item dinamis -->
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselTestimonial" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselTestimonial" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
     </div>
     <!-- Testimoni -->
 
@@ -332,5 +345,58 @@
         });
     });
     // Filter Form
+    const testimonials = @json($testimonials); // Mengambil testimonial dari server
+const testimonialContainer = document.getElementById('testimonialContainer');
+
+function createSlides(testimonials, chunkSize) {
+    testimonialContainer.innerHTML = ''; // Kosongkan kontainer sebelum memasukkan elemen baru
+
+    // Base URL untuk mengambil gambar dari storage
+    const baseUrl = "{{ url('storage/shops') }}";
+
+    // Chunking the testimonials array
+    for (let i = 0; i < testimonials.length; i += chunkSize) {
+        const testimonialChunk = testimonials.slice(i, i + chunkSize);
+        const isActive = i === 0 ? 'active' : '';
+
+        // Membuat carousel item dan grid kolom untuk setiap chunk
+        let slide = `
+            <div class="carousel-item ${isActive}">
+                <div class="row">`;
+
+        testimonialChunk.forEach(testimonial => {
+            // Menghapus 'public/shops/' dari testimonial.testimoni_url dan membuat URL yang benar
+            const imageUrl = `${baseUrl}/${testimonial.testimoni_url.replace('public/shops/', '')}`;
+
+            slide += `
+                <div class="col">
+                    <img src="${imageUrl}" class="d-block w-100 img-fluid" alt="Testimonial">
+                </div>
+            `;
+        });
+
+        slide += `</div></div>`;
+        testimonialContainer.insertAdjacentHTML('beforeend', slide);
+    }
+}
+
+function updateCarousel() {
+    const screenWidth = window.innerWidth;
+
+    let chunkSize;
+    if (screenWidth < 768) {
+        chunkSize = 1; // Smartphone: 1 testimonial per slide
+    } else if (screenWidth >= 768 && screenWidth < 992) {
+        chunkSize = 2; // Tablet: 2 testimonials per slide
+    } else {
+        chunkSize = 3; // Laptop: 3 testimonials per slide
+    }
+
+    createSlides(testimonials, chunkSize);
+}
+
+window.addEventListener('resize', updateCarousel); // Mengatur ulang carousel saat ukuran layar berubah
+window.addEventListener('DOMContentLoaded', updateCarousel); // Memanggil saat halaman selesai dimuat
+
 </script>
 @endpush
