@@ -1,14 +1,13 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
     <div class="container">
-        @guest
         <div class="d-flex justify-content-between w-100 align-content-center">
             <div class="">
                 <a href="{{ route('home')}}" class="text-decoration-none">
                     <img src="{{ Storage::url($shop->logo_url) }}" alt="" style="width: 3rem; height: 3rem; margin-right:1rem;">
                 </a>
             </div>
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <div class="d-flex gap-3 align-items-center">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- Keranjang -->
@@ -25,18 +24,12 @@
                 </div>
             </div>
         </div>
-        @endguest
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
-                <!-- Tambahkan item navbar di sini jika diperlukan -->
-            </ul>
-
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ms-auto">
                 <!-- Authentication Links -->
-                 @if (!empty($shop->first()->added_url))
+                @if (!empty($shop->first()->added_url))
                  <li class="nav-item align-items-center px-2">
                      <a class="nav-link align-items-center" href="{{$shop->first()->added_url}}" target="_blank">
                         <button class="btn btn-primary" >
@@ -82,6 +75,10 @@
                      </a>
                  </li>
                  @endif
+            </ul>
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ms-auto">
                 <!-- Keranjang -->
                 <li class="nav-item d-none d-md-block">
                     <a class="nav-link d-flex align-items-center" href="{{ route('cart.index') }}" aria-label="Keranjang">

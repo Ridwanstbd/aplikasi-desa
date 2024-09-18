@@ -1,7 +1,6 @@
 @extends('layouts.guest')
 
 @section('content')
-
 <div class="container">
     <!-- Deskripsi Toko -->
     @if (!empty($shop->first()->description))
@@ -39,7 +38,7 @@
                 </div>
             </div>
             <div class="col-md-10">
-                <h3 class="text-center my-3">Produk</h3>
+                <h3 class="text-center my-3">PRODUK</h3>
                 <div class="d-flex gap-2 mb-3">
                     <input type="text" name="search" class="form-control" placeholder="Cari produk..." value="{{ request('search') }}">
                     <select name="sort" class="form-control" onchange="document.getElementById('filterForm').submit();">
@@ -64,7 +63,7 @@
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-4">
                                     <div onclick="shareProduct('{{ route('products.show', $product->slug) }}', '{{ $product->name }}')" class="d-flex align-items-center" style="cursor: pointer;">
-                                        <i class="fa-solid fa-share text-gray-400"></i> <span class="fs-8 text-gray-400">Bagikan</span>
+                                        <i class="fa-solid fa-share text-gray-400"></i>
                                     </div>
                                     </div>
                                     <div class="col-8">
@@ -98,8 +97,12 @@
         </div>
     </div>
 
+    <div class="pt-5">
+        <img src="{{asset('assets/img/pemanis.png')}}" class="img-fluid" alt="" srcset="">
+    </div>
+
     <!-- Testimoni -->
-    <h3 class="text-center my-3">Testimoni</h3>
+    <h3 class="text-center pt-5 mb-3">TESTIMONI</h3>
     <div class="row mt-2">
     <div id="carouselTestimonial" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-inner" id="testimonialContainer">
@@ -119,7 +122,7 @@
     <!-- Testimoni -->
 
     <!-- Marketplace -->
-    <h3 class="text-center my-3">Marketplace</h3>
+    <h3 class="text-center pt-5 pb-3">MARKETPLACE</h3>
     <div class="d-flex flex-wrap justify-content-center gap-2 my-2">
         @foreach ($marketplaces as $marketplace)
             <div class="mb-2">
@@ -201,6 +204,12 @@
             border: none;
             outline: none;
         }
+        .small-laptop-img {
+            width: 80%;
+            max-width: 400px;
+            max-height: fit-content;
+            margin: 0 auto;
+        }
         /* Fake Sales Notification */
 
         @media (max-width: 767.98px) {
@@ -228,7 +237,7 @@
 
         @media (min-width: 768px) {
             .custom-radio-group {
-                flex-wrap: wrap;
+                flex-direction: column;
             }
             .custom-radio-group label {
                 border: none;
@@ -238,7 +247,6 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Fake Sales Notification
     const productAlert = document.getElementById("product-alert");
@@ -249,13 +257,21 @@
     const leads = @json($leads);
     const products = @json($productsJson);
     let alertTimeout;
-    let currentLeadIndex = leads.length - 1;
+    let currentLeadIndex = leads.length - 1; // Mulai dari index terbesar
+    let leadCount = 0; // Menghitung jumlah lead yang telah ditampilkan
 
     const getNextLead = () => {
+        if (leadCount >= 3) {
+            clearTimeout(alertTimeout); // Hentikan setelah 3 lead ditampilkan
+            return;
+        }
+
         const lead = leads[currentLeadIndex];
-        currentLeadIndex = (currentLeadIndex - 1 + leads.length) % leads.length;
+        currentLeadIndex--; // Kurangi index untuk mengambil lead sebelumnya
+        leadCount++; // Tambahkan hitungan lead yang telah ditampilkan
         return lead;
     };
+
 
     const showAlert = () => {
     const nextLead = getNextLead();
@@ -345,58 +361,58 @@
         });
     });
     // Filter Form
-    const testimonials = @json($testimonials); // Mengambil testimonial dari server
-const testimonialContainer = document.getElementById('testimonialContainer');
+    const testimonials = @json($testimonials);
+    const testimonialContainer = document.getElementById('testimonialContainer');
 
-function createSlides(testimonials, chunkSize) {
-    testimonialContainer.innerHTML = ''; // Kosongkan kontainer sebelum memasukkan elemen baru
+    function createSlides(testimonials, chunkSize) {
+        testimonialContainer.innerHTML = ''; // Kosongkan kontainer sebelum memasukkan elemen baru
 
-    // Base URL untuk mengambil gambar dari storage
-    const baseUrl = "{{ url('storage/shops') }}";
+        // Base URL untuk mengambil gambar dari storage
+        const baseUrl = "{{ url('storage/shops') }}";
 
-    // Chunking the testimonials array
-    for (let i = 0; i < testimonials.length; i += chunkSize) {
-        const testimonialChunk = testimonials.slice(i, i + chunkSize);
-        const isActive = i === 0 ? 'active' : '';
+        // Chunking the testimonials array
+        for (let i = 0; i < testimonials.length; i += chunkSize) {
+            const testimonialChunk = testimonials.slice(i, i + chunkSize);
+            const isActive = i === 0 ? 'active' : '';
 
-        // Membuat carousel item dan grid kolom untuk setiap chunk
-        let slide = `
-            <div class="carousel-item ${isActive}">
-                <div class="row">`;
+            // Membuat carousel item dan grid kolom untuk setiap chunk
+            let slide = `
+                <div class="carousel-item ${isActive}">
+                    <div class="row">`;
 
-        testimonialChunk.forEach(testimonial => {
-            // Menghapus 'public/shops/' dari testimonial.testimoni_url dan membuat URL yang benar
-            const imageUrl = `${baseUrl}/${testimonial.testimoni_url.replace('public/shops/', '')}`;
+            testimonialChunk.forEach(testimonial => {
+                // Menghapus 'public/shops/' dari testimonial.testimoni_url dan membuat URL yang benar
+                const imageUrl = `${baseUrl}/${testimonial.testimoni_url.replace('public/shops/', '')}`;
 
-            slide += `
-                <div class="col">
-                    <img src="${imageUrl}" class="d-block w-100 img-fluid" alt="Testimonial">
-                </div>
-            `;
-        });
+                const imgClass = chunkSize === 3 ? 'small-laptop-img' : '';
+                slide += `
+                    <div class="col">
+                        <img src="${imageUrl}" class="d-block img-fluid ${imgClass}" alt="Testimonial">
+                    </div>
+                `;
+            });
 
-        slide += `</div></div>`;
-        testimonialContainer.insertAdjacentHTML('beforeend', slide);
-    }
-}
-
-function updateCarousel() {
-    const screenWidth = window.innerWidth;
-
-    let chunkSize;
-    if (screenWidth < 768) {
-        chunkSize = 1; // Smartphone: 1 testimonial per slide
-    } else if (screenWidth >= 768 && screenWidth < 992) {
-        chunkSize = 2; // Tablet: 2 testimonials per slide
-    } else {
-        chunkSize = 3; // Laptop: 3 testimonials per slide
+            slide += `</div></div>`;
+            testimonialContainer.insertAdjacentHTML('beforeend', slide);
+        }
     }
 
-    createSlides(testimonials, chunkSize);
-}
+    function updateCarousel() {
+        const screenWidth = window.innerWidth;
 
-window.addEventListener('resize', updateCarousel); // Mengatur ulang carousel saat ukuran layar berubah
-window.addEventListener('DOMContentLoaded', updateCarousel); // Memanggil saat halaman selesai dimuat
+        let chunkSize;
+        if (screenWidth < 768) {
+            chunkSize = 1; // Smartphone: 1 testimonial per slide
+        } else if (screenWidth >= 768 && screenWidth < 992) {
+            chunkSize = 2; // Tablet: 2 testimonials per slide
+        } else {
+            chunkSize = 3; // Laptop: 3 testimonials per slide
+        }
 
+        createSlides(testimonials, chunkSize);
+    }
+
+    window.addEventListener('resize', updateCarousel);
+    window.addEventListener('DOMContentLoaded', updateCarousel);
 </script>
 @endpush

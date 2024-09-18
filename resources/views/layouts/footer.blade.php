@@ -50,6 +50,7 @@
                     </a>
                 @endif
             </div>
+            <p class="text-center text-white pt-4" style="font-size: smaller;">Copyright &copy 2024 PT ELEANOR PROJECT GLOBAL INDONESIA All Rights Reserved.</p>
         </div>
     </div>
 </footer>
