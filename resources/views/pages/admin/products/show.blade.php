@@ -134,6 +134,7 @@
     <style>
         .variation-choose {
             display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
             overflow-x: auto;
             padding-bottom: 0.625rem;
