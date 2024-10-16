@@ -98,7 +98,7 @@
     </div>
 
     <div class="pt-5">
-        <img src="{{asset('assets/img/pemanis.png')}}" class="img-fluid" alt="" srcset="">
+        <img src="{{asset('assets/img/banner.png')}}" class="img-fluid" alt="" srcset="">
     </div>
 
     <!-- Testimoni -->
@@ -288,31 +288,11 @@
         console.error('Image source is invalid or not found');
     }
 
-    const timeOrder = new Date(nextLead.time_order);
-    const now = new Date();
-    const timeDifference = Math.floor((now - timeOrder) / 1000); // Selisih dalam detik
+    // Batasi panjang product.name hingga 24 karakter
+    let productName = product.name.length > 24 ? product.name.slice(0, 24) + '...' : product.name;
 
-    let timeAgo = '';
-
-    if (timeDifference < 60) {
-        timeAgo = `${timeDifference} detik yang lalu`;
-    } else if (timeDifference < 3600) {
-        const minutesAgo = Math.floor(timeDifference / 60);
-        timeAgo = `${minutesAgo} menit yang lalu`;
-    } else if (timeDifference < 86400) {
-        const hoursAgo = Math.floor(timeDifference / 3600);
-        timeAgo = `${hoursAgo} jam yang lalu`;
-    } else if (timeDifference < 2592000) {
-        const daysAgo = Math.floor(timeDifference / 86400);
-        timeAgo = `${daysAgo} hari yang lalu`;
-    } else if (timeDifference < 31536000) {
-        const monthsAgo = Math.floor(timeDifference / 2592000);
-        timeAgo = `${monthsAgo} bulan yang lalu`;
-    } else {
-        const yearsAgo = Math.floor(timeDifference / 31536000);
-        timeAgo = `${yearsAgo} tahun yang lalu`;
-    }
-    productText.innerHTML = `<p class="message"><b>${nextLead.name}</b> dari <b>${nextLead.regency}</b> baru saja membeli <b>${product.name}</b></p><p class="time">${timeAgo}</p>`;
+    // Menampilkan pesan tanpa waktu order
+    productText.innerHTML = `<p class="message"><b>${nextLead.name}</b> dari <b>${nextLead.regency}</b> baru saja membeli <b>${productName}</b></p>`;
 
     if (productInfo) {
         productInfo.onclick = () => window.location.href = `{{ url('product/detail') }}/${product.slug}`;
