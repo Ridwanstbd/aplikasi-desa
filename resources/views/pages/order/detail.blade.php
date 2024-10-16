@@ -77,7 +77,8 @@
             <strong>Rp {{ number_format($orderData['total_price'], 0, ',', '.') }}</strong>
           </li>
         </ul>
-        <div class="my-2 d-flex justify-content-end">
+        <small class="text-body-secondary">*Total harga belum termasuk ongkos kirim</small>
+        <div class="my-2 d-flex gap-2 justify-content-end">
                 <button type="submit" class="btn btn-warning">Checkout</button>
                 <a href="{{ route('order.cancel') }}" class="btn btn-secondary">Batal</a>
             </div>
