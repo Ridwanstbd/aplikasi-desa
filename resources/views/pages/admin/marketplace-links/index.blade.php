@@ -199,7 +199,6 @@
                         text: data.message,
                         timer: 1500
                     }).then(() => {
-                        window.location.reload();
                     });
                 } else {
                     throw new Error(data.message || 'Terjadi kesalahan');
