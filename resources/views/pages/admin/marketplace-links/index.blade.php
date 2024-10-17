@@ -45,9 +45,13 @@
                 {{ session('error') }}
             </div>
         @endif
-        <div class="alert alert-info mb-3" role="alert">
-            <i class="bi bi-info-circle me-1"></i>
-            Anda dapat mengubah urutan dengan drag and drop baris tabel
+        <div class="d-flex align-items-center p-3 my-3 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-3 " role="alert">
+            <div class="me-3">
+                <i class="bi bi-info-circle-fill fs-4"></i>
+            </div>
+            <div>
+                Anda dapat mengubah urutan dengan drag and drop baris tabel
+            </div>
         </div>
         <table class="table" id="mpTable">
             <thead>
