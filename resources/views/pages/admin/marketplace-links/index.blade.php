@@ -167,9 +167,9 @@
                     Swal.showLoading();
                 }
             });
-
+            const reorderUrl = "{{ route('marketplace-links.reorder') }}";
             // Send to server
-            fetch('/dashboard/marketplace/reorder', {
+            fetch(reorderUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -199,6 +199,7 @@
                         text: data.message,
                         timer: 1500
                     }).then(() => {
+                        console.log(data)
                     });
                 } else {
                     throw new Error(data.message || 'Terjadi kesalahan');
