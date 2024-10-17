@@ -98,7 +98,7 @@
     </div>
 
     <div class="pt-5">
-        <img src="{{asset('assets/img/banner.png')}}" class="img-fluid" alt="" srcset="">
+        <img src="{{asset('assets/img/banner2.png')}}" class="img-fluid" alt="" srcset="">
     </div>
 
     <!-- Testimoni -->
