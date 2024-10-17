@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MarketplaceLinks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MarketplaceController extends Controller
 {
@@ -48,6 +49,71 @@ class MarketplaceController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'old_position' => 'required|integer|min:1',
+            'new_position' => 'required|integer|min:1',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $oldPosition = $request->old_position;
+            $newPosition = $request->new_position;
+
+            if ($oldPosition == $newPosition) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Posisi tidak berubah'
+                ]);
+            }
+
+            // Jika memindahkan item ke posisi yang lebih tinggi (contoh: dari 2 ke 12)
+            if ($oldPosition < $newPosition) {
+                MarketplaceLinks::whereBetween('id', [$oldPosition + 1, $newPosition])
+                    ->update(['id' => DB::raw('id - 1')]);
+
+                // Update item yang dipindahkan ke posisi baru
+                MarketplaceLinks::where('id', $oldPosition)
+                    ->update(['id' => $newPosition]);
+            }
+            // Jika memindahkan item ke posisi yang lebih rendah (contoh: dari 12 ke 6)
+            else {
+                MarketplaceLinks::whereBetween('id', [$newPosition, $oldPosition - 1])
+                    ->update(['id' => DB::raw('id + 1')]);
+
+                // Update item yang dipindahkan ke posisi baru
+                MarketplaceLinks::where('id', $oldPosition)
+                    ->update(['id' => $newPosition]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Urutan berhasil diperbarui'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah urutan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get all marketplace links in order
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getOrdered()
+    {
+        $links = MarketplaceLinks::orderBy('id', 'asc')->get();
+        return response()->json($links);
     }
 
     public function destroy($id)

@@ -45,6 +45,10 @@
                 {{ session('error') }}
             </div>
         @endif
+        <div class="alert alert-info mb-3" role="alert">
+            <i class="bi bi-info-circle me-1"></i>
+            Anda dapat mengubah urutan dengan drag and drop baris tabel
+        </div>
         <table class="table" id="mpTable">
             <thead>
                 <tr>
@@ -54,10 +58,10 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="sortable-list">
                 @foreach ($MarketplaceLinks as $index => $mp)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
+                <tr class="sortable-item" data-id="{{ $mp->id }}">
+                    <td class="handle"><i class="bi bi-grip-vertical"></i> {{ $index + 1 }}</td>
                     <td>{{ $mp->name }}</td>
                     <td>{{ $mp->marketplace_url }}</td>
                     <td>
@@ -111,8 +115,87 @@
     </x-card>
 </section>
 @endsection
+@push('styles')
+<style>
+    .sortable-item {
+        cursor: move;
+    }
+    .sortable-ghost {
+        background-color: #f8f9fa;
+        opacity: 0.5;
+    }
+    .handle {
+        cursor: grab;
+    }
+    .handle i {
+        color: #6c757d;
+        margin-right: 5px;
+    }
+</style>
+@endpush
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script>
-        let table = new DataTable('#mpTable');
+        let table = new DataTable('#mpTable',{
+            "ordering": false
+        });
+        const sortable = new Sortable(document.querySelector('.sortable-list'), {
+        animation: 150,
+        handle: '.handle',
+        ghostClass: 'sortable-ghost',
+        onEnd: function(evt) {
+            const oldPosition = evt.oldIndex + 1;
+            const newPosition = evt.newIndex + 1;
+
+            // Show loading state
+            Swal.fire({
+                title: 'Memperbarui urutan...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            // Send to server
+            fetch('/dashboard/marketplace/reorder', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    old_position: oldPosition,
+                    new_position: newPosition
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: 'Urutan berhasil diperbarui',
+                        timer: 1500
+                    }).then(() => {
+                        // Refresh the page to get updated order
+                        window.location.reload();
+                    });
+                } else {
+                    throw new Error(data.message || 'Terjadi kesalahan');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: 'Gagal mengubah urutan: ' + error.message
+                }).then(() => {
+                    // Refresh the page to reset order
+                    window.location.reload();
+                });
+            });
+        }
+    });
     </script>
 @endpush

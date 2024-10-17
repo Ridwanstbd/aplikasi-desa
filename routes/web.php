@@ -50,6 +50,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::post('store', [MarketplaceController::class, 'store'])->name('marketplace-links.create');
         Route::put('edit/{id}', [MarketplaceController::class, 'update'])->name('marketplace-links.update');
         Route::delete('delete/{id}', [MarketplaceController::class, 'destroy'])->name('marketplace-links.destroy');
+        Route::post('reorder', [MarketplaceController::class, 'reorder'])
+            ->name('marketplace-links.reorder');
+        Route::get('ordered', [MarketplaceController::class, 'getOrdered'])
+            ->name('marketplace-links.ordered');
     });
 
     Route::prefix('category')->group(function () {
