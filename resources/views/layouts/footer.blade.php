@@ -8,9 +8,9 @@
                 <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
             <h6 class="fw-bold text-white">Ekpedisi</h6>
             <div class="d-flex gap-2">
-                <img src="{{asset('assets/img/jne.png')}}" alt="JNE" style="width: 3rem; height: 3rem; object-fit: contain;">
-                <img src="{{asset('assets/img/jnt.png')}}" alt="JNT" style="width: 3rem; height: 3rem; object-fit: contain;">
-                <img src="{{asset('assets/img/jnt_cargo.png')}}" alt="JNT Cargo" style="width: 3rem; height: 3rem; object-fit: contain;">
+                <img src="{{asset('assets/img/jne.png')}}" alt="JNE" style="width: 5rem; height: 3rem; object-fit: contain;">
+                <img src="{{asset('assets/img/jnt.png')}}" alt="JNT" style="width: 5rem; height: 3rem; object-fit: contain;">
+                <img src="{{asset('assets/img/jnt_cargo.png')}}" alt="JNT Cargo" style="width: 5rem; height: 3rem; object-fit: contain;">
             </div>
             </div>
             <div class="col-md-4">
