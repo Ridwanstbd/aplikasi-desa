@@ -9,7 +9,7 @@ class MarketplaceLinks extends Model
 {
     use HasFactory;
 
-    public $fillable = ['id', 'type', 'name', 'marketplace_url', 'shop_id'];
+    public $fillable = ['type', 'name', 'marketplace_url', 'shop_id', 'position'];
 
     public function shop()
     {

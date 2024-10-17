@@ -139,17 +139,25 @@
 @endpush
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-    <script>
-        let table = new DataTable('#mpTable',{
-            "ordering": false
-        });
-        const sortable = new Sortable(document.querySelector('.sortable-list'), {
+<script>
+    // Initialize DataTable with drag-and-drop disabled
+    let table = new DataTable('#mpTable', {
+        "ordering": false
+    });
+
+    // Initialize Sortable
+    const sortable = new Sortable(document.querySelector('.sortable-list'), {
         animation: 150,
         handle: '.handle',
         ghostClass: 'sortable-ghost',
         onEnd: function(evt) {
-            const oldPosition = evt.oldIndex + 1;
+            const rows = document.querySelectorAll('.sortable-item');
+            const movedItem = rows[evt.oldIndex];
+
+            const oldPosition = parseInt(movedItem.querySelector('td:first-child').textContent.trim().split(' ')[1]);
             const newPosition = evt.newIndex + 1;
+
+            if (oldPosition === newPosition) return;
 
             // Show loading state
             Swal.fire({
@@ -181,6 +189,7 @@
                         text: 'Urutan berhasil diperbarui',
                         timer: 1500
                     }).then(() => {
+                        window.location.reload();
                     });
                 } else {
                     throw new Error(data.message || 'Terjadi kesalahan');
@@ -193,9 +202,10 @@
                     title: 'Gagal!',
                     text: 'Gagal mengubah urutan: ' + error.message
                 }).then(() => {
+                    window.location.reload();
                 });
             });
         }
     });
-    </script>
+</script>
 @endpush
