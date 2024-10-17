@@ -202,7 +202,7 @@
                         text: data.message,
                         timer: 1500
                     }).then(() => {
-                        console.log(data)
+                        return console.log(data)
                     });
                 } else {
                     throw new Error(data.message || 'Terjadi kesalahan');
