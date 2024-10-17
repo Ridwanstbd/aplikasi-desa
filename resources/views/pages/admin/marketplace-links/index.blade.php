@@ -154,7 +154,7 @@
             const rows = document.querySelectorAll('.sortable-item');
             const movedItem = rows[evt.oldIndex];
 
-            const oldPosition = parseInt(movedItem.querySelector('td:first-child').textContent.trim().split(' ')[1]);
+            const oldPosition = parseInt(movedItem.querySelector('td:first-child').textContent.trim());
             const newPosition = evt.newIndex + 1;
 
             if (oldPosition === newPosition) return;
