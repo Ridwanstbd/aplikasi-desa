@@ -181,8 +181,6 @@
                         text: 'Urutan berhasil diperbarui',
                         timer: 1500
                     }).then(() => {
-                        // Refresh the page to get updated order
-                        window.location.reload();
                     });
                 } else {
                     throw new Error(data.message || 'Terjadi kesalahan');
@@ -195,8 +193,6 @@
                     title: 'Gagal!',
                     text: 'Gagal mengubah urutan: ' + error.message
                 }).then(() => {
-                    // Refresh the page to reset order
-                    window.location.reload();
                 });
             });
         }
