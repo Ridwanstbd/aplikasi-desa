@@ -1,7 +1,7 @@
 <footer class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm mt-auto">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-4 d-flex flex-wrap align-items-center">
+            <div class="col-md-4 align-items-center">
             @if (!empty($shop->first()->logo_footer_url))
             <img src="{{ Storage::url($shop->logo_footer_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
             @endif
