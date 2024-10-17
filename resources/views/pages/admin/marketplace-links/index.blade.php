@@ -89,6 +89,9 @@
                                 <div class="col-md-12">
                                     <x-input type="text" label="Url Marketplace" name="marketplace_url" value="{{ $mp->marketplace_url }}" required=true />
                                 </div>
+                                <div class="col-md-12">
+                                    <x-input type="number" label="Urutan Tampilan" name="position" value="{{ $mp->position }}" />
+                                </div>
                                     <input type="hidden" name="shop_id" placeholder="##" value="{{$shop->first()->id}}" hidden />
                                 <div class="modal-footer">
                                     <x-button type="button" class="btn-secondary" dataBsDismiss="modal" label="Batalkan"/>
