@@ -53,6 +53,14 @@ class MarketplaceController extends Controller
 
     public function reorder(Request $request)
     {
+        // Pastikan request adalah AJAX
+        if (!$request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid request method'
+            ], 400);
+        }
+
         $request->validate([
             'old_position' => 'required|integer|min:1',
             'new_position' => 'required|integer|min:1',
@@ -71,24 +79,33 @@ class MarketplaceController extends Controller
                 ]);
             }
 
-            // Jika memindahkan item ke posisi yang lebih tinggi (contoh: dari 2 ke 12)
+            // Get the item being moved
+            $item = MarketplaceLinks::where('position', $oldPosition)->first();
+
+            if (!$item) {
+                throw new \Exception('Item tidak ditemukan');
+            }
+
+            // Moving item to a higher position
             if ($oldPosition < $newPosition) {
-                MarketplaceLinks::whereBetween('id', [$oldPosition + 1, $newPosition])
-                    ->update(['id' => DB::raw('id - 1')]);
-
-                // Update item yang dipindahkan ke posisi baru
-                MarketplaceLinks::where('id', $oldPosition)
-                    ->update(['id' => $newPosition]);
+                MarketplaceLinks::whereBetween('position', [$oldPosition + 1, $newPosition])
+                    ->update([
+                        'position' => DB::raw('position - 1'),
+                        'updated_at' => now()
+                    ]);
             }
-            // Jika memindahkan item ke posisi yang lebih rendah (contoh: dari 12 ke 6)
+            // Moving item to a lower position
             else {
-                MarketplaceLinks::whereBetween('id', [$newPosition, $oldPosition - 1])
-                    ->update(['id' => DB::raw('id + 1')]);
-
-                // Update item yang dipindahkan ke posisi baru
-                MarketplaceLinks::where('id', $oldPosition)
-                    ->update(['id' => $newPosition]);
+                MarketplaceLinks::whereBetween('position', [$newPosition, $oldPosition - 1])
+                    ->update([
+                        'position' => DB::raw('position + 1'),
+                        'updated_at' => now()
+                    ]);
             }
+
+            // Update the moved item's position
+            $item->position = $newPosition;
+            $item->save();
 
             DB::commit();
 

@@ -173,20 +173,30 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
                 body: JSON.stringify({
                     old_position: oldPosition,
                     new_position: newPosition
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    // Jika response bukan JSON, throw error
+                    if (!response.headers.get('content-type')?.includes('application/json')) {
+                        throw new Error('Server error: Invalid response format');
+                    }
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil!',
-                        text: 'Urutan berhasil diperbarui',
+                        text: data.message,
                         timer: 1500
                     }).then(() => {
                         window.location.reload();
@@ -200,7 +210,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Gagal!',
-                    text: 'Gagal mengubah urutan: ' + error.message
+                    text: error.message || 'Terjadi kesalahan pada server'
                 }).then(() => {
                     window.location.reload();
                 });
