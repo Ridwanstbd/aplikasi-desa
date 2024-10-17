@@ -1,11 +1,17 @@
 <footer class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm mt-auto">
     <div class="container">
         <div class="row w-100">
-            <div class="col-md-4 d-flex align-items-center">
+            <div class="col-md-4 d-flex flex-col align-items-center">
             @if (!empty($shop->first()->logo_footer_url))
             <img src="{{ Storage::url($shop->logo_footer_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
             @endif
                 <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
+            <h6 class="fw-bold text-white">Ekpedisi</h6>
+            <div class="d-flex gap-2">
+                <img src="{{asset('assets/img/jne.png')}}" alt="JNE" style="width: 3rem; height: 3rem; object-fit: contain;">
+                <img src="{{asset('assets/img/jnt.png')}}" alt="JNT" style="width: 3rem; height: 3rem; object-fit: contain;">
+                <img src="{{asset('assets/img/jnt_cargo.png')}}" alt="JNT Cargo" style="width: 3rem; height: 3rem; object-fit: contain;">
+            </div>
             </div>
             <div class="col-md-4">
                 @if (!empty($shop->first()->location_url))
