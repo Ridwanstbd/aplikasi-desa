@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Leads;
-use App\Models\Categories;
 use App\Models\Banner;
-use App\Models\Testimonial;
+use App\Models\Categories;
+use App\Models\Leads;
 use App\Models\MarketplaceLinks;
+use App\Models\Product;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -32,7 +32,7 @@ class HomeController extends Controller
         $categories = Categories::latest()->get();
         $banners = Banner::latest()->pluck('banner_url');
         $testimonials = Testimonial::latest()->get();
-        $marketplaces = MarketplaceLinks::latest()->get();
+        $marketplaces = MarketplaceLinks::orderBy('position', 'asc')->get();
         $kategori = $request->input('kategori');
         $search = $request->input('search');
         $sort = $request->input('sort');
@@ -59,14 +59,16 @@ class HomeController extends Controller
                     $query->orderBy('created_at', 'asc');
                     break;
                 case 'termurah':
-                    $query->leftJoin('variations', 'products.id', '=', 'variations.product_id')
-                          ->orderBy('variations.price', 'asc')
-                          ->select('products.*');
+                    $query
+                        ->leftJoin('variations', 'products.id', '=', 'variations.product_id')
+                        ->orderBy('variations.price', 'asc')
+                        ->select('products.*');
                     break;
                 case 'termahal':
-                    $query->leftJoin('variations', 'products.id', '=', 'variations.product_id')
-                          ->orderBy('variations.price', 'desc')
-                          ->select('products.*');
+                    $query
+                        ->leftJoin('variations', 'products.id', '=', 'variations.product_id')
+                        ->orderBy('variations.price', 'desc')
+                        ->select('products.*');
                     break;
             }
         }

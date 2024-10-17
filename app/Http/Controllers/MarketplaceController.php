@@ -10,7 +10,7 @@ class MarketplaceController extends Controller
 {
     public function index()
     {
-        $MarketplaceLinks = MarketplaceLinks::latest()->get();
+        $MarketplaceLinks = MarketplaceLinks::orderBy('position', 'asc')->get();
         $headers = ['Nama', 'Aksi'];
         return view('pages.admin.marketplace-links.index', compact('MarketplaceLinks', 'headers'));
     }
