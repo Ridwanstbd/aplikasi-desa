@@ -79,33 +79,39 @@ class MarketplaceController extends Controller
                 ]);
             }
 
-            // Get the item being moved
-            $item = MarketplaceLinks::where('position', $oldPosition)->first();
+            // Mengambil item yang dipindahkan
+            $item = DB::table('marketplace_links')->where('position', $oldPosition)->first();
 
             if (!$item) {
                 throw new \Exception('Item tidak ditemukan');
             }
 
-            // Moving item to a higher position
+            // Memindahkan item ke posisi yang lebih tinggi
             if ($oldPosition < $newPosition) {
-                MarketplaceLinks::whereBetween('position', [$oldPosition + 1, $newPosition])
+                DB::table('marketplace_links')
+                    ->whereBetween('position', [$oldPosition + 1, $newPosition])
                     ->update([
                         'position' => DB::raw('position - 1'),
                         'updated_at' => now()
                     ]);
             }
-            // Moving item to a lower position
+            // Memindahkan item ke posisi yang lebih rendah
             else {
-                MarketplaceLinks::whereBetween('position', [$newPosition, $oldPosition - 1])
+                DB::table('marketplace_links')
+                    ->whereBetween('position', [$newPosition, $oldPosition - 1])
                     ->update([
                         'position' => DB::raw('position + 1'),
                         'updated_at' => now()
                     ]);
             }
 
-            // Update the moved item's position
-            $item->position = $newPosition;
-            $item->save();
+            // Update posisi item yang dipindahkan
+            DB::table('marketplace_links')
+                ->where('id', $item->id)
+                ->update([
+                    'position' => $newPosition,
+                    'updated_at' => now()
+                ]);
 
             DB::commit();
 
