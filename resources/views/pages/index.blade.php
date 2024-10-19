@@ -276,21 +276,21 @@
         /* Fake Sales Notification */
 
         .image-container {
-            width: 100%;
+            width: 100%; /* Menggunakan lebar penuh dari kolom */
             height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            display: flex; /* Menjadikan kontainer flex */
+            justify-content: center; /* Memusatkan gambar secara horizontal */
+            overflow: hidden; /* Menyembunyikan bagian gambar yang keluar */
+            position: relative; /* Untuk positioning gambar */
         }
 
         .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            position: absolute;
-            top: 0;
-            left: 0;
+            width: 100%; /* Gambar mengisi lebar kontainer 100% */
+            height: 100%; /* Gambar mengisi tinggi kontainer 100% */
+            object-fit: contain; /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+            position: absolute; /* Posisi absolut untuk gambar */
+            top: 0; /* Mengatur gambar dari atas kontainer */
+            left: 0; /* Mengatur gambar dari kiri kontainer */
         }
 
         @media (max-width: 767.98px) {
