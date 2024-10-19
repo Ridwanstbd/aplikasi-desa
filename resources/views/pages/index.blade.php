@@ -132,51 +132,64 @@
     </div>
     <!-- Marketplace -->
     <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselEkspedisi" class="carousel slide" data-ride="carousel">
+    <div id="carouselEkspedisi" class="carousel slide mb-5" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
+            <div class="row">
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/jne.png') }}" alt="Image 1">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/jnt.png') }}" alt="Image 2">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/sicepat.png') }}" alt="Image 3">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/ninja.png') }}" alt="Image 4">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/grab.png') }}" alt="Image 5">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/sicepat.png') }}" class="img-fluid" alt="Image 3">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/ninja.png') }}" class="img-fluid" alt="Image 4">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/grab.png') }}" class="img-fluid" alt="Image 5">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/gosend.png') }}" class="img-fluid" alt="Image 6">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/gokil.png') }}" class="img-fluid" alt="Image 7">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/jtr.png') }}" class="img-fluid" alt="Image 8">
-            </div>
-        </div>
-        <div class="carousel-item">
-            <div class="image-container">
-                <img src="{{ asset('assets/img/indah.png') }}" class="img-fluid" alt="Image 9">
+            <div class="row">
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/gosend.png') }}" alt="Image 6">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/gokil.png') }}" alt="Image 7">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/jtr.png') }}" alt="Image 8">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/indah.png') }}" alt="Image 9">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="{{ asset('assets/img/ninja.png') }}" alt="Image 10">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -263,19 +276,19 @@
         /* Fake Sales Notification */
 
         .image-container {
-            width: 300px; /* Ubah ukuran sesuai kebutuhan */
-            height: 300px; /* Ubah ukuran sesuai kebutuhan */
+            width: 100%; /* Menggunakan lebar penuh dari kolom */
+            height: 100px; /* Tetapkan tinggi tetap untuk persegi */
             overflow: hidden; /* Menyembunyikan bagian gambar yang keluar */
-            position: relative; /* Posisi relatif untuk anak */
+            position: relative; /* Untuk positioning gambar */
         }
 
         .image-container img {
-            position: absolute; /* Posisi absolut agar dapat menyesuaikan dengan ukuran container */
-            top: 50%; /* Menggeser ke tengah secara vertikal */
-            left: 50%; /* Menggeser ke tengah secara horizontal */
-            width: auto; /* Opsi agar sesuai proporsi */
-            height: 100%; /* Pastikan gambar mengisi tinggi container */
-            transform: translate(-50%, -50%); /* Menggeser gambar kembali ke tengah */
+            width: 100%; /* Gambar mengisi lebar kontainer 100% */
+            height: 100%; /* Gambar mengisi tinggi kontainer 100% */
+            object-fit: cover; /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
+            position: absolute; /* Posisi absolut untuk gambar */
+            top: 0; /* Mengatur gambar dari atas kontainer */
+            left: 0; /* Mengatur gambar dari kiri kontainer */
         }
 
         @media (max-width: 767.98px) {
