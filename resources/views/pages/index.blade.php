@@ -131,7 +131,19 @@
         @endforeach
     </div>
     <!-- Marketplace -->
-
+    <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
+    <div id="carouselEkspedisi" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+        <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
+        </div>
+        <div class="carousel-item">
+        <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
+        </div>
+        <div class="carousel-item">
+        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
+        </div>
+    </div>
     </div>
 
     <!-- Fake sales Notification -->
@@ -393,6 +405,11 @@
 
         createSlides(testimonials, chunkSize);
     }
+    $(document).ready(function(){
+    setInterval(function(){
+        $('#carouselEkspedisi').carousel('next');
+    }, 2000);
+});
 
     window.addEventListener('resize', updateCarousel);
     window.addEventListener('DOMContentLoaded', updateCarousel);
