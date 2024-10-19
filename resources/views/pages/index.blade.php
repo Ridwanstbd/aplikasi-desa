@@ -132,18 +132,20 @@
     </div>
     <!-- Marketplace -->
     <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselEkspedisi" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-        <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
+    <div class="carousel-wrapper">
+        <div id="carouselEkspedisi" class="carousel" data-ride="carousel">
+            <div class="ekspedisi-img">
+                <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
+                <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
+                <img src="{{ asset('assets/img/sicepat.png') }}" class="img-fluid" alt="Image 3">
+                <img src="{{ asset('assets/img/ninja.png') }}" class="img-fluid" alt="Image 4">
+                <img src="{{ asset('assets/img/grab.png') }}" class="img-fluid" alt="Image 5">
+                <img src="{{ asset('assets/img/gosend.png') }}" class="img-fluid" alt="Image 6">
+                <img src="{{ asset('assets/img/gokil.png') }}" class="img-fluid" alt="Image 7">
+                <img src="{{ asset('assets/img/jtr.png') }}" class="img-fluid" alt="Image 8">
+                <img src="{{ asset('assets/img/indah.png') }}" class="img-fluid" alt="Image 9">
+            </div>
         </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
-        </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
-        </div>
-    </div>
     </div>
 
     <!-- Fake sales Notification -->
@@ -225,6 +227,33 @@
             margin: 0 auto;
         }
         /* Fake Sales Notification */
+
+        .carousel-wrapper {
+            overflow: hidden; /* Menyembunyikan bagian yang tidak diperlukan */
+            position: relative; /* Membuat konteks untuk positioning */
+            width: 100%; /* Lebar penuh dari container */
+        }
+
+        .ekspedisi-img {
+            display: flex; /* Menggunakan flexbox untuk mengatur gambar secara horizontal */
+            animation: scroll 15s linear infinite; /* Mengatur animasi scroll */
+        }
+
+        .ekspedisi-img img {
+            max-width: 100%; /* Mengatur gambar agar pas dengan lebar kontainer */
+            height: auto; /* Tinggi otomatis untuk menjaga proporsi gambar */
+            flex: 0 0 auto; /* Mengatur gambar agar tidak fleksibel (tidak menyesuaikan) */
+            margin: 0 10px; /* Memberikan jarak antar gambar */
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%); /* Mulai dari luar area tampilan di kanan */
+            }
+            100% {
+                transform: translateX(-100%); /* Pergi ke luar area tampilan di kiri */
+            }
+        }
 
         @media (max-width: 767.98px) {
             .custom-radio-group {
@@ -405,11 +434,6 @@
 
         createSlides(testimonials, chunkSize);
     }
-    $(document).ready(function(){
-    setInterval(function(){
-        $('#carouselEkspedisi').carousel('next');
-    }, 2000);
-});
 
     window.addEventListener('resize', updateCarousel);
     window.addEventListener('DOMContentLoaded', updateCarousel);
