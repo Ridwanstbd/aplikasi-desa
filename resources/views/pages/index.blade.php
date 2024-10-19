@@ -132,26 +132,18 @@
     </div>
     <!-- Marketplace -->
     <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
     <div class="carousel-inner">
         <div class="carousel-item active">
-        <img src="{{ asset('assets/img/jne.png') }}" style="height:3rem; width: 5rem;" alt="Image 1">
+        <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
         </div>
         <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt.png') }}" style="height:3rem; width: 5rem;" alt="Image 2">
+        <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
         </div>
         <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt_cargo.png') }}" style="height:3rem; width: 5rem;" alt="Image 3">
+        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
         </div>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
     </div>
 
     <!-- Fake sales Notification -->
