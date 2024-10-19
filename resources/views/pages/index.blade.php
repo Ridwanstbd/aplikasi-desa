@@ -135,28 +135,28 @@
     <div id="carouselEkspedisi" class="carousel slide mb-2" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <div class="row">
-                <div class="col-2">
+            <div class="d-flex justify-items-center">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/jne.png') }}" alt="Image 1">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/jnt.png') }}" alt="Image 2">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/sicepat.png') }}" alt="Image 3">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/ninja.png') }}" alt="Image 4">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/grab.png') }}" alt="Image 5">
                     </div>
@@ -164,30 +164,30 @@
             </div>
         </div>
         <div class="carousel-item">
-            <div class="row">
-                <div class="col-2">
+            <div class="d-flex justify-items-center">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/gosend.png') }}" alt="Image 6">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/gokil.png') }}" alt="Image 7">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/jtr.png') }}" alt="Image 8">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
                         <img src="{{ asset('assets/img/indah.png') }}" alt="Image 9">
                     </div>
                 </div>
-                <div class="col-2">
+                <div class="">
                     <div class="image-container">
-                        <img src="{{ asset('assets/img/ninja.png') }}" alt="Image 10">
+                        <img src="{{ asset('assets/img/jnt_cargo.png') }}" alt="Image 10">
                     </div>
                 </div>
             </div>
@@ -278,8 +278,6 @@
         .image-container {
             width: 100%; /* Menggunakan lebar penuh dari kolom */
             height: 100px;
-            display: flex; /* Menjadikan kontainer flex */
-            justify-content: center; /* Memusatkan gambar secara horizontal */
             overflow: hidden; /* Menyembunyikan bagian gambar yang keluar */
             position: relative; /* Untuk positioning gambar */
         }
