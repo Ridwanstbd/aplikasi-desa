@@ -56,6 +56,26 @@ class MarketplaceController extends Controller
             if ($existingMarketplace) {
                 return back()->withErrors(['error' => 'Posisi yang dipilih sudah digunakan oleh marketplace lain.']);
             }
+            $marketplace = MarketplaceLinks::find($id);
+            $oldPosition = $marketplace->position;
+
+            // Cek apakah ada marketplace lain dengan posisi yang sama
+            if ($oldPosition != $request->position) {
+                // Update posisi marketplace lain
+                if ($request->position < $oldPosition) {
+                    // Jika posisi baru lebih kecil
+                    MarketplaceLinks::where('shop_id', $request->shop_id)
+                        ->where('position', '>=', $request->position)
+                        ->where('position', '<', $oldPosition)
+                        ->increment('position');  // Setiap posisi yang lebih besar dari posisi baru ditambah 1
+                } else {
+                    // Jika posisi baru lebih besar
+                    MarketplaceLinks::where('shop_id', $request->shop_id)
+                        ->where('position', '<=', $request->position)
+                        ->where('position', '>', $oldPosition)
+                        ->decrement('position');  // Setiap posisi yang lebih kecil dari posisi baru dikurangi 1
+                }
+            }
 
             // Lanjutkan update jika tidak ada posisi yang sama
             $marketplace = MarketplaceLinks::find($id);
@@ -71,99 +91,5 @@ class MarketplaceController extends Controller
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
-    }
-
-    public function reorder(Request $request)
-    {
-        // Pastikan request adalah AJAX
-        if (!$request->ajax()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid request method'
-            ], 400);
-        }
-
-        $request->validate([
-            'old_position' => 'required|integer|min:1',
-            'new_position' => 'required|integer|min:1',
-        ]);
-
-        try {
-            DB::beginTransaction();
-
-            $oldPosition = $request->old_position;
-            $newPosition = $request->new_position;
-
-            if ($oldPosition == $newPosition) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Posisi tidak berubah'
-                ]);
-            }
-
-            // Mengambil item yang dipindahkan
-            $item = DB::table('marketplace_links')->where('position', $oldPosition)->first();
-
-            if (!$item) {
-                throw new \Exception('Item tidak ditemukan');
-            }
-
-            // Memindahkan item ke posisi yang lebih tinggi
-            if ($oldPosition < $newPosition) {
-                DB::table('marketplace_links')
-                    ->whereBetween('position', [$oldPosition + 1, $newPosition])
-                    ->update([
-                        'position' => DB::raw('position - 1'),
-                        'updated_at' => now()
-                    ]);
-            }
-            // Memindahkan item ke posisi yang lebih rendah
-            else {
-                DB::table('marketplace_links')
-                    ->whereBetween('position', [$newPosition, $oldPosition - 1])
-                    ->update([
-                        'position' => DB::raw('position + 1'),
-                        'updated_at' => now()
-                    ]);
-            }
-
-            // Update posisi item yang dipindahkan
-            DB::table('marketplace_links')
-                ->where('id', $item->id)
-                ->update([
-                    'position' => $newPosition,
-                    'updated_at' => now()
-                ]);
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Urutan berhasil diperbarui'
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengubah urutan: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Get all marketplace links in order
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getOrdered()
-    {
-        $links = MarketplaceLinks::orderBy('id', 'asc')->get();
-        return response()->json($links);
-    }
-
-    public function destroy($id)
-    {
-        MarketplaceLinks::find($id)->delete();
-        return redirect()->route('marketplace-links.index')->with('success', 'Kategori berhasil dihapus.');
     }
 }

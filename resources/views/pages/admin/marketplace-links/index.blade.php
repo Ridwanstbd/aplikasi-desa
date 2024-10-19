@@ -64,8 +64,8 @@
             </thead>
             <tbody class="sortable-list">
                 @foreach ($MarketplaceLinks as $index => $mp)
-                <tr class="sortable-item" data-id="{{ $mp->id }}">
-                    <td class="handle"><i class="bi bi-grip-vertical"></i> {{ $index + 1 }}</td>
+                <tr >
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $mp->name }}</td>
                     <td>{{ $mp->marketplace_url }}</td>
                     <td>
@@ -144,81 +144,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
     // Initialize DataTable with drag-and-drop disabled
-    let table = new DataTable('#mpTable', {
-        "ordering": false
-    });
-
-    // Initialize Sortable
-    const sortable = new Sortable(document.querySelector('.sortable-list'), {
-        animation: 150,
-        handle: '.handle',
-        ghostClass: 'sortable-ghost',
-        onEnd: function(evt) {
-            const rows = document.querySelectorAll('.sortable-item');
-            const movedItem = rows[evt.oldIndex];
-
-            const oldPosition = parseInt(movedItem.querySelector('td:first-child').textContent.trim());
-            const newPosition = evt.newIndex + 1;
-
-            if (oldPosition === newPosition) return;
-
-            // Show loading state
-            Swal.fire({
-                title: 'Memperbarui urutan...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-            const reorderUrl = "{{ route('marketplace-links.reorder') }}";
-            // Send to server
-            fetch(reorderUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                body: JSON.stringify({
-                    old_position: oldPosition,
-                    new_position: newPosition
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // Jika response bukan JSON, throw error
-                    if (!response.headers.get('content-type')?.includes('application/json')) {
-                        throw new Error('Server error: Invalid response format');
-                    }
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil!',
-                        text: data.message,
-                        timer: 1500
-                    }).then(() => {
-                        return console.log(data)
-                    });
-                } else {
-                    throw new Error(data.message || 'Terjadi kesalahan');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Gagal!',
-                    text: error.message || 'Terjadi kesalahan pada server'
-                }).then(() => {
-                    window.location.reload();
-                });
-            });
-        }
-    });
+    let table = new DataTable('#mpTable');
 </script>
 @endpush

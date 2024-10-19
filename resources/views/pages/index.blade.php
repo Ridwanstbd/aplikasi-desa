@@ -131,6 +131,9 @@
         @endforeach
     </div>
     <!-- Marketplace -->
+    <h6 class="text-center">Jasa Pengiriman</h6>
+
+    <x-carousel id="bannerCarousel" :images="$ekspedisi" />
 
     <!-- Fake sales Notification -->
     <div id="product-alert">
