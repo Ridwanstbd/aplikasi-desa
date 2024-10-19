@@ -131,18 +131,20 @@
         @endforeach
     </div>
     <!-- Marketplace -->
-    <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselEkspedisi" class="carousel slide" data-ride="carousel">
+    <h3 class="text-center pt-5 pb-3">JASA PENGIRIMAN</h3>
+    <div class="running-text-carousel">
     <div class="carousel-inner">
-        <div class="carousel-item active">
-        <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
-        </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
-        </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
-        </div>
+        <img src="{{ asset('assets/img/jne.png') }}" class="d-block" alt="jne">
+        <img src="{{ asset('assets/img/jnt.png') }}" class="d-block" alt="jnt">
+        <img src="{{ asset('assets/img/sicepat.png') }}" class="d-block" alt="sicepat">
+        <img src="{{ asset('assets/img/ninja.png') }}" class="d-block" alt="ninja">
+        <img src="{{ asset('assets/img/grab.png') }}" class="d-block" alt="grab">
+        <img src="{{ asset('assets/img/gosend.png') }}" class="d-block" alt="gosend">
+        <img src="{{ asset('assets/img/gokil.png') }}" class="d-block" alt="gokil">
+        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="d-block" alt="jnt cargo">
+        <img src="{{ asset('assets/img/jtr.png') }}" class="d-block" alt="jtr">
+        <img src="{{ asset('assets/img/indah.png') }}" class="d-block" alt="indah">
+
     </div>
     </div>
 
@@ -225,6 +227,26 @@
             margin: 0 auto;
         }
         /* Fake Sales Notification */
+        .running-text-carousel {
+        overflow: hidden; /* Menyembunyikan bagian yang tidak terlihat */
+        white-space: nowrap; /* Mencegah line break */
+        width: 100%; /* Menetapkan lebar penuh */
+        }
+
+        .carousel-inner {
+            display: inline-block; /* Menampilkan gambar dalam baris */
+            animation: scroll 10s linear infinite; /* Membuat animasi scroll */
+        }
+
+        .carousel-inner img {
+            width: 100%; /* Mengatur gambar agar pas dengan lebar kontainer */
+            height: auto; /* Mengatur tinggi secara otomatis */
+        }
+
+        @keyframes scroll {
+            0%   { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
 
         @media (max-width: 767.98px) {
             .custom-radio-group {
@@ -405,11 +427,6 @@
 
         createSlides(testimonials, chunkSize);
     }
-    $(document).ready(function(){
-    setInterval(function(){
-        $('#carouselEkspedisi').carousel('next');
-    }, 2000);
-});
 
     window.addEventListener('resize', updateCarousel);
     window.addEventListener('DOMContentLoaded', updateCarousel);
