@@ -131,19 +131,7 @@
         @endforeach
     </div>
     <!-- Marketplace -->
-    <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="3000">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-        <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
-        </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
-        </div>
-        <div class="carousel-item">
-        <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
-        </div>
-    </div>
+
     </div>
 
     <!-- Fake sales Notification -->
@@ -261,7 +249,6 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script>
     // Fake Sales Notification
     const productAlert = document.getElementById("product-alert");
