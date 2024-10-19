@@ -47,15 +47,6 @@ class MarketplaceController extends Controller
         ]);
 
         try {
-            // Cek apakah ada marketplace lain dengan posisi yang sama
-            $existingMarketplace = MarketplaceLinks::where('position', $request->position)
-                ->where('shop_id', $request->shop_id)
-                ->where('id', '!=', $id)  // pastikan tidak mengecek diri sendiri
-                ->first();
-
-            if ($existingMarketplace) {
-                return back()->withErrors(['error' => 'Posisi yang dipilih sudah digunakan oleh marketplace lain.']);
-            }
             $marketplace = MarketplaceLinks::find($id);
             $oldPosition = $marketplace->position;
 
