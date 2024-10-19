@@ -137,10 +137,10 @@
         <div class="carousel-item active">
         <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item active">
         <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item active">
         <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
         </div>
     </div>
