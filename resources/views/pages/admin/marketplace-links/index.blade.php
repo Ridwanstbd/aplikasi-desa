@@ -50,7 +50,7 @@
                 <i class="bi bi-info-circle-fill fs-4"></i>
             </div>
             <div>
-                Anda dapat mengubah urutan dengan drag and drop baris tabel
+                Anda dapat mengubah urutan dengan ubah posisi tampilan
             </div>
         </div>
         <table class="table" id="mpTable">

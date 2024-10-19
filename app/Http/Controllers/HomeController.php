@@ -37,11 +37,6 @@ class HomeController extends Controller
         $search = $request->input('search');
         $sort = $request->input('sort');
         $leads = Leads::with('product')->get();
-        $ekspedisi = [
-            'assets/img/jne.png',
-            'assets/img/jnt.png',
-            'assets/img/jnt_cargo.png',
-        ];
 
         $query = Product::with(['variations', 'images', 'category']);
 
@@ -88,7 +83,6 @@ class HomeController extends Controller
             'marketplaces' => $marketplaces,
             'categories' => $categories,
             'leads' => $leads,
-            'ekspedisi' => $ekspedisi,
             'productsJson' => $products->items(),
         ]);
     }
