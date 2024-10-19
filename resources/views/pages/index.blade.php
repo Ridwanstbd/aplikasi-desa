@@ -137,10 +137,10 @@
         <div class="carousel-item active">
         <img src="{{ asset('assets/img/jne.png') }}" class="img-fluid" alt="Image 1">
         </div>
-        <div class="carousel-item active">
+        <div class="carousel-item">
         <img src="{{ asset('assets/img/jnt.png') }}" class="img-fluid" alt="Image 2">
         </div>
-        <div class="carousel-item active">
+        <div class="carousel-item">
         <img src="{{ asset('assets/img/jnt_cargo.png') }}" class="img-fluid" alt="Image 3">
         </div>
     </div>
@@ -261,6 +261,7 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script>
     // Fake Sales Notification
     const productAlert = document.getElementById("product-alert");
