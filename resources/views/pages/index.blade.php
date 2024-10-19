@@ -132,7 +132,7 @@
     </div>
     <!-- Marketplace -->
     <h3 class="text-center pt-5 pb-3">Jasa Pengiriman</h3>
-    <div id="carouselEkspedisi" class="carousel slide mb-5" data-ride="carousel">
+    <div id="carouselEkspedisi" class="carousel slide mb-2" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <div class="row">
@@ -276,19 +276,21 @@
         /* Fake Sales Notification */
 
         .image-container {
-            width: 100%; /* Menggunakan lebar penuh dari kolom */
-            height: 100px; /* Tetapkan tinggi tetap untuk persegi */
-            overflow: hidden; /* Menyembunyikan bagian gambar yang keluar */
-            position: relative; /* Untuk positioning gambar */
+            width: 100%;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         .image-container img {
-            width: 100%; /* Gambar mengisi lebar kontainer 100% */
-            height: 100%; /* Gambar mengisi tinggi kontainer 100% */
-            object-fit: contain; /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
-            position: absolute; /* Posisi absolut untuk gambar */
-            top: 0; /* Mengatur gambar dari atas kontainer */
-            left: 0; /* Mengatur gambar dari kiri kontainer */
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         @media (max-width: 767.98px) {
