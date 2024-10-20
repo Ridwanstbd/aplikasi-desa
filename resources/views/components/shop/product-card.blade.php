@@ -1,5 +1,5 @@
 <a href="{{ route('products.show', $product->slug) }}" class="">
-    <img src="{{ Storage::url($product->main_image) }}" style="width:100%; height: 100%;" alt="...">
+    <img src="{{ Storage::url($product->main_image) }}" style="width:100%; height:auto;" alt="...">
 </a>
 <div class="p-1">
     <a href="{{ route('products.show', $product->slug) }}" class="text-black text-decoration-none">
