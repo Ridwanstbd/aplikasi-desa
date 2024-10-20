@@ -35,7 +35,7 @@
 
     <div class="row">
         <div class="col-12">
-            {{ $products->links() }}
+            {{ $products->links('vendor.pagination.custom') }}
         </div>
     </div>
 </div>
