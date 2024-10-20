@@ -22,13 +22,12 @@
         leadCount++; // Tambahkan hitungan lead yang telah ditampilkan
         return lead;
     };
-
-
     const showAlert = () => {
     const nextLead = getNextLead();
     const product = products.find(p => p.id === nextLead.product_id);
 
     if (!product) {
+        console.log(product);
         console.error('Product not found');
         return;
     }
