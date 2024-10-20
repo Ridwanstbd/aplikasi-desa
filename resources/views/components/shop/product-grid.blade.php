@@ -7,7 +7,7 @@
     @if($searchQuery)
         <div class="row mb-2">
             <div class="col-12">
-                <h6 class="mt-5 mb-2">
+                <h6 class="mt-3 mb-2">
                     Hasil pencarian untuk: "{{ $searchQuery }}"
                     <small class="text-muted">({{ $totalProducts }} produk ditemukan)</small>
                 </h6>
