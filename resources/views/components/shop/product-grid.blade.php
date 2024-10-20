@@ -1,4 +1,4 @@
-<div class="product-grid">
+<div class="product-grid" id="product-grid">
     <div class="row mb-2">
         <div class="col-12">
             <x-shop.search-sort />

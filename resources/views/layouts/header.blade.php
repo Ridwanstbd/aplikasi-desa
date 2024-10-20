@@ -6,7 +6,7 @@
                     <img src="{{ Storage::url($shop->logo_url) }}" alt="" style="width: 3rem; height: 3rem; margin-right:1rem;">
                 </a>
                 <!-- Input Pencarian dengan Ikon Kaca Pembesar -->
-                <form action="{{ url('/') }}" method="GET" class="d-flex ms-auto">
+                <form action="{{ url('/#product-grid') }}" method="GET" class="d-flex ms-auto">
                     {{-- Preserve existing filter if any --}}
                     @if(request('kategori'))
                         <input type="hidden" name="kategori" value="{{ request('kategori') }}">
