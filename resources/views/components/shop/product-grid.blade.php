@@ -33,9 +33,4 @@
         @endforelse
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            {{ $products->links('vendor.pagination.custom') }}
-        </div>
-    </div>
 </div>
