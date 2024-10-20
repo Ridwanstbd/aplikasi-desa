@@ -5,8 +5,10 @@
         </div>
         <div class="col-md-10">
             <h3 class="text-center my-3">PRODUK</h3>
-            <x-shop.search-sort />
-            <x-shop.product-grid :products="$products" />
+            <x-shop.product-grid
+                :products="$products"
+                :search-query="request('search')"
+            />
             {{ $products->links('vendor.pagination.custom') }}
         </div>
     </div>

@@ -33,25 +33,32 @@ class HomeController extends Controller
         $banners = Banner::latest()->pluck('banner_url');
         $testimonials = Testimonial::latest()->get();
         $marketplaces = MarketplaceLinks::orderBy('position', 'asc')->get();
-        $kategori = $request->input('kategori');
-        $search = $request->input('search');
-        $sort = $request->input('sort');
         $leads = Leads::with('product')->get();
 
         $query = Product::with(['variations', 'images', 'category']);
 
-        if ($kategori) {
-            $query->whereHas('category', function ($q) use ($kategori) {
-                $q->where('id', $kategori);
+        // Filter by category
+        if ($request->filled('kategori')) {
+            $query->whereHas('category', function ($q) use ($request) {
+                $q->where('id', $request->kategori);
             });
         }
 
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%");
+        // Search functionality
+        if ($request->filled('search')) {
+            $query->where(function ($q) use ($request) {
+                $q
+                    ->where('name', 'LIKE', "%{$request->search}%")
+                    ->orWhere('description', 'LIKE', "%{$request->search}%")
+                    ->orWhereHas('category', function ($q) use ($request) {
+                        $q->where('name', 'LIKE', "%{$request->search}%");
+                    });
+            });
         }
 
-        if ($sort) {
-            switch ($sort) {
+        // Sorting
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
                 case 'terbaru':
                     $query->orderBy('created_at', 'desc');
                     break;
@@ -71,8 +78,9 @@ class HomeController extends Controller
                         ->select('products.*');
                     break;
             }
+        } else {
+            $query->orderBy('created_at', 'desc');  // default sorting
         }
-
         $products = $query->paginate(24);
         $products->appends($request->except('page'));
 

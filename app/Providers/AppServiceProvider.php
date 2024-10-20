@@ -6,6 +6,7 @@ use App\View\Components\Form\Checkbox;
 use App\View\Components\Form\Input;
 use App\View\Components\Form\InputImage;
 use App\View\Components\Form\Select;
+use App\View\Components\Shop\ProductGrid;
 use App\View\Components\Anchor;
 use App\View\Components\Breadcrumbs;
 use App\View\Components\Button;
@@ -55,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('table-product', TableProduct::class);
         Blade::component('variation', Variation::class);
         Blade::component('image-preview', ImagePreview::class);
+        Blade::component('product-grid', ProductGrid::class);
+
         View::composer('*', function ($view) {
             $cart = session()->get('cart', []);
             $totalQuantity = array_sum(array_column($cart, 'quantity'));
