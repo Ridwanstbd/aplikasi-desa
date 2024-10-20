@@ -102,6 +102,14 @@
                 color: white;
             }
         }
+        .card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
 
         @media (min-width: 768px) {
             .custom-radio-group {
