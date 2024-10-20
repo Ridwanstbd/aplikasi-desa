@@ -27,7 +27,7 @@
     const product = products.find(p => p.id === nextLead.product_id);
 
     if (!product) {
-        console.log(product);
+        console.log(product.id);
         console.error('Product not found');
         return;
     }
