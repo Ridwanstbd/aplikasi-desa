@@ -1,6 +1,6 @@
 <a href="{{ route('products.show', $product->slug) }}" class="position-relative">
     <img src="{{ Storage::url($product->main_image) }}" style="width: 100%; height: auto;" alt="{{ $product->name }}">
-    <span class="badge bg-primary position-absolute" style="bottom: 20px; left: 10px;">Bebas Biaya Admin</span>  <!-- Meningkatkan jarak bottom -->
+    <span class="badge bg-primary position-absolute" style="bottom: 50px; left: 10px;">Bebas Biaya Admin</span>  <!-- Meningkatkan jarak bottom -->
 </a>
 <div class="p-1">
     <a href="{{ route('products.show', $product->slug) }}" class="text-black text-decoration-none">
