@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-md-6">
                 <input type="hidden" name="logo_footer_url" value="{{$shop->logo_footer_url}}" />
-                <x-input-image-png name="logo_footer_url" placeholder="Pilih Logo untuk footer (footer backgroundnya hitam)" label="Logo Footer *png (footer backgroundnya hitam)" />
+                <x-input-image-png name="logo_footer_url" placeholder="Pilih Logo untuk ikon tab" label="Logo Ikon" />
                     <div class="d-flex mb-2">
                        @if ($shop->logo_footer_url)
                         <x-image-preview :image="$shop->logo_footer_url"/>
