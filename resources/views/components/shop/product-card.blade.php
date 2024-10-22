@@ -23,21 +23,21 @@
 <!-- Tambahkan style CSS di bawah ini -->
 <style>
     .cod-badge {
-        bottom: -83px; /* Default untuk smartphone */
+        bottom: -80px; /* Default untuk smartphone */
         left: 125px; /* Default untuk smartphone */
     }
     .admin-badge {
-        bottom: -83px; /* Default untuk smartphone */
+        bottom: -80px; /* Default untuk smartphone */
         left: 5px; /* Default untuk smartphone */
     }
 
     @media (min-width: 768px) {
         .cod-badge {
-            bottom: -90px; /* Tablet */
+            bottom: -95px; /* Tablet */
             left: 125px;
         }
         .admin-badge {
-        bottom: -90px; /* Default untuk smartphone */
+        bottom: -95px; /* Default untuk smartphone */
         left: 5px; /* Default untuk smartphone */
     }
     }
