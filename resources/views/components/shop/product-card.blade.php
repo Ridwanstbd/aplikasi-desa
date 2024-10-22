@@ -1,7 +1,7 @@
 <a href="{{ route('products.show', $product->slug) }}" class="position-relative">
     <img src="{{ Storage::url($product->main_image) }}" style="width: 100%; height: auto;" alt="{{ $product->name }}">
-    <span class="badge bg-primary position-absolute" style="bottom: -55px; left: 10px;">Bebas Biaya Admin</span>
-    <span class="badge bg-danger position-absolute" style="bottom: -55px; left: 130px;">COD</span>
+    <span class="badge bg-primary position-absolute" style="bottom: -95px; left: 10px;">Bebas Biaya Admin</span>
+    <span class="badge bg-danger position-absolute" style="bottom: -95px; left: 130px;">COD</span>
 </a>
 <div class="p-1">
     <a href="{{ route('products.show', $product->slug) }}" class="text-black text-decoration-none">
