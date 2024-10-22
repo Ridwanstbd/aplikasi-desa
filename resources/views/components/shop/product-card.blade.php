@@ -33,11 +33,11 @@
 
     @media (min-width: 768px) {
         .cod-badge {
-            bottom: -90px; /* Tablet */
+            bottom: -86px; /* Tablet */
             left: 125px;
         }
         .admin-badge {
-        bottom: -90px; /* Default untuk smartphone */
+        bottom: -86px; /* Default untuk smartphone */
         left: 5px; /* Default untuk smartphone */
     }
     }
