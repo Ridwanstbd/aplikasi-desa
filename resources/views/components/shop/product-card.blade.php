@@ -10,14 +10,10 @@
         <h5 class="fs-5">Rp{{ number_format($product->hargaTermurah, 0, ',', '.') }}</h5>
         <p class="fs-6" style="color: green;">{{ $product->name }}</p>
     </a>
-    <div class="row w-100 justify-content-between align-items-center">
-        <div class="col-auto">
-            <div onclick="shareProduct('{{ route('products.show', $product->slug) }}', '{{ $product->name }}')" class="d-flex align-items-center" style="cursor: pointer;">
-                <i class="fa-solid fa-share text-gray-400"></i>
-            </div>
+    <div class="d-flex w-100 justify-content-between align-items-center">
+        <div onclick="shareProduct('{{ route('products.show', $product->slug) }}', '{{ $product->name }}')" class="d-flex align-items-center" style="cursor: pointer;">
+            <i class="fa-solid fa-share text-gray-400"></i>
         </div>
-        <div class="col-auto text-end">
-            <a href="{{ route('products.show', $product->slug) }}" class="btn btn-warning" style="white-space: nowrap;">Lihat detail</a>
-        </div>
+        <a href="{{ route('products.show', $product->slug) }}" class="btn btn-warning" style="white-space: nowrap;">Lihat detail</a>
     </div>
 </div>
