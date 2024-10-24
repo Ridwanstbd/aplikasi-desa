@@ -1,4 +1,4 @@
-<h3 class="text-center py-2 my-1 w-100 text-white" style="background-color: #2a401a;">TESTIMONI</h3>
+<h3 class="text-center py-2 my-3 w-100 text-white" style="background-color: #2a401a;">TESTIMONI</h3>
 <div class="row mt-2">
     <div id="carouselTestimonial" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
         <div class="carousel-inner" id="testimonialContainer">

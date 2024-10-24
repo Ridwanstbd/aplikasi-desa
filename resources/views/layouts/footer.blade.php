@@ -1,4 +1,4 @@
-<footer class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm mt-auto pt-2">
+<footer class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm mt-5 pt-5">
     <div class="container">
         <div class="row w-100">
             <div class="col-md-4 align-items-center">
