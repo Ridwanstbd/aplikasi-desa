@@ -1,10 +1,10 @@
-<a href="{{ route('products.show', $product->slug) }}" class="position-relative">
+<a href="{{ route('products.show', $product->slug) }}">
     <img src="{{ Storage::url($product->main_image) }}" style="width: 100%; height: auto;" alt="{{ $product->name }}">
 </a>
 <div class="p-1">
     <div class="d-flex">
-        <span class="badge bg-primary position-absolute">Bebas Biaya Admin</span>
-        <span class="badge bg-danger position-absolute">COD</span>
+        <span class="badge bg-primary">Bebas Biaya Admin</span>
+        <span class="badge bg-danger">COD</span>
     </div>
     <a href="{{ route('products.show', $product->slug) }}" class="text-black text-decoration-none">
         <h5 class="fs-5">Rp{{ number_format($product->hargaTermurah, 0, ',', '.') }}</h5>
