@@ -13,11 +13,7 @@
     <x-shop.filter-form :categories="$categories" :products="$products" />
 
     <x-shop.share-modal />
-
-    <div class="pt-5">
-        <img src="{{asset('assets/img/banner2.png')}}" class="img-fluid" alt="" srcset="">
-    </div>
-
+    <x-shop.adventages />
     <x-shop.testimonials />
     <x-shop.marketplace :marketplaces="$marketplaces" />
     <x-shop.shipping />

@@ -5,8 +5,22 @@
             @if (!empty($shop->first()->logo_url))
             <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
             @endif
-                <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
+            <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
 
+            <div class="mt-2">
+                <a href="/" target="_blank" class="text-white me-2">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="/" target="_blank" class="text-white me-2">
+                    <i class="bi bi-tiktok"></i>
+                </a>
+                <a href="/" target="_blank" class="text-white me-2">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="/" target="_blank" class="text-white">
+                    <i class="bi bi-youtube"></i>
+                </a>
+            </div>
             </div>
             <div class="col-md-4">
                 @if (!empty($shop->first()->location_url))
