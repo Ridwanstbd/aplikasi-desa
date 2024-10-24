@@ -34,11 +34,9 @@ class SettingController extends Controller
 
         try {
             $shop = Shop::findOrFail($id);
-
-            // Handle logo
             if ($request->hasFile('logo_url')) {
                 $logo_url = $shop->logo_url;
-                if (Storage::exists($logo_url)) {
+                if ($logo_url && Storage::exists($logo_url)) {
                     Storage::delete($logo_url);
                 }
                 $logoName = 'logo-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->logo_url->getClientOriginalExtension();
@@ -56,7 +54,6 @@ class SettingController extends Controller
                 $validated['logo_footer_url'] = $logo_footer_url;
             }
 
-            // Update shop
             $shop->update([
                 'name' => $validated['name'],
                 'logo_url' => $validated['logo_url'] ?? $shop->logo_url,
@@ -69,7 +66,6 @@ class SettingController extends Controller
                 'google_tag_id' => $validated['google_tag_id'],
             ]);
 
-            // Handle banners
             if ($request->hasFile('banners')) {
                 foreach ($request->banners as $banner) {
                     $shopbannersName = 'shop-banners-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $banner->getClientOriginalExtension();
@@ -79,7 +75,6 @@ class SettingController extends Controller
                     ]);
                 }
             }
-            // Handle testimonials
             if ($request->hasFile('testimonials')) {
                 foreach ($request->testimonials as $testimonial) {
                     $shopTestimonialsName = 'shop-testimonials-' . \Str::slug($shop->name, '-') . '-' . uniqid() . '.' . $testimonial->getClientOriginalExtension();
