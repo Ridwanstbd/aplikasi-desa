@@ -7,18 +7,18 @@
             @endif
             <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
 
-            <div class="mt-2">
-                <a href="/" target="_blank" class="text-white me-2">
-                    <i class="bi bi-instagram"></i>
-                </a>
-                <a href="/" target="_blank" class="text-white me-2">
-                    <i class="bi bi-tiktok"></i>
-                </a>
-                <a href="/" target="_blank" class="text-white me-2">
-                    <i class="bi bi-facebook"></i>
+            <div class="d-flex gap-2 mt-2">
+                <a href="/" target="_blank" class="text-white">
+                    <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
                 </a>
                 <a href="/" target="_blank" class="text-white">
-                    <i class="bi bi-youtube"></i>
+                    <i class="bi bi-tiktok" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="/" target="_blank" class="text-white">
+                    <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="/" target="_blank" class="text-white">
+                    <i class="bi bi-youtube" style="font-size: 1.5rem;"></i>
                 </a>
             </div>
             </div>
