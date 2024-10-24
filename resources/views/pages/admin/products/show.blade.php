@@ -88,7 +88,9 @@
     <div class="row mt-3">
         <h4>Produk Lainnya</h4>
         @foreach ($relatedProducts as $relatedProduct)
-        <x-shop.product-card :product="$relatedProduct" />
+        <div class="col-6 col-md-4 col-lg-2 mb-4">
+            <x-shop.product-card :product="$relatedProduct" />
+        </div>
         @endforeach
     </div>
     <!-- Modal Bagikan Produk -->
