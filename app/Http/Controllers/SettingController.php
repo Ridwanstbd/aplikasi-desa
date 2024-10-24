@@ -48,7 +48,7 @@ class SettingController extends Controller
 
             if ($request->hasFile('logo_footer_url')) {
                 $logo_footer_url = $shop->logo_footer_url;
-                if (Storage::exists($logo_footer_url)) {
+                if ($logo_footer_url && Storage::exists($logo_footer_url)) {
                     Storage::delete($logo_footer_url);
                 }
                 $logoName = 'logo-footer-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->logo_footer_url->getClientOriginalExtension();
