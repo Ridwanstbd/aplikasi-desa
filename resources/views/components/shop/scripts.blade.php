@@ -65,23 +65,6 @@
     });
     // Fake Sales Notification
 
-    function shareProduct(url, productName) {
-        const encodedUrl = encodeURIComponent(url);
-        const encodedProductName = encodeURIComponent(productName);
-
-        const fbShare = `<a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" class="btn btn-primary mb-2"><i class="fab fa-facebook-f"></i> Facebook</a>`;
-        const waShare = `<a href="https://wa.me/?text=${encodedProductName}%20${encodedUrl}" target="_blank" class="btn btn-success mb-2"><i class="fab fa-whatsapp"></i> WhatsApp</a>`;
-        const igShare = `<a href="https://www.instagram.com/?url=${encodedUrl}" target="_blank" class="btn btn-danger mb-2"><i class="fab fa-instagram"></i> Instagram</a>`;
-        const telegramShare = `<a href="https://telegram.me/share/url?url=${encodedUrl}&text=${encodedProductName}" target="_blank" class="btn btn-info mb-2"><i class="fab fa-telegram-plane"></i> Telegram</a>`;
-        const twitterShare = `<a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedProductName}" target="_blank" class="btn btn-primary mb-2" style="background-color: #1DA1F2;"><i class="fab fa-twitter"></i> Twitter</a>`;
-
-        document.getElementById('share-buttons-container').innerHTML = `${fbShare} ${waShare} ${igShare} ${telegramShare} ${twitterShare}`;
-
-        const shareProductModal = new bootstrap.Modal(document.getElementById('shareProductModal'));
-        shareProductModal.show();
-    }
-    // Share Product
-
     // Filter Form
     document.querySelectorAll('input[name="kategori"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
