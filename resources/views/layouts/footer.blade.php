@@ -8,16 +8,16 @@
             <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
 
             <div class="d-flex gap-3 mt-2">
-                <a href="/" target="_blank" class="text-white">
+                <a href="https://www.instagram.com/eleanorfarm.id" target="_blank" class="text-white">
                     <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
                 </a>
-                <a href="/" target="_blank" class="text-white">
+                <a href="https://www.tiktok.com/@eleanorfarm.id" target="_blank" class="text-white">
                     <i class="bi bi-tiktok" style="font-size: 1.5rem;"></i>
                 </a>
-                <a href="/" target="_blank" class="text-white">
+                <a href="https://www.facebook.com/eleanorfarmshop" target="_blank" class="text-white">
                     <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
                 </a>
-                <a href="/" target="_blank" class="text-white">
+                <a href="https://www.youtube.com/@eleanorfarmofficial" target="_blank" class="text-white">
                     <i class="bi bi-youtube" style="font-size: 1.5rem;"></i>
                 </a>
             </div>
