@@ -112,3 +112,22 @@
             </div>
         </div>
     </nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Ambil elemen navbar collapse
+    const navbarCollapse = document.getElementById('navbarSupportedContent');
+
+    // Fungsi untuk menutup navbar collapse saat tautan di klik
+    document.querySelectorAll('.navbar-nav a').forEach(link => {
+        link.addEventListener('click', function() {
+            // Cek apakah navbar sedang dalam keadaan "show" (terbuka)
+            if (navbarCollapse.classList.contains('show')) {
+                // Tutup navbar
+                const collapse = new bootstrap.Collapse(navbarCollapse, {
+                    toggle: true
+                });
+            }
+        });
+    });
+</script>
+
