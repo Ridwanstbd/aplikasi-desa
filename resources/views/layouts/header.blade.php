@@ -114,3 +114,21 @@
         </div>
     </div>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Get all the links inside the navbar
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    const navbarCollapse = document.querySelector('.navbar-collapse');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+
+    // Add click event to all links
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function() {
+            // If navbar is expanded (shown) and window is in mobile view
+            if (window.innerWidth < 768 && navbarCollapse.classList.contains('show')) {
+                navbarToggler.click(); // Programmatically click the toggler to close the navbar
+            }
+        });
+    });
+});
+</script>
