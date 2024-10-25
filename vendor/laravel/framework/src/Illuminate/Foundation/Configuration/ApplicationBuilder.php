@@ -28,6 +28,13 @@ class ApplicationBuilder
     protected array $pendingProviders = [];
 
     /**
+     * Any additional routing callbacks that should be invoked while registering routes.
+     *
+     * @var array
+     */
+    protected array $additionalRoutingCallbacks = [];
+
+    /**
      * The Folio / page middleware that have been defined by the user.
      *
      * @var array
@@ -222,6 +229,10 @@ class ApplicationBuilder
                 }
             }
 
+            foreach ($this->additionalRoutingCallbacks as $callback) {
+                $callback();
+            }
+
             if (is_string($pages) &&
                 realpath($pages) !== false &&
                 class_exists(Folio::class)) {
@@ -300,6 +311,8 @@ class ApplicationBuilder
         $this->app->afterResolving(ConsoleKernel::class, function ($kernel) use ($paths) {
             $this->app->booted(fn () => $kernel->addCommandRoutePaths($paths));
         });
+
+        return $this;
     }
 
     /**
