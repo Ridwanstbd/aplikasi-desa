@@ -128,6 +128,7 @@
     $(document).ready(function(){
     setInterval(function(){
         $('#carouselEkspedisi').carousel('next');
+        $('#carouselBank').carousel('next');
     }, 2000);
 });
 
