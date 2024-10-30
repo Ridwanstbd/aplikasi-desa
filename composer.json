@@ -9,6 +9,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "milon/barcode": "^11.0",
         "twbs/bootstrap": "5.3.3",
         "twbs/bootstrap-icons": "^1.11"
     },

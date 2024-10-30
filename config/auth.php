@@ -63,6 +63,7 @@ return [
         App\Providers\ShopServiceProvider::class,
         App\Providers\CustomerServiceProvider::class,
         App\Providers\MarketplaceServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

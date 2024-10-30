@@ -55,7 +55,6 @@
                         <x-button class="btn-sm btn-info rounded-pill" label="Ubah" dataBsToggle="modal" dataBsTarget="#ubahCSModal{{ $cs->id }}"/>
                         <x-modal id="ubahCSModal{{ $cs->id }}" title="{{ $cs->name }}">
                                 <form action="{{ route('customer-service.update', $cs->id) }}" method="POST" >
-                                    @csrf
                                     @method('PUT')
                                 <div class="col-md-12">
                                     <x-input type="text" label="Nama Customer Service" name="name" value="{{ $cs->name }}" required=true />

@@ -60,6 +60,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('vouchers.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('vouchers.index') ? 'active text-white' : '' }}">
+                    Voucher
+                </a>
+            </li>
+            <li>
                 <a href="{{route('settings.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('settings.index') ? 'active text-white' : '' }}">
                     Pengaturan Toko
                 </a>

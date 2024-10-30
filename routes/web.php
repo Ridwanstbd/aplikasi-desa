@@ -10,6 +10,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserClaimController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +29,9 @@ Route::delete('/cart/remove/{variation_id}', [CartController::class, 'removeFrom
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/cart/checkout/submit', [CartController::class, 'submitCheckout'])->name('cart.checkout.submit');
 Route::get('/cart/checkout/cancel', [CartController::class, 'orderCancel'])->name('cart.checkout.cancel');
+
+Route::get('/voucher/{slug}', [UserClaimController::class, 'show'])->name('vouchers.claim.show');
+Route::post('/vouchers/claim/{slug}', [UserClaimController::class, 'claim'])->name('vouchers.claim');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -82,6 +87,14 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::post('testimonials/store/{id}', [SettingController::class, 'storeTestimonials'])->name('testimonials.store');
         Route::delete('settings/delete-banner/{id}', [SettingController::class, 'destroyBanner'])->name('banners.destroy');
         Route::delete('settings/delete-testimonial/{id}', [SettingController::class, 'destroyTestimonial'])->name('testimonials.destroy');
+    });
+
+    Route::prefix('vouchers')->group(function () {
+        Route::get('', [VoucherController::class, 'index'])->name('vouchers.index');
+        Route::post('store', [VoucherController::class, 'store'])->name('vouchers.store');
+        Route::put('edit/{id}', [VoucherController::class, 'update'])->name('vouchers.update');
+        Route::delete('delete/{id}', [VoucherController::class, 'destroy'])->name('vouchers.delete');
+        Route::get('barcode/{slug}', [VoucherController::class, 'generateBarcode'])->name('vouchers.barcode');
     });
 });
 
