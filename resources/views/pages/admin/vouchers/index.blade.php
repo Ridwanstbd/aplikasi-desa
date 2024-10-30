@@ -24,7 +24,7 @@
                             <x-input
                                 type="text"
                                 name="slug"
-                                label="URL ShortLink"
+                                label="Nama Voucher"
                                 placeholder="loyaltyshopee"
                                 value=""
                                 required="true"
@@ -34,7 +34,7 @@
                             <x-input
                                 type="number"
                                 name="discount_amount"
-                                label="Jumlah diskon"
+                                label="Nominal Diskon"
                                 placeholder="% atau Rp"
                                 value=""
                                 required="true"
@@ -62,7 +62,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>URL Shortlink</th>
+                            <th>Nama Voucher</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -82,7 +82,7 @@
                                         <x-input
                                             type="text"
                                             name="slug"
-                                            label="URL ShortLink"
+                                            label="Nama Voucher"
                                             :value="$voucher->slug"
                                         />
                                     </div>
@@ -90,7 +90,7 @@
                                         <x-input
                                             type="number"
                                             name="discount_amount"
-                                            label="Jumlah diskon"
+                                            label="Nominal Diskon"
                                             placeholder="% atau Rp"
                                             :value="$voucher->discount_amount"
                                             required="true"

@@ -51,7 +51,7 @@ class UserClaimController extends Controller
         }
 
         $rotation->update(['current_cs_id' => $nextCsId]);
-        $whatsappMessage = 'Halo Kak ' . $customerService->name . " saya mau klaim voucher loyalty card DISKON ONGKIR dan FREE GIFT SPESIAL, mohon dibantu\u{00A0}proses\u{00A0}ya ..." . $slug;
+        $whatsappMessage = 'Halo Kak ' . $customerService->name . " saya mau klaim voucher loyalty card DISKON ONGKIR dan FREE GIFT SPESIAL, mohon dibantu\u{00A0}proses\u{00A0}ya ...";
 
         $whatsappUrl = 'https://wa.me/' . $customerService->phone . '?text=' . urlencode($whatsappMessage);
 
