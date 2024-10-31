@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Models\Shop;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class ShopServiceProvider extends ServiceProvider
 {
@@ -21,7 +22,10 @@ class ShopServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $shop = Shop::first();
-        View::share('shop', $shop);
+        if (Schema::hasTable('shops')) {
+            // Lakukan query
+            $shop = Shop::first();
+            View::share('shop', $shop);
+        }
     }
 }

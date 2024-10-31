@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use App\Models\CustomerService;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
 
 class CustomerServiceProvider extends ServiceProvider
 {
@@ -21,7 +21,10 @@ class CustomerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $cs = CustomerService::latest()->get();
-        View::share('cs', $cs);
+        if (\Illuminate\Support\Facades\Schema::hasTable('customer_services')) {
+            // Lakukan query
+            $cs = CustomerService::latest()->get();
+            View::share('cs', $cs);
+        }
     }
 }

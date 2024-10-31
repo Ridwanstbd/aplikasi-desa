@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Voucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Milon\Barcode\DNS2D;
 
@@ -19,6 +20,7 @@ class VoucherController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'discount_amount' => 'required|numeric'
@@ -27,6 +29,7 @@ class VoucherController extends Controller
         $slug = Str::slug($validated['slug']);
 
         Voucher::create([
+            'name' => $validated['name'],
             'slug' => $slug,
             'description' => $validated['description'],
             'discount_amount' => $validated['discount_amount'],
@@ -38,6 +41,7 @@ class VoucherController extends Controller
     public function update(Request $request, $slug)
     {
         $request->validate([
+            'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
             'description' => 'required|string|max:255',
             'discount_amount' => 'required|numeric'
@@ -52,6 +56,7 @@ class VoucherController extends Controller
         $newSlug = Str::slug($request->input('slug'));
 
         $voucher->update([
+            'name' => $request->input('name'),
             'slug' => $newSlug,
             'description' => $request->input('description'),
             'discount_amount' => $request->input('discount_amount'),
@@ -89,5 +94,21 @@ class VoucherController extends Controller
         return response($qrcodeImage, 200)
             ->header('Content-Type', 'image/png')
             ->header('Content-Disposition', 'attachment; filename="' . $voucher->slug . '.png"');
+    }
+
+    public function copyUrl($slug)
+    {
+        $voucher = Voucher::where('slug', $slug)->first();
+
+        if (!$voucher) {
+            return back()->with('error', 'Voucher tidak ditemukan');
+        }
+
+        $url = env('APP_URL') . "/voucher/{$voucher->slug}";
+
+        return back()->with([
+            'copy_url' => Session::put('copy_url', $url),
+            'success' => 'URL telah disalin dan siap untuk di-paste'
+        ]);
     }
 }

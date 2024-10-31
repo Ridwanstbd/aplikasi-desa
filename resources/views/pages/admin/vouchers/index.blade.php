@@ -3,6 +3,28 @@
 @push('scripts')
 <script>
     let table = new DataTable('#VcTable');
+
+    document.querySelector('input[name="slug"]').addEventListener('input', function(e) {
+    const regex = /^[a-z0-9-]+$/;
+    if (!regex.test(this.value)) {
+        this.setCustomValidity('Hanya huruf kecil, angka, dan tanda strip (-) yang diperbolehkan');
+    } else {
+        this.setCustomValidity('');
+    }
+    });
+
+    @if(session('copy_url'))
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const textArea = document.createElement('textarea');
+            textArea.value = '{{ session('copy_url') }}';
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            alert('{{ session('success') }}');
+        });
+    @endif
+
 </script>
 @endpush
 
@@ -23,8 +45,18 @@
                         <div class="col-md-12">
                             <x-input
                                 type="text"
-                                name="slug"
+                                name="name"
                                 label="Nama Voucher"
+                                placeholder="loyaltyshopee"
+                                value=""
+                                required="true"
+                            />
+                        </div>
+                        <div class="col-md-12">
+                            <x-input
+                                type="text"
+                                name="slug"
+                                label="Link"
                                 placeholder="loyaltyshopee"
                                 value=""
                                 required="true"
@@ -81,8 +113,16 @@
                                     <div class="col-md-12">
                                         <x-input
                                             type="text"
-                                            name="slug"
+                                            name="name"
                                             label="Nama Voucher"
+                                            :value="$voucher->name"
+                                        />
+                                    </div>
+                                    <div class="col-md-12">
+                                        <x-input
+                                            type="text"
+                                            name="slug"
+                                            label="Link"
                                             :value="$voucher->slug"
                                         />
                                     </div>
@@ -128,6 +168,10 @@
                                 {{-- Download QR Code Button --}}
                                 <a href="{{ route('vouchers.barcode', $voucher->slug) }}" class="btn btn-sm btn-success rounded-pill">
                                     <i class="bi bi-qr-code"></i> Download QRcode
+                                </a>
+                                {{-- Copy URL --}}
+                                <a href="{{ route('vouchers.copy', $voucher->slug) }}" class="btn btn-sm btn-primary rounded-pill">
+                                    Salin URL
                                 </a>
                             </td>
                         </tr>

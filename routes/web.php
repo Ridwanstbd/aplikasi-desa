@@ -95,6 +95,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::put('edit/{id}', [VoucherController::class, 'update'])->name('vouchers.update');
         Route::delete('delete/{id}', [VoucherController::class, 'destroy'])->name('vouchers.delete');
         Route::get('barcode/{slug}', [VoucherController::class, 'generateBarcode'])->name('vouchers.barcode');
+        Route::get('copy/{slug}', [VoucherController::class, 'copyUrl'])->name('vouchers.copy');
     });
 });
 

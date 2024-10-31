@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->decimal('discount_amount', 12, 2);

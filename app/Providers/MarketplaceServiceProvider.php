@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 use App\Models\MarketplaceLinks;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-
+use Illuminate\Support\ServiceProvider;
 
 class MarketplaceServiceProvider extends ServiceProvider
 {
@@ -22,7 +22,10 @@ class MarketplaceServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $mp = MarketplaceLinks::first();
-        View::share('mp',$mp);
+        if (Schema::hasTable('marketplace_links')) {
+            // Lakukan query
+            $mp = MarketplaceLinks::first();
+            View::share('mp', $mp);
+        }
     }
 }
