@@ -106,9 +106,10 @@ class VoucherController extends Controller
 
         $url = env('APP_URL') . "/voucher/{$voucher->slug}";
 
-        return back()->with([
-            'copy_url' => Session::put('copy_url', $url),
-            'success' => 'URL telah disalin dan siap untuk di-paste'
+        return response()->json([
+            'success' => true,
+            'url' => $url,
+            'message' => 'URL telah disalin'
         ]);
     }
 }

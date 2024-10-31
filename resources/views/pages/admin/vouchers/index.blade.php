@@ -13,18 +13,36 @@
     }
     });
 
-    @if(session('copy_url'))
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const textArea = document.createElement('textarea');
-            textArea.value = '{{ session('copy_url') }}';
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            alert('{{ session('success') }}');
+    function copyVoucherUrl(slug) {
+    fetch(`/dashboard/vouchers/copy/${slug}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                navigator.clipboard.writeText(data.url);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: 'URL telah disalin',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message || 'Voucher tidak ditemukan',
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Terjadi kesalahan saat menyalin URL',
+            });
         });
-    @endif
-
+}
 </script>
 @endpush
 
@@ -95,6 +113,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Voucher</th>
+                            <th>Link</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -102,6 +121,7 @@
                         @foreach($vouchers as $index => $voucher)
                         <tr>
                             <td>{{ $index + 1 }}</td>
+                            <td>{{ $voucher->name }}</td>
                             <td>{{ $voucher->slug }}</td>
                             <td>
                                 {{-- Modal Ubah --}}
@@ -170,9 +190,9 @@
                                     <i class="bi bi-qr-code"></i> Download QRcode
                                 </a>
                                 {{-- Copy URL --}}
-                                <a href="{{ route('vouchers.copy', $voucher->slug) }}" class="btn btn-sm btn-primary rounded-pill">
+                                <button onclick="copyVoucherUrl('{{ $voucher->slug }}')" class="btn btn-sm btn-primary rounded-pill">
                                     Salin URL
-                                </a>
+                                </button>
                             </td>
                         </tr>
                         @endforeach
