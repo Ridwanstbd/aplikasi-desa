@@ -94,7 +94,7 @@ class UserClaimController extends Controller
             }
 
             // Verify read/write permissions by reading A1
-            $range = sprintf('%s!A1', $this->sheetName);
+            $range = sprintf('%s!A2', $this->sheetName);
             $this->sheets->spreadsheets_values->get($this->spreadsheetId, $range);
             \Log::info('Successfully validated sheet access');
         });
