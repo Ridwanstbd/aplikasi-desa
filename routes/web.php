@@ -97,6 +97,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::get('barcode/{slug}', [VoucherController::class, 'generateBarcode'])->name('vouchers.barcode');
         Route::get('copy/{slug}', [VoucherController::class, 'copyUrl'])->name('vouchers.copy');
     });
+    Route::prefix('user-claims')->group(function () {
+        Route::get('', [UserClaimController::class, 'index'])->name('user-claims.index');
+        Route::get('/export', [UserClaimController::class, 'export'])->name('user-claims.export');
+        Route::get('/sync-to-sheets', [UserClaimController::class, 'syncAllClaimsToGoogleSheets'])->name('sync.user.claims');
+    });
 });
 
 require __DIR__ . '/auth.php';

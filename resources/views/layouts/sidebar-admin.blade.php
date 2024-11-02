@@ -65,6 +65,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('user-claims.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('user-claims.index') ? 'active text-white' : '' }}">
+                    Pengklaiman Voucher
+                </a>
+            </li>
+            <li>
                 <a href="{{route('settings.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('settings.index') ? 'active text-white' : '' }}">
                     Pengaturan Toko
                 </a>

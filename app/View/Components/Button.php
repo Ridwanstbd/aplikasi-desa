@@ -2,22 +2,25 @@
 
 namespace App\View\Components;
 
-use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Closure;
 
 class Button extends Component
 {
     /**
      * Create a new component instance.
      */
+    public $id;
+
     public $type;
     public $label;
     public $class;
     public $disabled;
 
-    public function __construct($type = 'button', $label = '', $class = 'btn btn-primary', $disabled = false)
+    public function __construct($id = '', $type = 'button', $label = '', $class = 'btn btn-primary', $disabled = false)
     {
+        $this->id = $id;
         $this->type = $type;
         $this->label = $label;
         $this->class = $class;

@@ -20,10 +20,11 @@
             @endif
             @if ($button)
                 <x-button
+                    :id="$button['id'] ?? ''"
                     :type="$button['type'] ?? 'button'"
                     :class="$button['class']"
-                    :dataBsToggle="$button['dataBsToggle']"
-                    :dataBsTarget="$button['dataBsTarget']"
+                    :dataBsToggle="$button['dataBsToggle'] ?? ''"
+                    :dataBsTarget="$button['dataBsTarget'] ??''"
                     :label="$button['label']"
                 />
             @endif

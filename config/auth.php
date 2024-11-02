@@ -64,6 +64,8 @@ return [
         App\Providers\CustomerServiceProvider::class,
         App\Providers\MarketplaceServiceProvider::class,
         Milon\Barcode\BarcodeServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

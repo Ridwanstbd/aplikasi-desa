@@ -21,6 +21,7 @@ use App\View\Components\Modal;
 use App\View\Components\TableProduct;
 use App\View\Components\Variation;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -57,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('variation', Variation::class);
         Blade::component('image-preview', ImagePreview::class);
         Blade::component('product-grid', ProductGrid::class);
-
+        Config::set('google.dns_servers', ['8.8.8.8', '8.8.4.4']);
         View::composer('*', function ($view) {
             $cart = session()->get('cart', []);
             $totalQuantity = array_sum(array_column($cart, 'quantity'));

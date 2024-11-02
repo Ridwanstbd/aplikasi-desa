@@ -25,33 +25,9 @@
                 {{-- Claim Form --}}
                 <div class="card">
                     <div class="card-body">
-                        <h2 class="h4 mb-4">Claim Your Voucher</h2>
-
-                        @if(session('error'))
-                            <div class="alert alert-danger d-flex align-items-center" role="alert">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
-                                </svg>
-                                <div>
-                                    {{ session('error') }}
-                                </div>
-                            </div>
-                        @endif
-
-                        @if($errors->any())
-                            <div class="alert alert-danger" role="alert">
-                                <h4 class="alert-heading h5">Please correct the following errors:</h4>
-                                <ul class="mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
+                        <h2 class="h4 mb-4">Klaim Voucher</h2>
                         <form action="{{ route('vouchers.claim', $voucher->slug) }}" method="POST">
                             @csrf
-
                             <div class="mb-3">
                                 <label for="user_name" class="form-label">Nama Lengkap</label>
                                 <input type="text"
