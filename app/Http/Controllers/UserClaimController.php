@@ -156,11 +156,6 @@ class UserClaimController extends Controller
     public function syncAllClaimsToGoogleSheets()
     {
         try {
-            // Validasi akses
-            if (!auth()->user()->can('sync-google-sheets')) {
-                throw new \Exception('Unauthorized access');
-            }
-
             if (!$this->sheets) {
                 throw new \Exception('Google Sheets service not initialized');
             }
