@@ -116,10 +116,15 @@ class UserClaimController extends Controller
             $this->retryOperation(function () use ($userClaim) {
                 $range = $this->getSheetRange();
 
+                // Get existing data to determine the new row number
+                $response = $this->sheets->spreadsheets_values->get($this->spreadsheetId, $range);
+                $rows = $response->getValues() ?? [];
+                $rowNumber = 1;  // Start from 1 since header is at row 1
+
                 // Prepare the new row data
                 $values = [
                     [
-                        $userClaim->id,
+                        $rowNumber,  // Nomor urut
                         $userClaim->user_name,
                         $userClaim->user_whatsapp,
                         $userClaim->voucher->name,
@@ -146,11 +151,45 @@ class UserClaimController extends Controller
                     ['valueInputOption' => 'RAW']
                 );
 
+                // Update all row numbers
+                $this->updateRowNumbers();
+
                 \Log::info('Successfully synced claim ID ' . $userClaim->id . ' to Google Sheets');
             });
         } catch (\Exception $e) {
             $this->logGoogleSheetsError($e);
         }
+    }
+
+    private function updateRowNumbers()
+    {
+        // Get all existing data
+        $range = $this->getSheetRange('A2:E');
+        $response = $this->sheets->spreadsheets_values->get($this->spreadsheetId, $range);
+        $rows = $response->getValues() ?? [];
+
+        if (empty($rows)) {
+            return;
+        }
+
+        // Update row numbers
+        $updatedRows = [];
+        foreach ($rows as $index => $row) {
+            $row[0] = $index + 1;  // Update nomor urut
+            $updatedRows[] = $row;
+        }
+
+        // Update the sheet with new row numbers
+        $body = new Google_Service_Sheets_ValueRange([
+            'values' => $updatedRows
+        ]);
+
+        $this->sheets->spreadsheets_values->update(
+            $this->spreadsheetId,
+            $this->getSheetRange('A2'),
+            $body,
+            ['valueInputOption' => 'RAW']
+        );
     }
 
     public function syncAllClaimsToGoogleSheets()
@@ -167,9 +206,9 @@ class UserClaimController extends Controller
 
             $values = [];
 
-            foreach ($claims as $claim) {
+            foreach ($claims as $index => $claim) {
                 $values[] = [
-                    $claim->id,
+                    $index + 1,  // Nomor urut
                     $claim->user_name,
                     $claim->user_whatsapp,
                     $claim->voucher->name,
