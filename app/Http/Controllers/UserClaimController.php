@@ -116,10 +116,7 @@ class UserClaimController extends Controller
             $this->retryOperation(function () use ($userClaim) {
                 $range = $this->getSheetRange();
 
-                // Get the last row number
-                $response = $this->sheets->spreadsheets_values->get($this->spreadsheetId, $range);
-                $rows = $response->getValues() ?? [];
-
+                // Prepare the new row data
                 $values = [
                     [
                         $userClaim->id,
@@ -130,6 +127,8 @@ class UserClaimController extends Controller
                     ]
                 ];
 
+                // Insert data at A2 (right after headers)
+                $insertRange = $this->getSheetRange('A2');
                 $body = new Google_Service_Sheets_ValueRange([
                     'values' => $values
                 ]);
@@ -139,11 +138,12 @@ class UserClaimController extends Controller
                     'insertDataOption' => 'INSERT_ROWS'
                 ];
 
-                $this->sheets->spreadsheets_values->append(
+                // Insert at specific position (A2) instead of appending
+                $this->sheets->spreadsheets_values->update(
                     $this->spreadsheetId,
-                    $range,
+                    $insertRange,
                     $body,
-                    $params
+                    ['valueInputOption' => 'RAW']
                 );
 
                 \Log::info('Successfully synced claim ID ' . $userClaim->id . ' to Google Sheets');
@@ -160,7 +160,11 @@ class UserClaimController extends Controller
                 throw new \Exception('Google Sheets service not initialized');
             }
 
-            $claims = UserClaim::with('voucher')->get();
+            // Get all claims sorted by created_at DESC
+            $claims = UserClaim::with('voucher')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
             $values = [];
 
             foreach ($claims as $claim) {
@@ -174,6 +178,7 @@ class UserClaimController extends Controller
             }
 
             $this->retryOperation(function () use ($values) {
+                // Clear existing data (except headers)
                 $clearRange = $this->getSheetRange('A2:E');
                 $this->sheets->spreadsheets_values->clear(
                     $this->spreadsheetId,
@@ -181,17 +186,14 @@ class UserClaimController extends Controller
                     new Google_Service_Sheets_ClearValuesRequest()
                 );
 
+                // Update with new sorted data
                 $body = new Google_Service_Sheets_ValueRange(['values' => $values]);
-                $params = [
-                    'valueInputOption' => 'RAW',
-                    'insertDataOption' => 'INSERT_ROWS'
-                ];
 
-                $this->sheets->spreadsheets_values->append(
+                $this->sheets->spreadsheets_values->update(
                     $this->spreadsheetId,
-                    $this->getSheetRange(),
+                    $this->getSheetRange('A2'),
                     $body,
-                    $params
+                    ['valueInputOption' => 'RAW']
                 );
             });
 
@@ -312,7 +314,7 @@ class UserClaimController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $query = UserClaim::with('voucher');
+            $query = UserClaim::with('voucher')->orderBy('created_at', 'desc');
 
             // Get the DataTables query
             $datatable = DataTables::of($query)
