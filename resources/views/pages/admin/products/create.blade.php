@@ -130,46 +130,62 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+        // Get all required elements
+        const hasVariationsCheckbox = document.getElementById('has_variations');
+        const noVariationDiv = document.getElementById('no_variation');
+        const variationsDiv = document.getElementById('variations');
+        const addVariationBtn = document.getElementById('add_variation');
+
+        // Only add event listeners if elements exist
+        if (hasVariationsCheckbox) {
+            // Handle checkbox changes for all checkboxes
             document.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
                 checkbox.addEventListener('change', function () {
                     var hiddenInput = this.previousElementSibling;
-                    if (this.checked) {
-                        hiddenInput.value = '1';
-                    } else {
-                        hiddenInput.value = '0';
+                    if (hiddenInput) {
+                        hiddenInput.value = this.checked ? '1' : '0';
                     }
                 });
             });
 
-            document.getElementById('has_variations').addEventListener('change', function () {
+            // Handle variations toggle
+            hasVariationsCheckbox.addEventListener('change', function () {
+                if (!noVariationDiv || !variationsDiv || !addVariationBtn) return;
+
                 var variations = document.querySelectorAll('#variations input');
                 var noVariationInputs = document.querySelectorAll('#no_variation input');
+
                 if (this.checked) {
-                    document.getElementById('no_variation').style.display = 'none';
-                    noVariationInputs.forEach(function (input) {
-                        input.disabled = true;
-                    });
-                    document.getElementById('variations').style.display = 'block';
-                    document.getElementById('add_variation').style.display = 'block';
-                    variations.forEach(function (input) {
-                        input.disabled = false;
-                    });
+                    noVariationDiv.style.display = 'none';
+                    noVariationInputs.forEach(input => input.disabled = true);
+
+                    variationsDiv.style.display = 'block';
+                    addVariationBtn.style.display = 'block';
+                    variations.forEach(input => input.disabled = false);
                 } else {
-                    document.getElementById('no_variation').style.display = 'block';
-                    noVariationInputs.forEach(function (input) {
-                        input.disabled = false;
-                    });
-                    document.getElementById('variations').style.display = 'none';
-                    document.getElementById('add_variation').style.display = 'none';
-                    variations.forEach(function (input) {
-                        input.disabled = true;
-                    });
+                    noVariationDiv.style.display = 'block';
+                    noVariationInputs.forEach(input => input.disabled = false);
+
+                    variationsDiv.style.display = 'none';
+                    addVariationBtn.style.display = 'none';
+                    variations.forEach(input => input.disabled = true);
                 }
             });
 
-            document.getElementById('add_variation').addEventListener('click', function () {
+            // Initialize the form state based on checkbox
+            hasVariationsCheckbox.dispatchEvent(new Event('change'));
+        }
+
+        // Add variation button handler
+        if (addVariationBtn) {
+            addVariationBtn.addEventListener('click', function () {
+                var variationTemplate = document.querySelector('.variation');
+                if (!variationTemplate) return;
+
                 var variationCount = document.querySelectorAll('.variation').length;
-                var newVariation = document.querySelector('.variation').cloneNode(true);
+                var newVariation = variationTemplate.cloneNode(true);
+
+                // Update all inputs in the new variation
                 newVariation.querySelectorAll('input').forEach(function (input) {
                     input.name = input.name.replace(/\d+/, variationCount);
                     input.id = input.id.replace(/\d+/, variationCount);
@@ -183,26 +199,36 @@
                     }
                     input.disabled = false;
                 });
-                newVariation.querySelector('.remove_variation').disabled = false;
-                document.getElementById('variations').appendChild(newVariation);
-                toggleRemoveButtons();
+
+                var removeButton = newVariation.querySelector('.remove_variation');
+                if (removeButton) {
+                    removeButton.disabled = false;
+                }
+
+                if (variationsDiv) {
+                    variationsDiv.appendChild(newVariation);
+                    toggleRemoveButtons();
+                }
             });
-
-
-            function toggleRemoveButtons() {
-                var variations = document.querySelectorAll('.variation');
-                document.querySelectorAll('.remove_variation').forEach(function (button) {
-                    button.disabled = variations.length === 1;
-                });
-            }
-
-            document.getElementById('has_variations').dispatchEvent(new Event('change'));
-        });
-        function removeVariation(button) {
-            if (document.querySelectorAll('.variation').length > 1) {
-                button.closest('.variation').remove();
-                toggleRemoveButtons();
-            }
         }
+    });
+
+    // Move toggleRemoveButtons function outside
+    function toggleRemoveButtons() {
+        var variations = document.querySelectorAll('.variation');
+        var removeButtons = document.querySelectorAll('.remove_variation');
+
+        removeButtons.forEach(function (button) {
+            button.disabled = variations.length === 1;
+        });
+    }
+
+    function removeVariation(button) {
+        var variations = document.querySelectorAll('.variation');
+        if (variations.length > 1) {
+            button.closest('.variation').remove();
+            toggleRemoveButtons();
+        }
+    }
     </script>
 @endpush
