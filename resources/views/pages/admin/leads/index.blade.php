@@ -26,6 +26,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nama</th>
+                    <th>Nomor WhatsApp</th>
                     <th>Waktu Klik</th>
                     <th>Aksi</th>
                 </tr>
@@ -35,10 +36,11 @@
                 <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $lead->name }}</td>
+                    <td>{{ $lead->phone }}</td>
                     <td>{{ $lead->time_order }}</td>
                     <td>
                         <!-- ubahCSModal -->
-                        <x-button class="btn-sm btn-info rounded-pill" label="Ubah" dataBsToggle="modal" dataBsTarget="#ubahCSModal{{ $lead->id }}"/>
+                        <x-button class="btn-sm btn-info rounded-pill" label="detail" dataBsToggle="modal" dataBsTarget="#ubahCSModal{{ $lead->id }}"/>
                         <x-modal id="ubahCSModal{{ $lead->id }}" title="{{ $lead->name }}">
                                 <div class="col-md-12">
                                     <x-input type="text" label="Nama Leads" name="name" value="{{ $lead->name }}" readonly />

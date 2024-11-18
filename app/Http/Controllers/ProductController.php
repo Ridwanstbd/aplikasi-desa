@@ -9,6 +9,7 @@ use App\Models\Variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -51,7 +52,7 @@ class ProductController extends Controller
         ]);
 
         try {
-            $mainImageName = 'product-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
+            $mainImageName = 'product-' . Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
             $main_image = $request->file('main_image')->storeAs('public/products', $mainImageName);
 
             $product = Product::create([
@@ -60,12 +61,12 @@ class ProductController extends Controller
                 'main_image' => $main_image,
                 'category_id' => $validated['category_id'],
                 'url_form' => $validated['url_form'],
-                'slug' => \Str::slug($validated['name'], '-') . '-' . uniqid(),
+                'slug' => Str::slug($validated['name'], '-') . '-' . uniqid(),
             ]);
 
             if ($request->hasFile('images') && $request->images) {
                 foreach ($request->images as $image) {
-                    $productImagesName = 'product-images-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                    $productImagesName = 'product-images-' . Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
                     $product->images()->create([
                         'product_id' => $product->id,
                         'images' => $image->storeAs('public/products/images', $productImagesName),
@@ -76,7 +77,7 @@ class ProductController extends Controller
             if ($request->has('has_variations') && $request->has_variations) {
                 foreach ($request->variations as $variation) {
                     if (isset($variation['image']) && $variation['image']->isValid()) {
-                        $variationImageName = 'variation-image-' . \Str::slug($request->name, '-') . '-' . \Str::slug($variation['name_variation'], '-') . '-' . uniqid() . '.' . $variation['image']->getClientOriginalExtension();
+                        $variationImageName = 'variation-image-' . Str::slug($request->name, '-') . '-' . Str::slug($variation['name_variation'], '-') . '-' . uniqid() . '.' . $variation['image']->getClientOriginalExtension();
                         $path = $variation['image']->storeAs('public/products/variations', $variationImageName);
                         $variation['image'] = $path;
                     } else {
@@ -125,7 +126,7 @@ class ProductController extends Controller
             if (Storage::exists($main_image)) {
                 Storage::delete($main_image);
             }
-            $mainImageName = 'product-' . \Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
+            $mainImageName = 'product-' . Str::slug($request->name, '-') . '-' . uniqid() . '.' . $request->main_image->getClientOriginalExtension();
             $main_image = $request->file('main_image')->storeAs('public/products', $mainImageName);
             $product->update([
                 'name' => $validated['name'],
@@ -133,7 +134,7 @@ class ProductController extends Controller
                 'main_image' => $main_image,
                 'category_id' => $validated['category_id'],
                 'url_form' => $validated['url_form'],
-                'slug' => \Str::slug($validated['name'], '-') . '-' . uniqid(),
+                'slug' => Str::slug($validated['name'], '-') . '-' . uniqid(),
             ]);
         } else {
             $product->update([
@@ -141,12 +142,12 @@ class ProductController extends Controller
                 'description' => $validated['description'],
                 'category_id' => $validated['category_id'],
                 'url_form' => $validated['url_form'],
-                'slug' => \Str::slug($validated['name'], '-') . '-' . uniqid(),
+                'slug' => Str::slug($validated['name'], '-') . '-' . uniqid(),
             ]);
         }
         if ($request->hasFile('images')) {
             foreach ($request->images as $image) {
-                $productImagesName = 'product-images-' . \Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $productImagesName = 'product-images-' . Str::slug($validated['name'], '-') . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $product->images()->create([
                     'product_id' => $product->id,
                     'images' => $image->storeAs('public/products/images', $productImagesName),
@@ -186,7 +187,7 @@ class ProductController extends Controller
 
                 if ($request->hasFile("variations.{$index}.image")) {
                     $file = $request->file("variations.{$index}.image");
-                    $variationImageName = 'variation-image-' . \Str::slug($product->name, '-') . '-' . \Str::slug($variationData['name_variation'], '-') . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $variationImageName = 'variation-image-' . Str::slug($product->name, '-') . '-' . Str::slug($variationData['name_variation'], '-') . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $path = $file->storeAs('public/products/variations', $variationImageName);
                     $variationImage = $path;
                 }
