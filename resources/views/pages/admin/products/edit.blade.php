@@ -99,119 +99,153 @@
             confirmButtonText: 'Ok'
         });
     }
-    @if (session('success'))
-        showAlert('success','Sukses!','{{ session('success') }}')
-    @endif
-    @if (session('error'))
-        @php $errorMessages = session('error'); @endphp
-        @if (is_array($errorMessages))
-            @foreach ($errorMessages as $errorMessage)
-                showAlert('error','Oops...','{{ $errorMessage }}')
-            @endforeach
-        @else
-                showAlert('error','Oops...','{{ $errorMessages }}')
-        @endif
-    @endif
-    $(document).on('click', '.delete-image', function(e) {
-        e.preventDefault();
-        var imageId = $(this).data('id');
-        var url = '/dashboard/product/delete-image/' + imageId;
 
-        if (confirm('Apakah Anda yakin ingin menghapus Foto ini?')) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                },
-                success: function(response) {
-                    showAlert('success','Sukses!','Foto berhasil dihapus.');
-                    location.reload();
-                },
-                error: function(xhr) {
-                    showAlert('error','Oops...','Terjadi kesalahan saat menghapus foto.');
+    function initializeVariationHandlers() {
+        const addVariationBtn = document.getElementById('add_variation');
+        const hasVariationsCheckbox = document.getElementById('has_variations');
+
+        if (addVariationBtn) {
+            addVariationBtn.addEventListener('click', function() {
+                const variationsContainer = document.getElementById('variations');
+                if (!variationsContainer) return;
+
+                const variations = document.querySelectorAll('.variation');
+                const variationCount = variations.length;
+                const firstVariation = variations[0];
+
+                if (firstVariation) {
+                    const newVariation = firstVariation.cloneNode(true);
+
+                    // Reset and update inputs
+                    newVariation.querySelectorAll('input').forEach(function(input) {
+                        const newIndex = variationCount;
+                        input.name = input.name.replace(/\d+/, newIndex);
+                        input.id = input.id.replace(/\d+/, newIndex);
+
+                        if (input.type === 'checkbox') {
+                            input.checked = false;
+                        } else if (input.type === 'hidden') {
+                            input.value = '0';
+                        } else {
+                            input.value = '';
+                        }
+                        input.disabled = false;
+                    });
+
+                    const removeButton = newVariation.querySelector('.remove_variation');
+                    if (removeButton) {
+                        removeButton.disabled = false;
+                    }
+
+                    variationsContainer.appendChild(newVariation);
+                    toggleRemoveButtons();
                 }
             });
         }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
+
+        if (hasVariationsCheckbox) {
+            hasVariationsCheckbox.addEventListener('change', function() {
+                const variations = document.querySelectorAll('#variations input');
+                const noVariationInputs = document.querySelectorAll('#no_variation input');
+                const variationsSection = document.getElementById('variations');
+                const addVariationBtn = document.getElementById('add_variation');
+                const noVariationSection = document.getElementById('no_variation');
+
+                if (this.checked) {
+                    if (noVariationSection) noVariationSection.style.display = 'none';
+                    noVariationInputs.forEach(input => input.disabled = true);
+
+                    if (variationsSection) variationsSection.style.display = 'block';
+                    if (addVariationBtn) addVariationBtn.style.display = 'block';
+                    variations.forEach(input => input.disabled = false);
+                } else {
+                    if (noVariationSection) noVariationSection.style.display = 'block';
+                    noVariationInputs.forEach(input => input.disabled = false);
+
+                    if (variationsSection) variationsSection.style.display = 'none';
+                    if (addVariationBtn) addVariationBtn.style.display = 'none';
+                    variations.forEach(input => input.disabled = true);
+                }
+
+                toggleRemoveButtons();
+            });
+        }
+
+        // Initialize checkbox handlers
         document.querySelectorAll('input[type="checkbox"]').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
-                var hiddenInput = this.previousElementSibling;
-                if (this.checked) {
-                    hiddenInput.value = '1';
-                } else {
-                    hiddenInput.value = '0';
+                const hiddenInput = this.previousElementSibling;
+                if (hiddenInput) {
+                    hiddenInput.value = this.checked ? '1' : '0';
                 }
             });
         });
+    }
 
-        document.getElementById('has_variations').addEventListener('change', function() {
-            var variations = document.querySelectorAll('#variations input');
-            var noVariationInputs = document.querySelectorAll('#no_variation input');
-            if (this.checked) {
-                document.getElementById('no_variation').style.display = 'none';
-                noVariationInputs.forEach(function(input) {
-                    input.disabled = true;
-                });
-                document.getElementById('variations').style.display = 'block';
-                document.getElementById('add_variation').style.display = 'block';
-                variations.forEach(function(input) {
-                    input.disabled = false;
-                });
-                document.querySelectorAll('.remove_variation').forEach(function(button) {
-                    button.disabled = document.querySelectorAll('.variation').length === 1;
-                });
-            } else {
-                document.getElementById('no_variation').style.display = 'block';
-                noVariationInputs.forEach(function(input) {
-                    input.disabled = false;
-                });
-                document.getElementById('variations').style.display = 'none';
-                document.getElementById('add_variation').style.display = 'none';
-                variations.forEach(function(input) {
-                    input.disabled = true;
-                });
-                document.querySelectorAll('.remove_variation').forEach(function(button) {
-                    button.disabled = true;
-                });
-            }
+    function toggleRemoveButtons() {
+        const variations = document.querySelectorAll('.variation');
+        const removeButtons = document.querySelectorAll('.remove_variation');
+
+        removeButtons.forEach(button => {
+            button.disabled = variations.length <= 1;
         });
+    }
 
-        document.getElementById('add_variation').addEventListener('click', function() {
-            var variationCount = document.querySelectorAll('.variation').length;
-            var newVariation = document.querySelector('.variation').cloneNode(true);
-            newVariation.querySelectorAll('input').forEach(function(input) {
-                input.name = input.name.replace(/\d+/, variationCount);
-                input.id = input.id.replace(/\d+/, variationCount);
-
-                if (input.type === 'checkbox') {
-                    input.checked = false;
-                } else if (input.type === 'hidden') {
-                    input.value = '0';
-                } else {
-                    input.value = '';
-                }
-                input.disabled = false;
-            });
-            newVariation.querySelector('.remove_variation').disabled = false;
-            document.getElementById('variations').appendChild(newVariation);
+    function removeVariation(button) {
+        const variations = document.querySelectorAll('.variation');
+        if (variations.length > 1) {
+            button.closest('.variation').remove();
             toggleRemoveButtons();
-        });
+        }
+    }
 
-        function removeVariation(button) {
-            if (document.querySelectorAll('.variation').length > 1) {
-                button.closest('.variation').remove();
-                toggleRemoveButtons();
+    // Delete image handler
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.delete-image')) {
+            e.preventDefault();
+            const button = e.target.closest('.delete-image');
+            const imageId = button.dataset.id;
+            const url = '/dashboard/product/delete-image/' + imageId;
+
+            if (confirm('Apakah Anda yakin ingin menghapus Foto ini?')) {
+                fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    showAlert('success', 'Sukses!', 'Foto berhasil dihapus.');
+                    location.reload();
+                })
+                .catch(error => {
+                    showAlert('error', 'Oops...', 'Terjadi kesalahan saat menghapus foto.');
+                });
             }
         }
+    });
 
-        function toggleRemoveButtons() {
-            var variations = document.querySelectorAll('.variation');
-            document.querySelectorAll('.remove_variation').forEach(function(button) {
-                button.disabled = variations.length === 1;
-            });
-        }
+    // Initialize all handlers when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeVariationHandlers();
+
+        // Show alerts for session messages
+        @if (session('success'))
+            showAlert('success', 'Sukses!', '{{ session('success') }}');
+        @endif
+
+        @if (session('error'))
+            @php $errorMessages = session('error'); @endphp
+            @if (is_array($errorMessages))
+                @foreach ($errorMessages as $errorMessage)
+                    showAlert('error', 'Oops...', '{{ $errorMessage }}');
+                @endforeach
+            @else
+                showAlert('error', 'Oops...', '{{ $errorMessages }}');
+            @endif
+        @endif
     });
 </script>
 @endpush
