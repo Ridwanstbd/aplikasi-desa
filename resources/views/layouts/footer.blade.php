@@ -39,24 +39,7 @@
                  @endif
             </div>
             <div class="col-md-4">
-                <h6 class="fw-bold text-white">Marketplace</h6>
-                @if (!empty($mp))
-                    <a class="nav-link text-decoration-none text-white d-flex align-items-center px-2" href="{{$mp->marketplace_url}}" target="_blank">
-                        @if ($mp->type === 'Shopee')
-                            <img src="{{asset('assets/icons/shopee.png')}}" alt="Shopee" style="width: 1.2rem; height: 1.2rem; margin-right: 0.5rem;">
-                        @endif
-                        @if ($mp->type === 'Tokopedia')
-                            <img src="{{asset('assets/icons/tokopedia.png')}}" alt="Tokopedia" style="width: 1.2rem; height: 1.2rem; margin-right: 0.5rem;">
-                        @endif
-                        @if ($mp->type === 'Tiktok')
-                            <img src="{{asset('assets/icons/tiktok.png')}}" alt="Tiktok" style="width: 1.2rem; height: 1.2rem; margin-right: 0.5rem;">
-                        @endif
-                        @if ($mp->type === 'Lazada')
-                            <img src="{{asset('assets/icons/lazada.png')}}" alt="Lazada" style="width: 1.2rem; height: 1.2rem; margin-right: 0.5rem;">
-                        @endif
-                        {{$mp->name}}
-                    </a>
-                @endif
+                <p class="fw-bold text-white">Artikel Peternakan</p>
                 <h6 class="fw-bold mt-3 text-white">Kontak</h6>
                 @if (!empty($cs->first()->phone))
                     <a class="nav-link text-decoration-none text-white d-flex align-items-center px-2" href="https://wa.me/{{$cs->first()->phone}}" target="_blank">

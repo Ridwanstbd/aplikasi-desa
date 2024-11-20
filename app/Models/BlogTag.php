@@ -10,4 +10,9 @@ class BlogTag extends Model
     use HasFactory;
 
     public $fillable = ['name', 'slug'];
+
+    public function blogPosts()
+    {
+        return $this->belongsToMany(BlogPost::class, 'blog_post_tags', 'tag_id', 'post_id');
+    }
 }

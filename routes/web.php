@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomerServiceController;
@@ -32,7 +33,10 @@ Route::get('/cart/checkout/cancel', [CartController::class, 'orderCancel'])->nam
 
 Route::get('/voucher/{slug}', [UserClaimController::class, 'show'])->name('vouchers.claim.show');
 Route::post('/vouchers/claim/{slug}', [UserClaimController::class, 'claim'])->name('vouchers.claim');
-
+Route::prefix('blog')->group(function () {
+    Route::get('', [BlogController::class, 'index'])->name('blog.index');
+    Route::get('{slug}', [BlogController::class, 'show'])->name('blog.show');
+});
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -101,6 +105,24 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::get('', [UserClaimController::class, 'index'])->name('user-claims.index');
         Route::get('/export', [UserClaimController::class, 'export'])->name('user-claims.export');
         Route::get('/sync-to-sheets', [UserClaimController::class, 'syncAllClaimsToGoogleSheets'])->name('sync.user.claims');
+    });
+    Route::prefix('blog')->group(function () {
+        Route::get('', [BlogController::class, 'stores'])->name('admin.blog.index');
+        Route::get('create', [BlogController::class, 'create'])->name('admin.blog.create');
+        Route::get('{id}', [BlogController::class, 'edit'])->name('admin.blog.edit');
+        Route::post('store', [BlogController::class, 'store'])->name('admin.blog.store');
+        Route::put('{id}', [BlogController::class, 'update'])->name('admin.blog.update');
+        Route::delete('{id}', [BlogController::class, 'destroy'])->name('admin.blog.delete');
+        // tag
+        Route::get('tags', [BlogController::class, 'tags'])->name('admin.blog.tag.index');
+        Route::post('tags', [BlogController::class, 'store_tag'])->name('admin.blog.tag.store');
+        Route::put('tags/{id}', [BlogController::class, 'update_tag'])->name('admin.blog.tag.update');
+        Route::delete('tags/{id}', [BlogController::class, 'delete_tag'])->name('admin.blog.tag.delete');
+        // category
+        Route::get('categories', [BlogController::class, 'categories'])->name('admin.blog.category.index');
+        Route::post('categories', [BlogController::class, 'store_category'])->name('admin.blog.category.store');
+        Route::put('categories/{id}', [BlogController::class, 'update_category'])->name('admin.blog.category.update');
+        Route::delete('categories/{id}', [BlogController::class, 'delete_category'])->name('admin.blog.category.delete');
     });
 });
 

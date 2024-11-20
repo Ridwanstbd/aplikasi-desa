@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse min-vh-100" id="navbarSupportedContent">
         <ul class="nav nav-pills flex-column mb-auto mt-4">
             <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                <a id="navbarDropdown" class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false" v-pre>
                     {{ Auth::user()->name }}
                 </a>

@@ -76,25 +76,7 @@
                      </a>
                  </li>
                  @endif
-                 @if (!empty($mp))
-                 <li class="nav-item d-flex align-items-center px-2">
-                     <a class="nav-link d-flex align-items-center text-white" href="{{$mp->marketplace_url}}" target="_blank">
-                        @if ($mp->type === 'Shopee')
-                        <img src="{{asset('assets/icons/shopee.png')}}" alt="" style="width: 2.5rem;height:2.5rem; margin-right: 0.5rem;" />
-                        @endif
-                        @if ($mp->type === 'Tokopedia')
-                        <img src="{{asset('assets/icons/tokopedia.png')}}" alt="" style="width: 2.5rem;height:2.5rem; margin-right: 0.5rem;" />
-                        @endif
-                        @if ($mp->type === 'Tiktok')
-                        <img src="{{asset('assets/icons/tiktok.png')}}" alt="" style="width: 2.5rem;height:2.5rem; margin-right: 0.5rem;" />
-                        @endif
-                        @if ($mp->type === 'Lazada')
-                        <img src="{{asset('assets/icons/lazada.png')}}" alt="" style="width: 2.5rem;height:2.5rem; margin-right: 0.5rem;" />
-                        @endif
-                        {{$mp->name}}
-                     </a>
-                 </li>
-                 @endif
+                 <!-- Blog -->
             </ul>
 
             <!-- Right Side Of Navbar -->
