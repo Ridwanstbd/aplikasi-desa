@@ -1,17 +1,50 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    {{-- Favicon --}}
     <link rel="icon" type="image/png" href="{{ Storage::url($shop->logo_footer_url) }}">
 
+    {{-- Primary Meta Tags --}}
     <title>{{ $shop->name ?? 'Home' }}</title>
+    <meta name="description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
+    <meta name="author" content="{{ $shop->name ?? config('app.name') }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph Meta Tags --}}
+    <meta property="og:title" content="{{ $shop->name ?? 'Home' }}">
+    <meta property="og:description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ Storage::url($shop->logo_footer_url) }}">
+    <meta property="og:site_name" content="{{ $shop->name ?? config('app.name') }}">
+
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $shop->name ?? 'Home' }}">
+    <meta name="twitter:description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
+    <meta name="twitter:image" content="{{ Storage::url($shop->logo_footer_url) }}">
+
+    {{-- Schema.org Markup --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "{{ $shop->name ?? config('app.name') }}",
+        "url": "{{ url('/') }}",
+        "logo": "{{ Storage::url($shop->logo_footer_url) }}"
+    }
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
     <!-- Meta Pixel Code -->
     @if(!empty($shop->meta_pixel_id))
         <script>
@@ -23,6 +56,7 @@
         </noscript>
     @endif
     <!-- End Meta Pixel Code -->
+
     <!-- TikTok Pixel Code -->
     @if($shop->tiktok_pixel_id)
         <script>
@@ -54,6 +88,7 @@
         </script>
     @endif
     <!-- End TikTok Pixel Code -->
+
     <!-- Google Tag Manager -->
     @if(!empty($shop->google_tag_id))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{$shop->google_tag_id}}"></script>
@@ -65,6 +100,7 @@
         </script>
     @endif
     <!-- End Google Tag Manager -->
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
@@ -85,7 +121,6 @@
             background: #f8f9fa;
             padding: 1rem;
         }
-
     </style>
     @stack('styles')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -130,5 +165,4 @@
     <!-- sweetalert2 -->
     @stack('scripts')
 </body>
-
 </html>

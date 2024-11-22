@@ -37,6 +37,10 @@ Route::prefix('blog')->group(function () {
     Route::get('', [BlogController::class, 'index'])->name('blog.index');
     Route::get('{slug}', [BlogController::class, 'show'])->name('blog.show');
 });
+Route::prefix('blog')->group(function () {
+    Route::get('category/{slug}', 'BlogController@showByCategory')->name('blog.category');
+    Route::get('/tag/{slug}', 'BlogController@showByTag')->name('blog.tag');
+});
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
