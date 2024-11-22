@@ -2,12 +2,12 @@
     <div class="container py-4">
         <div class="row w-100">
             @if (!empty($shop->first()->logo_url))
-            <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 3rem; height: 3rem; margin-right:1rem;">
+            <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo">
             @endif
             <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
         </div>
         <div class="row w-100 mt-3">
-            <div class="col-md-4 align-items-center">           
+            <div class="col-md-4 align-items-center">
                 <div class="d-flex gap-3 mt-2">
                     <a href="https://www.instagram.com/eleanorfarm.id" target="_blank" class="text-white">
                         <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
@@ -50,8 +50,10 @@
                 @endif
             </div>
         </div>
-        <p class="text-center text-white pt-4" style="font-size: smaller;">
-            Copyright &copy 2024 PT ELEANOR PROJECT GLOBAL INDONESIA All Rights Reserved.
-        </p>
+        <div class="row w-100">
+            <p class="text-center text-white pt-4" style="font-size: smaller;">
+                Copyright &copy 2024 PT ELEANOR PROJECT GLOBAL INDONESIA All Rights Reserved.
+            </p>
+        </div>
     </div>
 </footer>
