@@ -1,10 +1,12 @@
 <footer class="navbar navbar-dark bg-dark shadow-sm mt-2" style="width: 100%; margin: 0; padding: 0;">
     <div class="container py-4">
-        <div class="row w-100 d-flex">
-            @if (!empty($shop->first()->logo_url))
-            <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 5rem; height: 5rem;">
-            @endif
-            <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
+        <div class="row w-100 d-flex align-items-center mb-3">
+            <div class="d-flex align-items-center gap-3">
+                @if (!empty($shop->first()->logo_url))
+                    <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 8rem; height: 5rem;">
+                @endif
+                <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
+            </div>
         </div>
         <div class="row w-100 mt-3">
             <div class="col-md-4 align-items-center">
