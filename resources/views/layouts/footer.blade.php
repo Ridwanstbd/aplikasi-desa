@@ -3,7 +3,7 @@
         <div class="row w-100 d-flex align-items-center mb-3">
             <div class="d-flex align-items-center gap-3">
                 @if (!empty($shop->first()->logo_url))
-                    <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 8rem; height: 5rem;">
+                    <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="max-width: 5rem; max-height: 5rem; height: auto;">
                 @endif
                 <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
             </div>
