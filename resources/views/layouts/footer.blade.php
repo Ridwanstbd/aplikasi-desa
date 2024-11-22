@@ -1,6 +1,6 @@
 <footer class="navbar navbar-dark bg-dark shadow-sm mt-2" style="width: 100%; margin: 0; padding: 0;">
     <div class="container py-4">
-        <div class="row w-100">
+        <div class="row w-100 d-flex">
             @if (!empty($shop->first()->logo_url))
             <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo">
             @endif
