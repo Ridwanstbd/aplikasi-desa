@@ -2,7 +2,7 @@
     <div class="container py-4">
         <div class="row w-100 d-flex">
             @if (!empty($shop->first()->logo_url))
-            <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo">
+            <img src="{{ Storage::url($shop->logo_url) }}" alt="Logo" style="width: 5rem; height: 5rem;">
             @endif
             <span class="fs-5 text-white fw-bold">{{$shop->name}}</span>
         </div>
