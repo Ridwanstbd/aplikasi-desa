@@ -11,7 +11,7 @@ class BlogTagController extends Controller
 {
     public function index()
     {
-        $tags = BlogTag::withCount('blogPosts')
+        $tags = BlogTag::withCount('posts')
             ->latest()
             ->get();
 
