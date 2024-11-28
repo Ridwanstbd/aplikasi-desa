@@ -76,6 +76,11 @@
                      </a>
                  </li>
                  @endif
+                 <li class="nav-item d-flex align-items-center px-2">
+                     <a class="nav-link d-flex align-items-center text-white" href="{{route('blog.index')}}" target="_blank">
+                         Artikel
+                     </a>
+                 </li>
                  <!-- Blog -->
             </ul>
 

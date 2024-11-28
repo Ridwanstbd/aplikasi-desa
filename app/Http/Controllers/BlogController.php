@@ -4,168 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\BlogCategory;
 use App\Models\BlogPost;
+use App\Models\BlogPostTag;
 use App\Models\BlogTag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Auth;
-use Str;
 
 class BlogController extends Controller
 {
-    // Kategori BLOG
-    public function categories()
-    {
-        $categories = BlogCategory::withCount('blogPosts')->latest()->get();
-        return view('pages.admin.blog_category.index', compact('categories'));
-    }
-
-    public function store_category(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:blog_categories,name',
-        ]);
-
-        try {
-            BlogCategory::create([
-                'name' => $validated['name'],
-                'slug' => Str::slug($validated['name'])
-            ]);
-
-            return redirect()->back()->with('success', 'Kategori blog berhasil ditambahkan');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menambahkan kategori blog')->withInput();
-        }
-    }
-
-    public function update_category(Request $request)
-    {
-        $validated = $request->validate([
-            'category_id' => 'required|exists:blog_categories,id',
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('blog_categories', 'name')->ignore($request->category_id),
-            ],
-        ]);
-
-        try {
-            $category = BlogCategory::findOrFail($validated['category_id']);
-
-            $category->update([
-                'name' => $validated['name'],
-                'slug' => Str::slug($validated['name'])
-            ]);
-
-            return redirect()->back()->with('success', 'Kategori blog berhasil diperbarui');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal memperbarui kategori blog')->withInput();
-        }
-    }
-
-    public function delete_category(Request $request)
-    {
-        $validated = $request->validate([
-            'category_id' => 'required|exists:blog_categories,id',
-        ]);
-
-        try {
-            $category = BlogCategory::findOrFail($validated['category_id']);
-
-            // Optional: Check if category has related posts
-            if ($category->blogPosts()->count() > 0) {
-                return redirect()->back()->with('error', 'Kategori tidak dapat dihapus karena masih memiliki artikel terkait');
-            }
-
-            $category->delete();
-
-            return redirect()->back()->with('success', 'Kategori blog berhasil dihapus');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Gagal menghapus kategori blog');
-        }
-    }
-
-    // Tag BLOG
-    public function tags()
-    {
-        $tags = BlogTag::withCount('blogPosts')
-            ->latest()
-            ->get();
-
-        return view('pages.admin.blog_tag.index', compact('tags'));
-    }
-
-    public function store_tag(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:blog_tags,name',
-        ]);
-
-        try {
-            BlogTag::create([
-                'name' => $validated['name'],
-                'slug' => Str::slug($validated['name'])
-            ]);
-
-            return redirect()->back()->with('success', 'Tag berhasil ditambahkan');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', 'Gagal menambahkan tag')
-                ->withInput();
-        }
-    }
-
-    public function update_tag(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique('blog_tags', 'name')->ignore($id),
-            ],
-        ]);
-
-        try {
-            $tag = BlogTag::findOrFail($id);
-
-            $tag->update([
-                'name' => $validated['name'],
-                'slug' => Str::slug($validated['name'])
-            ]);
-
-            return redirect()->back()->with('success', 'Tag berhasil diperbarui');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', 'Gagal memperbarui tag')
-                ->withInput();
-        }
-    }
-
-    public function delete_tag(Request $request, $id)
-    {
-        try {
-            $tag = BlogTag::findOrFail($id);
-
-            if ($tag->blogPosts()->count() > 0) {
-                return redirect()
-                    ->back()
-                    ->with('error', 'Tag tidak dapat dihapus karena masih digunakan dalam artikel');
-            }
-
-            $tag->delete();
-
-            return redirect()->back()->with('success', 'Tag berhasil dihapus');
-        } catch (\Exception $e) {
-            return redirect()
-                ->back()
-                ->with('error', 'Gagal menghapus tag');
-        }
-    }
-
-    // BLOG
     public function index()
     {
         $posts = BlogPost::with(['author', 'category', 'tags'])
@@ -194,7 +41,7 @@ class BlogController extends Controller
     {
         $tag = BlogTag::where('slug', $slug)->firstOrFail();
         $posts = $tag
-            ->blogPosts()
+            ->posts()
             ->with(['author', 'category', 'tags'])
             ->where('status', 'published')
             ->where('published_at', '<=', now())
@@ -222,6 +69,15 @@ class BlogController extends Controller
         return view('pages.blog.show', compact('post'));
     }
 
+    public function adminIndex()
+    {
+        $posts = BlogPost::with(['author', 'category', 'tags'])
+            ->latest()
+            ->paginate(15);
+
+        return view('pages.admin.blog.stores', compact('posts'));
+    }
+
     public function create()
     {
         $categories = BlogCategory::all();
@@ -238,16 +94,19 @@ class BlogController extends Controller
             'excerpt' => 'nullable|string|max:500',
             'category_id' => 'required|exists:blog_categories,id',
             'tags' => 'nullable|array',
-            'tags.*' => 'exists:blog_tags,id',
+            'tags.*' => 'string',
             'status' => 'required|in:published,draft',
             'published_at' => 'nullable|date|required_if:status,published',
+            'featured_image' => 'nullable|image|max:2048'
         ]);
 
         try {
-            // Generate excerpt if not provided
             if (empty($validated['excerpt'])) {
-                $excerpt = strip_tags($validated['content']);
-                $validated['excerpt'] = Str::limit($excerpt, 300);
+                $validated['excerpt'] = Str::limit(strip_tags($validated['content']), 300);
+            }
+            $featuredImage = null;
+            if ($request->hasFile('featured_image')) {
+                $featuredImage = $request->file('featured_image')->store('featured_images', 'public');
             }
 
             $post = BlogPost::create([
@@ -258,34 +117,38 @@ class BlogController extends Controller
                 'author_id' => Auth::id(),
                 'category_id' => $validated['category_id'],
                 'status' => $validated['status'],
+                'featured_image' => $featuredImage,
                 'published_at' => $validated['status'] === 'published'
                     ? ($validated['published_at'] ?? now())
                     : null,
             ]);
 
-            // Sync tags
+            // Proses tags jika ada
             if (!empty($validated['tags'])) {
-                $post->tags()->sync($validated['tags']);
+                foreach ($validated['tags'] as $tagName) {
+                    // Cek apakah tag sudah ada atau buat baru
+                    $tag = BlogTag::firstOrCreate(
+                        ['name' => $tagName],
+                        ['slug' => Str::slug($tagName)]
+                    );
+
+                    // Simpan hubungan ke tabel pivot BlogPostTag
+                    BlogPostTag::create([
+                        'post_id' => $post->id,
+                        'tag_id' => $tag->id,
+                    ]);
+                }
             }
 
             return redirect()
                 ->route('admin.blog.index')
-                ->with('success', 'Artikel berhasil dibuat');
+                ->with('success', 'Artikel berhasil dibuat.');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->with('error', 'Gagal membuat artikel')
+                ->with('error', 'Gagal membuat artikel. ' . $e->getMessage())
                 ->withInput();
         }
-    }
-
-    public function stores()
-    {
-        $posts = BlogPost::with(['author', 'category', 'tags'])
-            ->latest()
-            ->paginate(15);
-
-        return view('pages.admin.blog.stores', compact('posts'));
     }
 
     public function edit($id)
@@ -312,17 +175,17 @@ class BlogController extends Controller
             'excerpt' => 'nullable|string|max:500',
             'category_id' => 'required|exists:blog_categories,id',
             'tags' => 'nullable|array',
-            'tags.*' => 'exists:blog_tags,id',
+            'tags.*' => 'string',
             'status' => 'required|in:published,draft',
+            'featured_image' => 'nullable|image|max:2048',
             'published_at' => 'nullable|date|required_if:status,published',
         ]);
 
         try {
-            // Generate excerpt if not provided
             if (empty($validated['excerpt'])) {
-                $excerpt = strip_tags($validated['content']);
-                $validated['excerpt'] = Str::limit($excerpt, 300);
+                $validated['excerpt'] = Str::limit(strip_tags($validated['content']), 300);
             }
+            $featuredImage = ($request->hasFile('featured_image')) ? $request->file('featured_image')->store('featured_images', 'public') : $post->featured_image;
 
             $post->update([
                 'title' => $validated['title'],
@@ -331,25 +194,32 @@ class BlogController extends Controller
                 'excerpt' => $validated['excerpt'],
                 'category_id' => $validated['category_id'],
                 'status' => $validated['status'],
+                'featured_image' => $featuredImage,
                 'published_at' => $validated['status'] === 'published'
                     ? ($validated['published_at'] ?? now())
                     : null,
             ]);
 
-            // Sync tags
-            if (isset($validated['tags'])) {
-                $post->tags()->sync($validated['tags']);
+            if (!empty($validated['tags'])) {
+                $tagIds = collect($validated['tags'])->map(function ($tagName) {
+                    return BlogTag::firstOrCreate(
+                        ['name' => $tagName],
+                        ['slug' => Str::slug($tagName)]
+                    )->id;
+                });
+
+                $post->tags()->sync($tagIds);
             } else {
                 $post->tags()->detach();
             }
 
             return redirect()
                 ->route('admin.blog.index')
-                ->with('success', 'Artikel berhasil diperbarui');
+                ->with('success', 'Artikel berhasil diperbarui.');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->with('error', 'Gagal memperbarui artikel')
+                ->with('error', 'Gagal memperbarui artikel. ' . $e->getMessage())
                 ->withInput();
         }
     }
@@ -358,20 +228,16 @@ class BlogController extends Controller
     {
         try {
             $post = BlogPost::findOrFail($id);
-
-            // Delete related tags
             $post->tags()->detach();
-
-            // Delete the post
             $post->delete();
 
             return redirect()
                 ->route('admin.blog.index')
-                ->with('success', 'Artikel berhasil dihapus');
+                ->with('success', 'Artikel berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()
                 ->back()
-                ->with('error', 'Gagal menghapus artikel');
+                ->with('error', 'Gagal menghapus artikel. ' . $e->getMessage());
         }
     }
 }

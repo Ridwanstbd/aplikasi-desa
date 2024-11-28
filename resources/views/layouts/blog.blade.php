@@ -27,7 +27,7 @@
     <meta property="og:description" content="@yield('meta_description', $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami'))">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="{{Storage::url($shop->logo_footer_url)}}">
+    <meta property="og:image" content="@yield('meta_image', Storage::url($shop->logo_footer_url))">
     <meta property="og:site_name" content="{{ $shop->name ?? config('app.name') }}">
 
     {{-- Twitter Card Meta Tags --}}

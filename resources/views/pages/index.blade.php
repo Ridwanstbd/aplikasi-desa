@@ -2,72 +2,28 @@
 
 @push('scripts')
 <script>
-    // Fake Sales Notification
-    const productAlert = document.getElementById("product-alert");
-    const productInfo = document.getElementById("product-info");
-    const closeAlertBtn = document.getElementById("close-btn");
-    const productText = document.getElementById("product-text");
-    const productImage = document.getElementById("product-image");
-    const leads = @json($leads);
-    const products = @json($productsJson);
-    let alertTimeout;
-    let currentLeadIndex = leads.length - 1; // Mulai dari index terbesar
-    let leadCount = 0; // Menghitung jumlah lead yang telah ditampilkan
-
-    const getNextLead = () => {
-        if (leadCount >= 3) {
-            clearTimeout(alertTimeout); // Hentikan setelah 3 lead ditampilkan
-            return;
-        }
-
-        const lead = leads[currentLeadIndex];
-        currentLeadIndex--; // Kurangi index untuk mengambil lead sebelumnya
-        leadCount++; // Tambahkan hitungan lead yang telah ditampilkan
-        return lead;
-    };
-    const showAlert = () => {
-    const nextLead = getNextLead();
-    const product = products.find(p => p.id === nextLead.product_id);
-
-    if (!product) {
-        return;
+    // konsultasi dokter start
+    function openModal() {
+        $('#consultationModal').modal('show');
     }
-
-    productImage.src = `{{ url('storage/products') }}/${product.main_image.replace('public/products/', '')}`;
-
-    if (!productImage.src) {
-        console.error('Image source is invalid or not found');
+    function submitForm(event) {
+        event.preventDefault();
+        
+        // Simulasi pengiriman data ke server
+        setTimeout(() => {
+            document.getElementById('consultationForm').reset();
+            closeModal(); // Menutup modal setelah submit
+            
+            // Menampilkan SweetAlert
+            Swal.fire({
+                icon: 'success',
+                title: 'Pesan Terkirim!',
+                text: 'Terima kasih, tim kami akan menghubungi anda dalam rentang waktu 1x24 jam kedepan.',
+                confirmButtonText: 'OK'
+            });
+        }, 500);
     }
-
-    // Batasi panjang product.name hingga 24 karakter
-    let productName = product.name.length > 24 ? product.name.slice(0, 24) + '...' : product.name;
-
-    // Menampilkan pesan tanpa waktu order
-    productText.innerHTML = `<p class="message"><b>${nextLead.name}</b> dari <b>${nextLead.regency}</b> baru saja membeli <b>${productName}</b></p>`;
-
-    if (productInfo) {
-        productInfo.onclick = () => window.location.href = `{{ url('product/detail') }}/${product.slug}`;
-    } else {
-        console.error('Product info element not found');
-    }
-
-    productAlert.style.display = "flex";
-    alertTimeout = setTimeout(() => {
-        productAlert.style.display = "none";
-        showAlert();
-    }, 5000);
-};
-    closeAlertBtn.addEventListener("click", () => {
-        clearTimeout(alertTimeout);
-        productAlert.style.display = "none";
-        setTimeout(showAlert, getRandomDisplayTime() * 1000);
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-        showAlert();
-    });
-    // Fake Sales Notification
-
+    // Konsultsi dokter end
     // Filter Form
     document.querySelectorAll('input[name="kategori"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
@@ -159,12 +115,24 @@
     <x-shop.marketplace :marketplaces="$marketplaces" />
     <x-shop.shipping />
     <x-shop.banks />
-    <div id="product-alert">
-    <div id="product-info" class="product-info">
-        <img id="product-image" src="" alt="Product">
-        <div id="product-text"></div>
-    </div>
-    <button id="close-btn"><i class="bi bi-x-lg"></i></button>
-</div>
+    <!-- WhatsApp Icon -->
+    <!-- <div class="whatsapp-icon" onclick="openModal()">
+        <img src="{{//asset('assets/icons/whatsapp.png')}}" alt="WhatsApp" width="60" height="60">
+    </div> -->
+
+    <!-- Modal -->
+    <x-modal id="consultationModal" title="Kirim Pesan Konsultasi">
+        <form id="consultationForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+                <label for="name">Nama:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Pesan:</label>
+                <textarea class="form-control" id="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Kirim</button>
+        </form>
+    </x-modal>
 </div>
 @endsection

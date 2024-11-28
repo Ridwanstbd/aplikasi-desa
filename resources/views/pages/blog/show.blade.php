@@ -1,7 +1,8 @@
 @extends('layouts.blog')
 
 @section('meta_title', $post->title)
-@section('meta_description', Str::limit(strip_tags($post->excerpt), 160))
+@section('meta_description', Illuminate\Support\Str::limit(strip_tags($post->excerpt), 160))
+@section('meta_image', Storage::url($post->featured_image))
 
 @push('styles')
 <style>
@@ -173,8 +174,8 @@
                     </address>
                     <div class="article-metadata-item">
                         <i class="bi bi-calendar3" aria-hidden="true"></i>
-                        <time datetime="{{ $post->published_at->toIso8601String() }}">
-                            {{ $post->published_at->format('d M Y') }}
+                        <time datetime="{{ $post->published_at ? \Illuminate\Support\Carbon::parse($post->published_at) : now()->format('Y-m-d\TH:i')}}">
+                            {{ $post->published_at ? \Illuminate\Support\Carbon::parse($post->published_at) : now()->format('Y-m-d\TH:i') }}
                         </time>
                     </div>
                     <div class="article-metadata-item">
@@ -193,6 +194,16 @@
                     </p>
                 @endif
             </header>
+
+            @if($post->featured_image)
+                <figure class="mb-4">
+                    <img src="{{ Storage::url($post->featured_image) }}"
+                         alt="{{ $post->title }}"
+                         class="featured-image"
+                         style="height:32rem; width: 100%;"
+                         loading="lazy">
+                </figure>
+            @endif
 
             <section class="trix-content mb-4">
                 {!! $post->content !!}

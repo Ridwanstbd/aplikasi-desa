@@ -1,4 +1,11 @@
 <style>
+        .whatsapp-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            cursor: pointer;
+        }
         .custom-radio-group {
             display: flex;
             gap: 0.625rem;

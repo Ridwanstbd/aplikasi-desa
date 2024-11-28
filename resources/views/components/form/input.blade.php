@@ -1,12 +1,44 @@
-<label for="{{$name}}" class="form-label mt-1 block text-sm font-medium text-gray-700">{{$label}}</label>
-@if ($type === 'textarea')
-    <textarea name="{{$name}}" id="{{$name}}" placeholder="{{$placeholder}}" {{ $required ? 'required': ''}} {{$disabled ? 'disabled': ''}} {{$attributes}} rows="16" class="form-control focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md @error('{{$name}}') is-invalid @enderror">{{$value}}</textarea>
-    @error($name)
-    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-    @enderror
+@if($isHidden())
+    <input 
+        type="hidden" 
+        name="{{ $name }}" 
+        value="{{ $value }}"
+        {{ $attributes }}
+    >
 @else
-    <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}" value="{{ $value }}" placeholder="{{ $placeholder }}" {{ $required ? 'required' : '' }} {{ $disabled ? 'disabled' : '' }} {{ $attributes }} class="form-control focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" {{$attributes}}>
-    @error($name)
-    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-    @enderror
+    <div class="form-group mb-3">
+        @if($label)
+            <label for="{{ $name }}" class="form-label">{{ $label }}</label>
+        @endif
+        
+        @if($type === 'textarea')
+            <textarea 
+                class="form-control @error($name) is-invalid @enderror" 
+                name="{{ $name }}" 
+                id="{{ $name }}"
+                placeholder="{{ $placeholder }}"
+                {{ $required ? 'required' : '' }}
+                {{ $disabled ? 'disabled' : '' }}
+                {{ $attributes }}
+            >{{ $value }}</textarea>
+        @else
+            <input 
+                type="{{ $type }}" 
+                class="form-control @error($name) is-invalid @enderror" 
+                name="{{ $name }}" 
+                id="{{ $name }}"
+                value="{{ $value }}"
+                placeholder="{{ $placeholder }}"
+                {{ $required ? 'required' : '' }}
+                {{ $disabled ? 'disabled' : '' }}
+                {{ $attributes }}
+            >
+        @endif
+
+        @error($name)
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
 @endif

@@ -3,7 +3,7 @@
 @section('content')
 <section class="section">
     <div class="pagetitle">
-        <h2>Kategori</h2>
+        <h2>Kategori Product</h2>
     </div><!-- End Page Title -->
     <x-card title="Daftar Kategori" :button="['type' => 'button', 'class' => 'btn btn-sm btn-primary rounded-pill', 'dataBsToggle' => 'modal', 'dataBsTarget' => '#buatKategori', 'label' => 'Tambah Kategori']">
         <x-modal id="buatKategori" title="Tambah Kategori">

@@ -42,7 +42,7 @@
                 @endif
             </div>
             <div class="col-md-4 mt-3">
-                <p class="fw-bold text-white">Artikel Peternakan</p>
+                <a href="{{route('blog.index')}}" target="_blank" class="fw-bold text-white text-decoration-none">Artikel Peternakan</a>
                 <h6 class="fw-bold mt-3 text-white">Kontak</h6>
                 @if (!empty($cs->first()->phone))
                     <a class="nav-link text-decoration-none text-white d-flex align-items-center px-2" href="https://wa.me/{{$cs->first()->phone}}" target="_blank">

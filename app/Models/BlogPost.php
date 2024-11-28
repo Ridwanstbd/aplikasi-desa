@@ -9,7 +9,7 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    public $fillable = ['title', 'slug', 'content', 'excerpt', 'author_id', 'category_id', 'published_at', 'status'];
+    public $fillable = ['title', 'slug', 'content', 'excerpt', 'author_id', 'category_id', 'published_at', 'status', 'featured_image'];
 
     public function author()
     {

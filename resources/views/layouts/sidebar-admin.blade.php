@@ -34,6 +34,25 @@
                     </form>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle text-black" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false" v-pre>
+                    Blog CMS
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                    <a class="dropdown-item" href="{{ route('admin.blog-category.index') }}">
+                    Kategori Blog
+                    </a>
+                    <a class="dropdown-item" href="{{ route('admin.blog-tag.index') }}">
+                    Tag Blog
+                    </a>
+                    <a class="dropdown-item" href="{{ route('admin.blog.index') }}">
+                    Daftar Blog
+                    </a>
+                </div>
+            </li>
             <li class="nav-item">
                 <a href="{{ route('products.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('products.index') ? 'active text-white' : '' }}" aria-current="page">
                     Produk

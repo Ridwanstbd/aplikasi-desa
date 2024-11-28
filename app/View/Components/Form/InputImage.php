@@ -2,9 +2,9 @@
 
 namespace App\View\Components\Form;
 
-use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Closure;
 
 class InputImage extends Component
 {
@@ -17,7 +17,7 @@ class InputImage extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($name, $label, $multiple = false, $required = false, $disabled= false)
+    public function __construct($name, $label, $multiple = false, $required = false, $disabled = false)
     {
         $this->name = $name;
         $this->label = $label;
