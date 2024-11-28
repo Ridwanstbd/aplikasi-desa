@@ -42,6 +42,7 @@
                 </div>
             </div>
             <div class="col-12">
+                <label for="feature_image">Gambar Sampul</label>
             <input 
                 type="file" 
                 id="featured_image" 
