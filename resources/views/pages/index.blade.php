@@ -117,7 +117,6 @@
     <x-shop.banks />
     <!-- WhatsApp Icon -->
     <!-- <div class="whatsapp-icon" onclick="openModal()">
-        <img src="{{//asset('assets/icons/whatsapp.png')}}" alt="WhatsApp" width="60" height="60">
     </div> -->
 
     <!-- Modal -->
