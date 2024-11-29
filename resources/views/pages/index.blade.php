@@ -7,74 +7,30 @@
         $('#consultationModal').modal('show');
     }
     async function submitForm(event) {
-    event.preventDefault();
+        event.preventDefault(); 
 
-    const formData = new FormData(document.getElementById('consultationForm'));
+        const formData = new FormData(document.getElementById('consultationForm'));
 
-    try {
-        const response = await fetch("{{ route('vet_consult.store') }}", {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json'
-            }
-        });
-
-        const contentType = response.headers.get("content-type");
-        
-        if (response.ok) {
-            if (contentType && contentType.includes("application/json")) {
-                const result = await response.json();
-                document.getElementById('consultationForm').reset();
-                $('#consultationModal').modal('hide');
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: 'Konsultasi berhasil dikirim',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                // Handle non-JSON successful response
-                document.getElementById('consultationForm').reset();
-                $('#consultationModal').modal('hide');
-                Swal.fire({
-                    title: 'Sukses!',
-                    text: 'Konsultasi berhasil dikirim',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
-                });
-            }
-        } else {
-            let errorMessage = 'Terjadi kesalahan saat menambahkan konsultasi.';
-            
-            if (contentType && contentType.includes("application/json")) {
-                try {
-                    const errorData = await response.json();
-                    errorMessage = errorData.message || errorMessage;
-                } catch (e) {
-                    console.error('Error parsing error response:', e);
+        try {
+            const response = await fetch('/vet_consultations', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF untuk keamanan
                 }
-            }
-
-            Swal.fire({
-                title: 'Error!',
-                text: errorMessage,
-                icon: 'error',
-                confirmButtonText: 'OK'
             });
+
+            if (response.ok) {
+                const result = await response.json(); 
+                document.getElementById('consultationForm').reset();
+            } else {
+                alert('Terjadi kesalahan saat menambahkan konsultasi.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim data.');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        Swal.fire({
-            title: 'Error!',
-            text: 'Terjadi kesalahan saat mengirim data.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-        });
-    }
-}
-// Konsultsi dokter end
+    }// Konsultsi dokter end
     // Filter Form
     document.querySelectorAll('input[name="kategori"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
