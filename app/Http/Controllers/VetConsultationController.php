@@ -17,16 +17,19 @@ class VetConsultationController extends Controller
     // Menyimpan konsultasi baru
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'full_name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:15',
+            'address' => 'required|string',
+            'phone_number' => 'required|string',
             'consultation_date' => 'required|date',
-            'notes' => 'nullable|string',
+            'notes' => 'nullable|string'
         ]);
 
-        VetConsultation::create($request->all());
-        return redirect()->back()->with('success', 'Konsultasi berhasil ditambahkan. Akan Kami hubuungi Kembali dalam 1x24 jam.');
+        VetConsultation::create($validated);
+
+        return redirect()
+            ->back()
+            ->with('success', 'Konsultasi berhasil dikirim. Silakan menunggu balasan kami.');
     }
 
     // Menampilkan form untuk mengedit konsultasi

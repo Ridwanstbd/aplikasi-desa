@@ -6,31 +6,8 @@
     function openModal() {
         $('#consultationModal').modal('show');
     }
-    async function submitForm(event) {
-        event.preventDefault(); 
-
-        const formData = new FormData(document.getElementById('consultationForm'));
-
-        try {
-            const response = await fetch('/vet_consultations', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}' // Token CSRF untuk keamanan
-                }
-            });
-
-            if (response.ok) {
-                const result = await response.json(); 
-                document.getElementById('consultationForm').reset();
-            } else {
-                alert('Terjadi kesalahan saat menambahkan konsultasi.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Terjadi kesalahan saat mengirim data.');
-        }
-    }// Konsultsi dokter end
+    
+    // Konsultsi dokter end
     // Filter Form
     document.querySelectorAll('input[name="kategori"]').forEach(function(radio) {
         radio.addEventListener('change', function() {
@@ -129,14 +106,19 @@
 
     <!-- Modal -->
     <x-modal id="consultationModal" title="Kirim Pesan Konsultasi">
-        <form id="consultationForm" onsubmit="submitForm(event)">
+        <x-form 
+            id="consultationForm"
+            action="{{ route('vet_consult.store') }}"
+            method="POST"
+            class="consultation-form">
+            
             <x-input type="text" name="full_name" label="Nama Lengkap" required="true" />
             <x-input type="text" name="address" label="Alamat" required="true" />
             <x-input type="text" name="phone_number" label="Nomor WhatsApp" required="true" />
             <input type="hidden" name="consultation_date" value="{{ now()->format('Y-m-d') }}" />
             <x-input type="textarea" name="notes" label="Detail Sakit Hewan" />
             <x-button type="submit" class="btn-primary" label="Kirim Konsultasi"/>
-        </form>
+        </x-form>
     </x-modal>
 </div>
 @endsection
