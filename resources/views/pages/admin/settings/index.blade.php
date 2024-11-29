@@ -139,29 +139,50 @@
                 showAlert('error','Oops...','{{ $errorMessages }}')
         @endif
     @endif
-        $(document).on('click', '.delete-banner', function(e) {
-        e.preventDefault();
-        var bannerId = $(this).data('id');
-        var url = '/dashboard/shop/settings/delete-banner/' + bannerId;
+    $(document).on('click', '.delete-banner', function(e) {
+    e.preventDefault();
+    var bannerId = $(this).data('id');
+    var url = '/dashboard/shop/settings/delete-banner/' + bannerId;
 
-        if (confirm('Apakah Anda yakin ingin menghapus banner ini?')) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Banner yang dihapus tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.isConfirmed) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
-                data: {
-                    "_token": "{{ csrf_token() }}",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response) {
-                    showAlert('success','Sukses!','Banner berhasil dihapus.');
-                    location.reload();
+                    Swal.fire(
+                        'Terhapus!',
+                        'Banner berhasil dihapus.',
+                        'success'
+                    ).then(() => {
+                        location.reload();
+                    });
                 },
                 error: function(xhr) {
-                    showAlert('error','Oops...','Terjadi kesalahan saat menghapus banner.');
+                    Swal.fire(
+                        'Error!',
+                        'Terjadi kesalahan saat menghapus banner.',
+                        'error'
+                    );
+                    console.error('Error:', xhr);
                 }
             });
         }
     });
-        $(document).on('click', '.delete-testimonial', function(e) {
+});
+$(document).on('click', '.delete-testimonial', function(e) {
         e.preventDefault();
         var testimonialId = $(this).data('id');
         var url = '/dashboard/shop/settings/delete-testimonial/' + testimonialId;
