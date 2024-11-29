@@ -1,5 +1,5 @@
 <style>
-        .whatsapp-icon {
+        .doctor-icon {
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -79,7 +79,7 @@
         }
 
         .image-container img {
-            width: 100%; /* Gambar mengisi lebar kontainer 100% */
+            width: 100%;
             height: 100%; /* Gambar mengisi tinggi kontainer 100% */
             object-fit: contain; /* Memastikan gambar mengisi kontainer tanpa merusak proporsi */
             position: absolute; /* Posisi absolut untuk gambar */

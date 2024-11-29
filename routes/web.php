@@ -15,6 +15,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrixUploadController;
 use App\Http\Controllers\UserClaimController;
+use App\Http\Controllers\VetConsultationController;
 use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,7 @@ Route::delete('/cart/remove/{variation_id}', [CartController::class, 'removeFrom
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::post('/cart/checkout/submit', [CartController::class, 'submitCheckout'])->name('cart.checkout.submit');
 Route::get('/cart/checkout/cancel', [CartController::class, 'orderCancel'])->name('cart.checkout.cancel');
+Route::post('/vet_consultations', [VetConsultationController::class, 'store'])->name('vet_consult.store');
 
 Route::get('/voucher/{slug}', [UserClaimController::class, 'show'])->name('vouchers.claim.show');
 Route::post('/vouchers/claim/{slug}', [UserClaimController::class, 'claim'])->name('vouchers.claim');

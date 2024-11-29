@@ -6,22 +6,49 @@
     function openModal() {
         $('#consultationModal').modal('show');
     }
-    function submitForm(event) {
+    async function submitForm(event) {
         event.preventDefault();
-        
-        // Simulasi pengiriman data ke server
-        setTimeout(() => {
-            document.getElementById('consultationForm').reset();
-            closeModal(); // Menutup modal setelah submit
-            
-            // Menampilkan SweetAlert
+
+        const formData = new FormData(document.getElementById('consultationForm'));
+
+        try {
+            const response = await fetch("{{ route('vet_consult.store') }}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json' 
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                document.getElementById('consultationForm').reset();
+                $('#consultationModal').modal('hide');
+                Swal.fire({
+                    title: 'Sukses!',
+                    text: 'Konsultasi berhasil dikirim',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            } else {
+                const errorData = await response.json();
+                Swal.fire({
+                    title: 'Error!',
+                    text: errorData.message || 'Terjadi kesalahan saat menambahkan konsultasi.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
             Swal.fire({
-                icon: 'success',
-                title: 'Pesan Terkirim!',
-                text: 'Terima kasih, tim kami akan menghubungi anda dalam rentang waktu 1x24 jam kedepan.',
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat mengirim data.',
+                icon: 'error',
                 confirmButtonText: 'OK'
             });
-        }, 500);
+        }
     }
     // Konsultsi dokter end
     // Filter Form
@@ -116,21 +143,19 @@
     <x-shop.shipping />
     <x-shop.banks />
     <!-- WhatsApp Icon -->
-    <!-- <div class="whatsapp-icon" onclick="openModal()">
-    </div> -->
+    <div class="doctor-icon" onclick="openModal()">
+        <img src="{{asset('assets/icons/doctor-icon.png')}}" alt="Consultation" width="80" height="80">
+    </div>
 
     <!-- Modal -->
     <x-modal id="consultationModal" title="Kirim Pesan Konsultasi">
         <form id="consultationForm" onsubmit="submitForm(event)">
-            <div class="form-group">
-                <label for="name">Nama:</label>
-                <input type="text" class="form-control" id="name" required>
-            </div>
-            <div class="form-group">
-                <label for="message">Pesan:</label>
-                <textarea class="form-control" id="message" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Kirim</button>
+            <x-input type="text" name="full_name" label="Nama Lengkap" required="true" />
+            <x-input type="text" name="address" label="Alamat" required="true" />
+            <x-input type="text" name="phone_number" label="Nomor WhatsApp" required="true" />
+            <input type="hidden" name="consultation_date" value="{{ now()->format('Y-m-d') }}" />
+            <x-input type="textarea" name="notes" label="Detail Sakit Hewan" />
+            <x-button type="submit" class="btn-primary" label="Kirim Konsultasi"/>
         </form>
     </x-modal>
 </div>
