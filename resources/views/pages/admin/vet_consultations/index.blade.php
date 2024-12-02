@@ -4,6 +4,8 @@
 <section class="section">
     <div class="pagetitle">
         <h2>Data Konsultasi Dokter</h2>
+        <x-anchor href="{{route('vet-consult.syncs')}}" label="Sinkronkan Spreadsheet" class="btn btn-primary my-2"/>
+        <x-anchor href="https://docs.google.com/spreadsheets/d/1ygX11rJOQgXX_iHqTGHRfHVZddwmCP4N8Qnmmkji1Ps/edit?usp=sharing" target="_blank" label="lihat Spreadsheet" class="btn btn-success my-4"/>
     </div><!-- End Page Title -->
     <x-card title="Daftar Kategori" >
 

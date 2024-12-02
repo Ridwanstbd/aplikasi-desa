@@ -91,6 +91,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::prefix('leads')->group(function () {
         Route::get('', [LeadsController::class, 'index'])->name('leads.index');
         Route::delete('{id}', [LeadsController::class, 'destroy'])->name('leads.destroy');
+        Route::get('/sync-to-sheets', [LeadsController::class, 'syncAllLeadsToGoogleSheets'])->name('leads.syncs');
     });
 
     Route::prefix('shop')->group(function () {
@@ -138,6 +139,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::prefix('vet-consult')->group(function () {
         Route::get('', [VetConsultationController::class, 'index'])->name('vet-consult.index');
         Route::delete('/{id}', [VetConsultationController::class, 'destroy'])->name('vet-consult.destroy');
+        Route::get('/sync-to-sheets', [VetConsultationController::class, 'syncAllVetConsultToGoogleSheets'])->name('vet-consult.syncs');
     });
 });
 

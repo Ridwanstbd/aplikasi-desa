@@ -26,7 +26,7 @@ class UserClaimController extends Controller
 
     public function __construct()
     {
-        $this->spreadsheetId = config('services.google.spreadsheet_id');
+        $this->spreadsheetId = config('services.user_claims_spreadsheet_id');
         $this->sheetName = config('services.google.sheet_name');
 
         if (app()->environment('production')) {

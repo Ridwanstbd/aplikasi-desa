@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Leads;
+use App\Observers\LeadsObserver;
 use App\View\Components\Form\Checkbox;
 use App\View\Components\Form\Input;
 use App\View\Components\Form\InputImage;
@@ -64,5 +66,6 @@ class AppServiceProvider extends ServiceProvider
             $totalQuantity = array_sum(array_column($cart, 'quantity'));
             $view->with('totalQuantity', $totalQuantity);
         });
+        Leads::observe(LeadsObserver::class);
     }
 }

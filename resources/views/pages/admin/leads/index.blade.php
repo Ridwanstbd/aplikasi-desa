@@ -4,6 +4,8 @@
 <section class="section">
     <div class="pagetitle">
         <h2>Leads</h2>
+        <x-anchor href="{{route('leads.syncs')}}" label="Sinkronkan Spreadsheet" class="btn btn-primary my-2"/>
+        <x-anchor href="https://docs.google.com/spreadsheets/d/13D2Z4TzqAYL83lgxhazCuuQvgJ7aL1Mdv7JvVfagQ9Q/edit?usp=sharing" target="_blank" label="Lihat Spreadsheet" class="btn btn-success my-4"/>
     </div>
     <x-card title="Daftar Leads">
         @if ($errors->any())

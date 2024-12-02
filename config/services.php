@@ -30,7 +30,9 @@ return [
         ],
     ],
     'google' => [
-        'spreadsheet_id' => env('GOOGLE_SPREADSHEET_ID'),
+        'user_claims_spreadsheet_id' => env('GOOGLE_SHEETS_USER_CLAIMS_ID'),
+        'leads_spreadsheet_id' => env('GOOGLE_SHEETS_LEADS_ID'),
+        'consultations_spreadsheet_id' => env('GOOGLE_SHEETS_CONSULTATIONS_ID'),
         'sheet_name' => env('GOOGLE_SHEET_NAME', 'Sheet1')
     ],
 ];
