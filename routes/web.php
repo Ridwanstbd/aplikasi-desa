@@ -135,6 +135,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::put('/{id}', [BlogTagController::class, 'update'])->name('admin.blog-tag.update');
         Route::delete('/{id}', [BlogTagController::class, 'delete'])->name('admin.blog-tag.delete');
     });
+    Route::prefix('vet-consult')->group(function () {
+        Route::get('', [VetConsultationController::class, 'index'])->name('vet-consult.index');
+        Route::delete('/{id}', [VetConsultationController::class, 'destroy'])->name('vet-consult.destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

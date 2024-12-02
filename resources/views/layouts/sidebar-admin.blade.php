@@ -89,6 +89,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('vet-consult.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('vet-consult.index') ? 'active text-white' : '' }}">
+                    Data Konsultasi Dokter
+                </a>
+            </li>
+            <li>
                 <a href="{{route('settings.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('settings.index') ? 'active text-white' : '' }}">
                     Pengaturan Toko
                 </a>

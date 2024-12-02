@@ -11,7 +11,7 @@ class VetConsultationController extends Controller
     public function index()
     {
         $consultations = VetConsultation::all();
-        return view('vet_consultations.index', compact('consultations'));
+        return view('pages.admin.vet_consultations.index', compact('consultations'));
     }
 
     // Menyimpan konsultasi baru
@@ -32,34 +32,11 @@ class VetConsultationController extends Controller
             ->with('success', 'Konsultasi berhasil dikirim. Silakan menunggu balasan kami.');
     }
 
-    // Menampilkan form untuk mengedit konsultasi
-    public function edit($id)
-    {
-        $consultation = VetConsultation::findOrFail($id);
-        return view('vet_consultations.edit', compact('consultation'));
-    }
-
-    // Memperbarui konsultasi yang ada
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'full_name' => 'string|max:255',
-            'address' => 'string|max:255',
-            'phone_number' => 'string|max:15',
-            'consultation_date' => 'date',
-            'notes' => 'nullable|string',
-        ]);
-
-        $consultation = VetConsultation::findOrFail($id);
-        $consultation->update($request->all());
-        return redirect()->route('vet_consultations.index')->with('success', 'Konsultasi berhasil diperbarui.');
-    }
-
     // Menghapus konsultasi
     public function destroy($id)
     {
         $consultation = VetConsultation::findOrFail($id);
         $consultation->delete();
-        return redirect()->route('vet_consultations.index')->with('success', 'Konsultasi berhasil dihapus.');
+        return redirect()->route('vet-consult.index')->with('success', 'Konsultasi berhasil dihapus.');
     }
 }
