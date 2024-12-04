@@ -80,7 +80,7 @@ class HomeController extends Controller
         } else {
             $query->orderBy('created_at', 'desc');  // default sorting
         }
-        $products = $query->paginate(24);
+        $products = $query->paginate(12);
         $products->appends($request->except('page'));
 
         return view('pages.index', [
