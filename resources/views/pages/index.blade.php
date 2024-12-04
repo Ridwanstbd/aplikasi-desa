@@ -101,7 +101,7 @@
     <x-shop.banks />
     <!-- WhatsApp Icon -->
     <div class="doctor-icon" onclick="openModal()">
-        <img src="{{asset('assets/icons/doctor-consul.png')}}" alt="Consultation" width="200" height="200">
+        <img id="doctor-icon" src="{{asset('assets/icons/doctor-consul.png')}}" alt="Consultation">
     </div>
 
     <!-- Modal -->
