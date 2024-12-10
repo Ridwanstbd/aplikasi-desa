@@ -11,20 +11,20 @@
         <div class="row w-100 mt-3">
             <div class="col-md-4 align-items-center">
                 <div class="d-flex gap-3 mt-2">
-                    <a href="https://www.instagram.com/eleanorfarm.id" target="_blank" class="text-white">
+                    <a href="https://www.instagram.com/eleanorfarm.id" target="_blank" alt="Instagram Account" class="text-white">
                         <i class="bi bi-instagram" style="font-size: 1.5rem;"></i>
                     </a>
-                    <a href="https://www.tiktok.com/@eleanorfarm.id" target="_blank" class="text-white">
+                    <a href="https://www.tiktok.com/@eleanorfarm.id" target="_blank" alt="Tiktok Account" class="text-white">
                         <i class="bi bi-tiktok" style="font-size: 1.5rem;"></i>
                     </a>
-                    <a href="https://www.facebook.com/eleanorfarmshop" target="_blank" class="text-white">
+                    <a href="https://www.facebook.com/eleanorfarmshop" target="_blank" alt="Facebook Account" class="text-white">
                         <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
                     </a>
-                    <a href="https://www.youtube.com/@eleanorfarmofficial" target="_blank" class="text-white">
+                    <a href="https://www.youtube.com/@eleanorfarmofficial" target="_blank" alt="Youtube Account" class="text-white">
                         <i class="bi bi-youtube" style="font-size: 1.5rem;"></i>
                     </a>
                     @if($cs->isNotEmpty() && $cs->first()->phone)
-                        <a href="https://wa.me/{{$cs->first()->phone}}" target="_blank" class="text-white">
+                        <a href="https://wa.me/{{$cs->first()->phone}}" target="_blank" alt="" class="text-white">
                             <i class="bi bi-whatsapp" style="font-size: 1.5rem"></i>
                         </a>
                     @else

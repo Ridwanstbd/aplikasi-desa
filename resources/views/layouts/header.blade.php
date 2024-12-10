@@ -2,8 +2,8 @@
     <div class="container">
         <div class="d-flex justify-content-start w-100 align-items-center">
             <div class="d-flex align-items-center gap-2">
-                <a href="{{ route('home')}}" class="text-decoration-none">
-                    <img src="{{ Storage::url($shop->logo_url) }}" alt="" style="width: 3rem; height: 3rem; margin-right:1rem;">
+                <a href="{{ route('home')}}" class="text-decoration-none" alt="Home">
+                    <img src="{{ Storage::url($shop->logo_url) }}" alt="Eleanor Farm Shop" style="width: 3rem; height: 3rem; margin-right:1rem;">
                 </a>
                 <!-- Input Pencarian dengan Ikon Kaca Pembesar -->
                 <form action="{{ url('/#product-grid') }}" method="GET" class="d-flex ms-auto">
@@ -18,12 +18,15 @@
                     <div class="input-group">
                         <input type="search"
                                name="search"
+                               id="searchInput"
                                class="form-control"
                                placeholder="Cari produk..."
                                value="{{ request('search') }}"
+                               aria-label="Cari produk"
                                required>
-                        <button class="btn btn-outline-primary" type="submit">
-                            <i class="fas fa-search"></i>
+                        <button class="btn btn-outline-primary" type="submit" aria-label="Tekan untuk mencari">
+                            <i class="fas fa-search" aria-hidden="true"></i>
+                            <span class="visually-hidden">Cari</span>
                         </button>
                     </div>
                 </form>

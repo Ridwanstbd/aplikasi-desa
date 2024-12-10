@@ -8,18 +8,34 @@
         }
         .custom-radio-group {
             display: flex;
-            gap: 0.625rem;
+            flex-wrap: wrap;
+            gap: 1rem;
             overflow-x: auto;
+            margin-top: 1rem;
             padding-bottom: 0.625rem;
         }
         .custom-radio-group label {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: #ffffff;
+            border: 2px solid #2a401a;
+            border-radius: 4px;
+            color: #2a401a;
             cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         .custom-radio-group input[type="radio"] {
             display: none;
         }
         .custom-radio-group input[type="radio"]:checked + label {
-            color: orange;
+            background-color: #2a401a;
+            color: #ffffff;
+        }
+        .category-title {
+            color: #2a401a;
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
         /* Fake Sales Notification */
         #product-alert {
@@ -68,6 +84,10 @@
             max-width: 400px;
             max-height: fit-content;
             margin: 0 auto;
+        }
+        .custom-radio-group label:hover {
+            background-color: #3d5c26;
+            color: #ffffff;
         }
         /* Fake Sales Notification */
 
