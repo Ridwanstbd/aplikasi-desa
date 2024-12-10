@@ -23,6 +23,15 @@
                     <a href="https://www.youtube.com/@eleanorfarmofficial" target="_blank" class="text-white">
                         <i class="bi bi-youtube" style="font-size: 1.5rem;"></i>
                     </a>
+                    @if($cs->isNotEmpty() && $cs->first()->phone)
+                        <a href="https://wa.me/{{$cs->first()->phone}}" target="_blank" class="text-white">
+                            <i class="bi bi-whatsapp" style="font-size: 1.5rem"></i>
+                        </a>
+                    @else
+                        <span class="text-white">
+                            <i class="bi bi-whatsapp" style="font-size: 1.5rem;" class="text-white"></i>
+                        </span>
+                    @endif
                 </div>
             </div>
             <div class="col-md-4 mt-3">
@@ -42,14 +51,8 @@
                 @endif
             </div>
             <div class="col-md-4 mt-3">
-                <a href="{{route('blog.index')}}" target="_blank" class="fw-bold text-white text-decoration-none">Artikel Peternakan</a>
-                <h6 class="fw-bold mt-3 text-white">Kontak</h6>
-                @if (!empty($cs->first()->phone))
-                    <a class="nav-link text-decoration-none text-white d-flex align-items-center px-2" href="https://wa.me/{{$cs->first()->phone}}" target="_blank">
-                        <img src="{{asset('assets/icons/whatsapp.png')}}" alt="WhatsApp" style="width: 1.2rem; height: 1.2rem; margin-right: 0.5rem;">
-                        WhatsApp
-                    </a>
-                @endif
+                <h6 class="fw-bold mt-3 text-white">Perusahaan</h6>
+                <a href="{{route('blog.index')}}" target="_blank" class=" text-white text-decoration-none">Artikel Peternakan</a>
             </div>
         </div>
         <div class="row w-100">
