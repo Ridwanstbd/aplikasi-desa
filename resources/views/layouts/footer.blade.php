@@ -51,7 +51,7 @@
                 @endif
             </div>
             <div class="col-md-4 mt-3">
-                <h6 class="fw-bold mt-3 text-white">Perusahaan</h6>
+                <h6 class="fw-bold text-white">Perusahaan</h6>
                 <a href="{{route('blog.index')}}" target="_blank" class=" text-white text-decoration-none">Artikel Peternakan</a>
             </div>
         </div>
