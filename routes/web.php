@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CustomerServiceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadsController;
+use App\Http\Controllers\LiveKonsulController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -37,6 +38,9 @@ Route::post('/vet_consultations', [VetConsultationController::class, 'store'])->
 
 Route::get('/voucher/{slug}', [UserClaimController::class, 'show'])->name('vouchers.claim.show');
 Route::post('/vouchers/claim/{slug}', [UserClaimController::class, 'claim'])->name('vouchers.claim');
+Route::get('/live-konsultasi', [LiveKonsulController::class, 'index'])->name('live.konsul');
+Route::post('/live-konsultasi', [LiveKonsulController::class, 'store'])->name('live.konsul.store');
+
 Route::prefix('blog')->group(function () {
     Route::get('', [BlogController::class, 'index'])->name('blog.index');
     Route::get('{slug}', [BlogController::class, 'show'])->name('blog.show');
@@ -45,6 +49,7 @@ Route::prefix('blog')->group(function () {
     Route::get('category/{slug}', [BlogController::class, 'showByCategory'])->name('blog.category');
     Route::get('tag/{slug}', [BlogController::class, 'showByTag'])->name('blog.tag');
 });
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -140,6 +145,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
         Route::get('', [VetConsultationController::class, 'index'])->name('vet-consult.index');
         Route::delete('/{id}', [VetConsultationController::class, 'destroy'])->name('vet-consult.destroy');
         Route::get('/sync-to-sheets', [VetConsultationController::class, 'syncAllVetConsultToGoogleSheets'])->name('vet-consult.syncs');
+    });
+    Route::prefix('live-konsul')->group(function () {
+        Route::get('', [LiveKonsulController::class,'stored'])->name('admin.live-konsul');
+        Route::delete('/{id}', [LiveKonsulController::class,'delete'])->name('admin.live-konsul.destroy');
     });
 });
 

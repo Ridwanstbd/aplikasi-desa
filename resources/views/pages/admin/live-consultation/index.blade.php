@@ -3,11 +3,9 @@
 @section('content')
 <section class="section">
     <div class="pagetitle">
-        <h2>Data Konsultasi Dokter</h2>
-        <x-anchor href="{{route('vet-consult.syncs')}}" label="Sinkronkan Spreadsheet" class="btn btn-primary my-2"/>
-        <x-anchor href="https://docs.google.com/spreadsheets/d/1ygX11rJOQgXX_iHqTGHRfHVZddwmCP4N8Qnmmkji1Ps/edit?usp=sharing" target="_blank" label="lihat Spreadsheet" class="btn btn-success my-4"/>
+        <h2>Data Live</h2>
     </div><!-- End Page Title -->
-    <x-card title="Daftar Data Konsultasi" >
+    <x-card title="Daftar Data Konsultasi Live" >
 
         @if ($errors->any())
             <div class="container">
@@ -32,33 +30,40 @@
                     <th>No</th>
                     <th>Nama Lengkap</th>
                     <th>Nomor WhatsApp</th>
+                    <th>Kirim Pesan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($consultations as $index => $consult)
+                @foreach($liveConsults as $index => $consult)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $consult->full_name }}</td>
-                    <td>{{ $consult->phone_number }}</td>
+                    <td>{{ $consult->user_name }}</td>
+                    <td>{{ $consult->user_whatsapp }}</td>
+                    <td>
+                        <a href="https://wa.me/{{$consult->user_whatsapp}}" target="_blank" alt="" class="text-black">
+                            <i class="bi bi-whatsapp" style="font-size: 1.5rem"></i>
+                        </a>
+                    </td>
                     <td>
                         <div class="d-flex gap-2">
                             <!-- Ubah Kategori Modal -->
                              <x-button type="button" class="btn-sm btn-info rounded-pill" label="Lihat Data" dataBsToggle="modal" dataBsTarget="#lihatModal{{ $consult->id }}"/>
                              <x-modal id="lihatModal{{ $consult->id }}" title="Detail Pesan Konsultasi">
-                                    <x-input type="text" name="full_name" label="Nama Lengkap" value="{{$consult->full_name}}" required="true" />
+                                    <x-input type="text" name="user_name" label="Nama Lengkap" value="{{$consult->user_name}}" required="true" />
                                     <x-input type="text" name="address" label="Alamat" value="{{$consult->address}}" required="true" />
-                                    <x-input type="text" name="phone_number" label="Nomor WhatsApp" value="{{$consult->phone_number}}" required="true" />
-                                    <x-input type="text" name="consultation_date" label="Tanggal" value="{{$consult->consultation_date}}" />
-                                    <x-input type="textarea" name="notes" label="Detail Sakit Hewan" value="{{$consult->notes}}" />
+                                    <x-input type="text" name="user_whatsapp" label="Nomor WhatsApp" value="{{$consult->user_whatsapp}}" required="true" />
+                                    <x-input type="text" name="name_kandang" label="Nama Kandang" value="{{$consult->name_kandang}}" />
+                                    <x-input type="text" name="jenis_hewan" label="Jenis Hewan" value="{{$consult->jenis_hewan}}" />
+                                    <x-input type="textarea" name="data_pembelian" label="Data Pembelian" value="{{$consult->data_pembelian}}" />
                             </x-modal><!-- End Ubah Kategori Modal-->
                             <!-- Hapus Kategori Modal -->
                              <x-button type="button" class="btn-sm btn-warning rounded-pill" dataBsToggle="modal" dataBsTarget="#hapusModal{{ $consult->id }}" label="Hapus" />
-                             <x-modal id="hapusModal{{ $consult->id }}" title="{{ $consult->full_name }}">
+                             <x-modal id="hapusModal{{ $consult->id }}" title="{{ $consult->user_name }}">
                              <p>Yakin ingin menghapus Konsultasi ini?</p>
                              <div class="modal-footer">
                                 <x-button type="button" class="btn-secondary" dataBsDismiss="modal" label="Tidak, Batalkan" />
-                                <form action="{{ route('vet-consult.destroy', $consult->id) }}" method="POST" class="inline-block">
+                                <form action="{{ route('admin.live-konsul.destroy', $consult->id) }}" method="POST" class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <x-button type="submit" class="btn btn-danger" label="Hapus"/>

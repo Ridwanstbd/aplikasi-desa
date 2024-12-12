@@ -94,6 +94,11 @@
                 </a>
             </li>
             <li>
+                <a href="{{route('admin.live-konsul')}}" class="nav-link link-body-emphasis {{ Request::routeIs('admin.live-konsul') ? 'active text-white' : ''}}">
+                    Data Live Konsultasi
+                </a>
+            </li>
+            <li>
                 <a href="{{route('settings.index')}}" class="nav-link link-body-emphasis {{ Request::routeIs('settings.index') ? 'active text-white' : '' }}">
                     Pengaturan Toko
                 </a>
