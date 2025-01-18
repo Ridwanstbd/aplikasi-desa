@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -6,6 +7,11 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+=======
+## Eleanor E-Commerce WhatsApp
+
+Eleanor E-Commerce merupakan website penjualan produk dari eleanor dimana pada website ini menyediakan fitur untuk membeli produk langsung maupun tambahkan ke Keranjang Belanja dan mengirimkan data pesanan melalui pesan WhatsApp, Membuat Variasi Produk, Tanam Pixel Meta dan Tiktok maupun Tag Google, Ada Opsi untuk menggunakan Form Order dari pihak ketiga pada saat pemesanan.
+>>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
 
 ## About Laravel
 
