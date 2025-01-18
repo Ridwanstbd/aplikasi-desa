@@ -16,11 +16,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-<<<<<<< HEAD
-        return view('pages.Profile.edit', [
-=======
         return view('profile.edit', [
->>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
             'user' => $request->user(),
         ]);
     }
