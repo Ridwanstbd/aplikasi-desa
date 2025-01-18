@@ -132,5 +132,6 @@ return [
         'Request' => Illuminate\Support\Facades\Request::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'DB' => Illuminate\Support\Facades\DB::class,
+        'Indonesia' => Laravolt\Indonesia\Facade::class,
     ],
 ];

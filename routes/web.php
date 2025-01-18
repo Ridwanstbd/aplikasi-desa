@@ -19,6 +19,7 @@ use App\Http\Controllers\UserClaimController;
 use App\Http\Controllers\VetConsultationController;
 use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
+Route::post('/update-region', [OrderController::class, 'updateRegion'])->name('update.region');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/detail/{slug}', [ProductController::class, 'show'])->name('products.show');

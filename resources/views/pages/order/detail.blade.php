@@ -27,30 +27,50 @@
             </div>
 
             <div class="col-md-6">
-              <label for="province" class="form-label">Provinsi</label>
-              <select class="form-select select2" id="province" name="province" required>
+                <label for="province" class="form-label">Provinsi</label>
+                <select class="form-select select2" id="province" name="province" required>
+                    <option value="">Pilih Provinsi</option>
+                    @foreach($provinces as $code => $name)
+                        <option value="{{ $code }}" data-name="{{ $name }}">{{ $name }}</option>
+                    @endforeach
                 </select>
                 <input type="hidden" id="province_name" name="province_name">
             </div>
 
             <div class="col-md-6">
               <label for="regency" class="form-label">Kabupaten/Kota</label>
-                    <select class="form-select select2" id="regency" name="regency" required>
-                    </select>
-                <input type="hidden" id="regency_name" name="regency_name">
-            </div>
-            <div class="col-md-6">
-                <label for="district" class="form-label">Kecamatan</label>
-                <select class="form-select select2" id="district" name="district" required>
-                </select>
-                <input type="hidden" id="district_name" name="district_name">
-            </div>
-            <div class="col-md-6">
-                <label for="" class="form-label">Desa/Kelurahan</label>
-                <select class="form-control select2" id="village" name="village" required>
-                </select>
-                <input type="hidden" id="village_name" name="village_name">
-            </div>
+              <select class="form-select select2" id="regency" name="regency" required>
+                  <option value="">Pilih Kabupaten/Kota</option>
+                  @foreach($regencies as $code => $name)
+                      <option value="{{ $code }}" data-name="{{ $name }}" {{ $selectedRegencyCode == $code ? 'selected' : '' }}>
+                          {{ $name }}
+                      </option>
+                  @endforeach
+              </select>
+              <input type="hidden" id="regency_name" name="regency_name">
+          </div>
+          <div class="col-md-6">
+            <label for="district" class="form-label">Kecamatan</label>
+            <select class="form-select select2" id="district" name="district" required>
+                <option value="">Pilih Kecamatan</option>
+                @foreach($districts as $code => $name)
+                    <option value="{{ $code }}" data-name="{{ $name }}" {{ $selectedDistrictCode == $code ? 'selected' : '' }}>
+                        {{ $name }}
+                    </option>
+                @endforeach
+            </select>
+            <input type="hidden" id="district_name" name="district_name">
+        </div>
+        <div class="col-md-6">
+          <label for="village" class="form-label">Desa/Kelurahan</label>
+          <select class="form-select select2" id="village" name="village" required>
+              <option value="">Pilih Desa/Kelurahan</option>
+              @foreach($villages as $code => $name)
+                  <option value="{{ $code }}" data-name="{{ $name }}">{{ $name }}</option>
+              @endforeach
+          </select>
+          <input type="hidden" id="village_name" name="village_name">
+      </div>
             <div class="col-12">
               <label for="address" class="form-label">Alamat</label>
               <textarea class="form-control" id="address" name="address"  value="{{ old('address') }}" required placeholder="Tambahkan RT/RW Atau Nama Jalan"></textarea>
@@ -100,70 +120,80 @@ $(document).ready(function() {
         allowClear: true,
         width: 'resolve'
     });
-    $.ajax({
-        url: 'https://api.cahyadsn.com/provinces',
-        type: 'GET',
-        success: function(data) {
-            $('#province').empty().append('<option value="">Pilih Provinsi</option>');
-            $.each(data.data, function(key, value) {
-                $('#province').append('<option value="'+ value.kode +'" data-name="'+ value.nama +'">'+ value.nama +'</option>');
-            });
+
+    function updateRegion(type, code) {
+        $.ajax({
+            url: '{{ route("update.region") }}',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                type: type,
+                code: code
+            },
+            success: function(data) {
+                let target, placeholder;
+                
+                switch(type) {
+                    case 'province':
+                        target = '#regency';
+                        placeholder = 'Pilih Kabupaten/Kota';
+                        // Reset dependent selects
+                        $('#district').empty().append('<option value="">Pilih Kecamatan</option>');
+                        $('#village').empty().append('<option value="">Pilih Desa/Kelurahan</option>');
+                        break;
+                    case 'regency':
+                        target = '#district';
+                        placeholder = 'Pilih Kecamatan';
+                        // Reset dependent select
+                        $('#village').empty().append('<option value="">Pilih Desa/Kelurahan</option>');
+                        break;
+                    case 'district':
+                        target = '#village';
+                        placeholder = 'Pilih Desa/Kelurahan';
+                        break;
+                }
+                
+                $(target).empty().append(`<option value="">${placeholder}</option>`);
+                $.each(data, function(code, name) {
+                    $(target).append(`<option value="${code}" data-name="${name}">${name}</option>`);
+                });
+                
+                // Reinitialize select2
+                $(target).trigger('change');
+            }
+        });
+    }
+
+    $('#province').change(function() {
+        var code = $(this).val();
+        var name = $(this).find('option:selected').data('name');
+        $('#province_name').val(name);
+        if(code) {
+            updateRegion('province', code);
         }
     });
 
-    $('#province').change(function() {
-        var provinceId = $(this).val();
-        var provinceName = $(this).find('option:selected').data('name');
-        $('#province_name').val(provinceName);
-        $.ajax({
-            url: 'https://api.cahyadsn.com/regencies/'+ provinceId,
-            type: 'GET',
-            success: function(data) {
-                $('#regency').empty().append('<option value="">Pilih Kabupaten/Kota</option>');
-                $('#district').empty().append('<option value="">Pilih Kecamatan</option>');
-                $('#village').empty().append('<option value="">Pilih Desa</option>');
-                $.each(data.data, function(key, value) {
-                    $('#regency').append('<option value="'+ value.kode +'" data-name="'+ value.nama +'">'+ value.nama +'</option>');
-                });
-            }
-        });
-    });
-
     $('#regency').change(function() {
-        var regencyId = $(this).val();
-        var regencyName = $(this).find('option:selected').data('name');
-        $('#regency_name').val(regencyName);
-        $.ajax({
-            url: 'https://api.cahyadsn.com/districts/' + regencyId,
-            type: 'GET',
-            success: function(data) {
-                $('#district').empty().append('<option value="">Pilih Kecamatan</option>');
-                $('#village').empty().append('<option value="">Pilih Desa</option>');
-                $.each(data.data, function(key, value) {
-                    $('#district').append('<option value="'+ value.kode +'" data-name="'+ value.nama +'">'+ value.nama +'</option>');
-                });
-            }
-        });
+        var code = $(this).val();
+        var name = $(this).find('option:selected').data('name');
+        $('#regency_name').val(name);
+        if(code) {
+            updateRegion('regency', code);
+        }
     });
 
     $('#district').change(function() {
-        var districtId = $(this).val();
-        var districtName = $(this).find('option:selected').data('name');
-        $('#district_name').val(districtName);
-        $.ajax({
-            url: 'https://api.cahyadsn.com/villages/' + districtId,
-            type: 'GET',
-            success: function(data) {
-                $('#village').empty().append('<option value="">Pilih Desa</option>');
-                $.each(data.data, function(key, value) {
-                    $('#village').append('<option value="'+ value.kode +'" data-name="'+ value.nama +'">'+ value.nama +'</option>');
-                });
-            }
-        });
+        var code = $(this).val();
+        var name = $(this).find('option:selected').data('name');
+        $('#district_name').val(name);
+        if(code) {
+            updateRegion('district', code);
+        }
     });
+
     $('#village').change(function() {
-        var villageName = $(this).find('option:selected').data('name');
-        $('#village_name').val(villageName);
+        var name = $(this).find('option:selected').data('name');
+        $('#village_name').val(name);
     });
 });
 </script>

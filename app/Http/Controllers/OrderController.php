@@ -9,6 +9,10 @@ use App\Models\Product;
 use App\Models\Variation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Laravolt\Indonesia\Models\City;
+use Laravolt\Indonesia\Models\District;
+use Laravolt\Indonesia\Models\Province;
+use Laravolt\Indonesia\Models\Village;
 
 class OrderController extends Controller
 {
@@ -58,14 +62,76 @@ class OrderController extends Controller
         if (!$orderData) {
             return redirect()->route('home');
         }
+        
         $product = Product::find($orderData['product_id']);
         $variation = Variation::find($orderData['variation_id']);
+        
+        // Data provinsi
+        $provinces = Province::pluck('name', 'code');
+        
+        // Ambil data wilayah dari session jika ada
+        $selectedProvinceCode = $request->session()->get('selected_province');
+        $selectedRegencyCode = $request->session()->get('selected_regency');
+        $selectedDistrictCode = $request->session()->get('selected_district');
+        
+        $regencies = [];
+        $districts = [];
+        $villages = [];
+        
+        if($selectedProvinceCode) {
+            $regencies = City::where('province_code', $selectedProvinceCode)->pluck('name', 'code');
+        }
+        
+        if($selectedRegencyCode) {
+            $districts = District::where('city_code', $selectedRegencyCode)->pluck('name', 'code');
+        }
+        
+        if($selectedDistrictCode) {
+            $villages = Village::where('district_code', $selectedDistrictCode)->pluck('name', 'code');
+        }
 
         return view('pages.order.detail', [
             'orderData' => $orderData,
             'product' => $product,
             'variation' => $variation,
+            'provinces' => $provinces,
+            'regencies' => $regencies,
+            'districts' => $districts,
+            'villages' => $villages,
+            'selectedProvinceCode' => $selectedProvinceCode,
+            'selectedRegencyCode' => $selectedRegencyCode,
+            'selectedDistrictCode' => $selectedDistrictCode
         ]);
+    }
+    public function updateRegion(Request $request)
+    {
+        $type = $request->type;
+        $code = $request->code;
+        
+        switch($type) {
+            case 'province':
+                $request->session()->put('selected_province', $code);
+                $request->session()->forget(['selected_regency', 'selected_district', 'selected_village']);
+                $data = City::where('province_code', $code)->pluck('name', 'code');
+                break;
+                
+            case 'regency':
+                $request->session()->put('selected_regency', $code);
+                $request->session()->forget(['selected_district', 'selected_village']);
+                $data = District::where('city_code', $code)->pluck('name', 'code');
+                break;
+                
+            case 'district':
+                $request->session()->put('selected_district', $code);
+                $request->session()->forget('selected_village');
+                $data = Village::where('district_code', $code)->pluck('name', 'code');
+                break;
+                
+            default:
+                $data = [];
+        }
+        
+        return response()->json($data);
     }
 
     public function submitOrderDetails(Request $request)
