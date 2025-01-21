@@ -22,11 +22,7 @@ class LoginRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-<<<<<<< HEAD
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-=======
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
->>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
      */
     public function rules(): array
     {

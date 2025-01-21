@@ -4,128 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     {{-- Favicon --}}
-    <link rel="icon" type="image/png" href="{{ Storage::url($shop->logo_footer_url) }}">
-
+    <link rel="icon" type="image/png" >
     {{-- Primary Meta Tags --}}
-    <title>{{ $shop->name ?? 'Home' }}</title>
-    <meta name="description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
-    <meta name="author" content="{{ $shop->name ?? config('app.name') }}">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="{{ url()->current() }}">
-
-    {{-- Open Graph Meta Tags --}}
-    <meta property="og:title" content="{{ $shop->name ?? 'Home' }}">
-    <meta property="og:description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ Storage::url($shop->logo_footer_url) }}">
-    <meta property="og:site_name" content="{{ $shop->name ?? config('app.name') }}">
-
-    {{-- Twitter Card Meta Tags --}}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $shop->name ?? 'Home' }}">
-    <meta name="twitter:description" content="{{ $shop->description ?? 'Temukan produk berkualitas di ' . ($shop->name ?? 'Toko Kami') }}">
-    <meta name="twitter:image" content="{{ Storage::url($shop->logo_footer_url) }}">
-
-    {{-- Schema.org Markup --}}
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "{{ $shop->name ?? config('app.name') }}",
-        "url": "{{ url('/') }}",
-        "logo": "{{ Storage::url($shop->logo_footer_url) }}"
-    }
-    </script>
-
+    <title>Home</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <!-- Meta Pixel Code -->
-    @if(!empty($shop->meta_pixel_id))
-        <script>
-            !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s) }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js'); fbq('init', '{{$shop->meta_pixel_id}}'); fbq('track', 'PageView');
-        </script>
-        <noscript>
-            <img height="1" width="1" style="display:none"
-                src="https://www.facebook.com/tr?id={{$shop->meta_pixel_id}}&ev=PageView&noscript=1" />
-        </noscript>
-    @endif
-    <!-- End Meta Pixel Code -->
-
-    <!-- TikTok Pixel Code -->
-    @if($shop->tiktok_pixel_id)
-        <script>
-            !function (w, d, t) {
-                w.TiktokAnalyticsObject = t;
-                var ttq = w[t] = w[t] || [];
-                ttq.methods = ["page", "track", "identify", "instances", "debug", "on", "off", "once", "ready", "alias", "group", "enableCookie", "disableCookie"], ttq.setAndDefer = function (t, e) {
-                    t[e] = function () {
-                        t.push([e].concat(Array.prototype.slice.call(arguments, 0)))
-                    }
-                };
-                for (var i = 0; i < ttq.methods.length; i++) ttq.setAndDefer(ttq, ttq.methods[i]);
-                ttq.instance = function (t) {
-                    for (var e = ttq._i[t] || [], n = 0; n < ttq.methods.length; n++
-                    )ttq.setAndDefer(e, ttq.methods[n]);
-                    return e
-                }, ttq.load = function (e, n) {
-                    var i = "https://analytics.tiktok.com/i18n/pixel/events.js";
-                    ttq._i = ttq._i || {}, ttq._i[e] = [], ttq._i[e]._u = i, ttq._t = ttq._t || {}, ttq._t[e] = +new Date, ttq._o = ttq._o || {}, ttq._o[e] = n || {};
-                    n = document.createElement("script");
-                    n.type = "text/javascript", n.async = !0, n.src = i;
-                    var a = document.getElementsByTagName("script")[0];
-                    a.parentNode.insertBefore(n, a)
-                };
-
-                ttq.load('{{ $shop->tiktok_pixel_id }}');
-                ttq.page();
-            }(window, document, 'ttq');
-        </script>
-    @endif
-    <!-- End TikTok Pixel Code -->
-
-    <!-- Google Tag Manager -->
-    @if(!empty($shop->google_tag_id))
-        <script async src="https://www.googletagmanager.com/gtag/js?id={{$shop->google_tag_id}}"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', '{{$shop->google_tag_id}}');
-        </script>
-    @endif
-    <!-- End Google Tag Manager -->
-
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        html,
-        body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            padding-top: 3rem;
-        }
-
-        main {
-            flex: 1;
-        }
-
-        footer {
-            background: #f8f9fa;
-            padding: 1rem;
-        }
-        #doctor-icon {
-            width: 10rem;
-            height: 10rem;
-        }
-    </style>
     @stack('styles')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -135,12 +23,9 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    @include('layouts.header')
     <main>
         @yield('content')
     </main>
-    @include('layouts.footer')
-
     <!-- sweetalert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module">

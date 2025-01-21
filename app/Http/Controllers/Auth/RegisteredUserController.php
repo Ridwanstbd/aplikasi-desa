@@ -45,10 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-<<<<<<< HEAD
-        return redirect(route('dashboard', absolute: false));
-=======
         return redirect(route('products.index', absolute: false));
->>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
     }
 }

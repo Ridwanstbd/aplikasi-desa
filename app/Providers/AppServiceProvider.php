@@ -1,12 +1,6 @@
 <?php
 
 namespace App\Providers;
-<<<<<<< HEAD
-use App\Models\System;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-=======
 
 use App\Models\Leads;
 use App\Observers\LeadsObserver;
@@ -31,7 +25,6 @@ use App\View\Components\Variation;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
->>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -49,14 +42,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-<<<<<<< HEAD
-        View::composer('*', function ($view) {
-            $view->with([
-                'systems' => Cache::remember('systems', 60, fn() => System::first()),
-                'loggedInUser' => Auth::user()
-            ]);
-        });
-=======
         Blade::component('breadcrumbs', Breadcrumbs::class);
         Blade::component('anchor', Anchor::class);
         Blade::component('form', Form::class);
@@ -81,7 +66,5 @@ class AppServiceProvider extends ServiceProvider
             $totalQuantity = array_sum(array_column($cart, 'quantity'));
             $view->with('totalQuantity', $totalQuantity);
         });
-        Leads::observe(LeadsObserver::class);
->>>>>>> 34e877b1e5638ebf9ca7b65a555643e4543a2062
     }
 }
