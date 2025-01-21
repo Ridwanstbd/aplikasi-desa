@@ -16,19 +16,3 @@ yarn-error.log
 /.idea
 /.vscode
 .env
-
-# Tambahan yang sering digunakan
-.DS_Store
-/public/uploads
-/public/css
-/public/js
-/public/mix-manifest.json
-.env.testing
-composer.lock
-package-lock.json
-yarn.lock
-supervisord.log
-supervisord.pid
-*.log
-*.sqlite
-*.sqlite-journal
