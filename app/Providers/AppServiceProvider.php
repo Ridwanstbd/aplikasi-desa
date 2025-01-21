@@ -66,6 +66,5 @@ class AppServiceProvider extends ServiceProvider
             $totalQuantity = array_sum(array_column($cart, 'quantity'));
             $view->with('totalQuantity', $totalQuantity);
         });
-        Leads::observe(LeadsObserver::class);
     }
 }
