@@ -23,7 +23,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased">
-    <main>
+    <main class="container">
         @yield('content')
     </main>
     <!-- sweetalert2 -->

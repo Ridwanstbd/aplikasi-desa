@@ -15,11 +15,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // Menggunakan password yang diinginkan
-        $password = Hash::make('12345678');
+        $password = Hash::make('password');
 
         User::factory()->create([
-            'name' => 'Admin Eleanor',
-            'email' => 'eleanoradmin@admin',
+            'name' => 'Admin',
+            'email' => 'test@example.com',
             'password' => $password,
         ]);
     }
