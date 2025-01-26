@@ -2,12 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
-use App\Models\Categories;
-use App\Models\Leads;
-use App\Models\MarketplaceLinks;
-use App\Models\Product;
-use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
